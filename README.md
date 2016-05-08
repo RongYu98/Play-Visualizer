@@ -1,4 +1,4 @@
-# QuickSandbox
+# Planned CrashCourse
 
 __Team:__ Vivian Li, Isaac Gerstein, Rong Yu, Eric Stringham
 
@@ -9,6 +9,6 @@ __Team:__ Vivian Li, Isaac Gerstein, Rong Yu, Eric Stringham
 | Rong          | Middleware    |
 | Eric          | Backend       |
 
-__Description:__ Evolution Simulator
+__Description:__ Sports Play Visualizer
 
-__Client:__ Dr.Tu
+__Client:__ Mr. Higgins
