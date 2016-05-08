@@ -1,0 +1,42 @@
+Plan as of 5/8/16:
+
+Basic Structure: 
+Program shall run through a global array
+Each index of the global array maps to a "Player".
+Each "Player" shall have an array with coordinates.
+Each time it loops through the array, each player's
+coordinates shall change based on the position it is
+moving towards. 
+Once it reached the point, it will move on to the
+next coordinates in it's array.
+
+Steps:
+1. Create the basic html and create the global array.
+2. Create a class of players with it's own array.
+3. Create an "add" function to add players.
+4. Create a gloabl function that will take the mouse 
+   xy-cords, and store them into an array.
+5. Combine steps 3 and 4.
+   Unless add is pressed again, the newly created 
+   player shall remain the "selected" one, all mouse 
+   clicks will add onto it's array.
+6. Create a run button that will run through the array.
+7. Add a edit button that will tell the program that 
+   the next "player" clicked on will become "selected",
+   and future clicks should change it's array.
+8. Reset button, that will return all players to their
+   initial state, before the run button.
+9. Delete all button that will wipe the slate clean.   
+
+Possible Ideas to add:
+- When hovering over a "player", it's route should be 
+  shown by drawing lines connecting the points.
+- The run button should have a pause part to it.
+- Once it has reached it's last position, it should do
+  something.
+- Being able to save the data into something.
+
+Extreme Ideas to Consider:
+- Some Players should be faster than others, can pick
+  which player is faster to be more realistic
+- Being able to load a formation for the enemy.
