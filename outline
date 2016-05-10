@@ -10,6 +10,14 @@ moving towards.
 Once it reached the point, it will move on to the
 next coordinates in it's array.
 
+Basic HTML:
+1. Background of football field(?)
+2. Import X's and probably O's.
+3. Create buttons
+4. Make stuff look pretty
+Extra HTML:
+1. Tutorial webpage
+
 Steps:
 1. Create the basic html and create the global array.
 2. Create a class of players with it's own array.
@@ -27,6 +35,7 @@ Steps:
 8. Reset button, that will return all players to their
    initial state, before the run button.
 9. Delete all button that will wipe the slate clean.   
+10. Player Roster, with names, the name will appear when hovering, or maybe on top.
 
 Possible Ideas to add:
 - When hovering over a "player", it's route should be 
@@ -40,3 +49,4 @@ Extreme Ideas to Consider:
 - Some Players should be faster than others, can pick
   which player is faster to be more realistic
 - Being able to load a formation for the enemy.
+- Health to represent the extent of injuries.
