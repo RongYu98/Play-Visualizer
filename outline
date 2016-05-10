@@ -1,4 +1,4 @@
-Plan as of 5/8/16:
+Plan as of 5/10/16:
 
 Basic Structure: 
 Program shall run through a global array
@@ -13,14 +13,18 @@ next coordinates in it's array.
 Basic HTML:
 1. Background of football field(?)
 2. Import X's and probably O's.
+	X's are defense, O's are offense
 3. Create buttons
 4. Make stuff look pretty
 Extra HTML:
 1. Tutorial webpage
 
 Steps:
+
+Part I: Creation
 1. Create the basic html and create the global array.
-2. Create a class of players with it's own array.
+2. Create a class of players with it's own array, a 
+   random color/picture + random addendum, and ball.
 3. Create an "add" function to add players.
 4. Create a gloabl function that will take the mouse 
    xy-cords, and store them into an array.
@@ -28,14 +32,28 @@ Steps:
    Unless add is pressed again, the newly created 
    player shall remain the "selected" one, all mouse 
    clicks will add onto it's array.
-6. Create a run button that will run through the array.
-7. Add a edit button that will tell the program that 
+6. Replicate 3, 4, 5 for the X's, the defense. 
+
+Part II: Action
+7a. Create a run button that will run through the array.
+   If everyone is done, restart and rerun.
+   If pressed again, pause.
+7b. Create the middleware for the fast-forward button.
+8. Add a edit button that will tell the program that 
    the next "player" clicked on will become "selected",
    and future clicks should change it's array.
-8. Reset button, that will return all players to their
+9. Reset button, that will return all players to their
    initial state, before the run button.
-9. Delete all button that will wipe the slate clean.   
-10. Player Roster, with names, the name will appear when hovering, or maybe on top.
+10. Delete all button that will wipe the slate clean. 
+
+Part III: Saving
+12. Save the current info into a txt doc, only one part
+13. Open by reading a txt doc, process it
+14. Have a scroll down, change innerHTML to change it.
+15. To load formation, scroll through and click select.
+16. Create function to set everything.
+17. Replicate everything for enemy.
+Note: 12 and 13 are subject to change, that's backend.
 
 Possible Ideas to add:
 - When hovering over a "player", it's route should be 
@@ -44,6 +62,7 @@ Possible Ideas to add:
 - Once it has reached it's last position, it should do
   something.
 - Being able to save the data into something.
+- Player Roster, with names, the name will appear when hovering, or maybe on top.
 
 Extreme Ideas to Consider:
 - Some Players should be faster than others, can pick
