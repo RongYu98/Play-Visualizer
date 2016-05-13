@@ -33,6 +33,7 @@ Part I: Creation
    player shall remain the "selected" one, all mouse 
    clicks will add onto it's array.
 6. Replicate 3, 4, 5 for the X's, the defense. 
+   (PUT ON HOLD, WILL DEPEND ON CLIENT) 
 
 Part II: Action
 7a. Create a run button that will run through the array.

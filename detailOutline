@@ -1,0 +1,10 @@
+Steps I-3-5:
+1. When the add button is pressed, it wil:
+   A) Create a player, set a variable to it
+   B) Set a variable to true, which call a function 
+      to store the x,y's when the mouse is clicked 
+      to that player's x y array.
+   c) When the Add/(Stop Adding) button is clicked 
+      again, the variable will become false, and the
+      array stops being added onto, everything will
+      be set to either null or false.

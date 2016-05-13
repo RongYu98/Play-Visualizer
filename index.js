@@ -2,6 +2,8 @@
 //var ctx = c.getContext("2d");
 
 var PLAYERS = new Array();
+var cursorX;
+var cursorY;
 
 function PLAYER(){
     
@@ -10,25 +12,31 @@ function PLAYER(){
     var onPos = 0;
     var x = 0;
     var y = 0; 
+    var move = true;
 
     this.move = function(){
-	// will move, but if at end, do nothing
-	if ( this.x - xpositions[onPos] > 2 || 
-	     this.y - ypositions[onPos+1] > 2 ){ 
-	    
-	    //move 
-	    //...................
 	
-	}
+	// if it is before the last position
+	if (onPos < xpositions.length)
+	{
+	    // if arrived at postions[onPos], then move on to next place
+	    if ( this.x - xpositions[onPos] < 2 && 
+		 this.y - ypositions[onPos+1] < 2 ){
+		onPos += 1;
+	    }
 
+	    // will move, but if at end, do nothing
+	    if ( this.x - xpositions[onPos] > 2 || 
+		 this.y - ypositions[onPos+1] > 2 ){ 
+		
+		//move 
+		//...................
+		
+	    }
+
+	};    
 	// draw
-	//..................
-	
-	// if arrived at postions[onPos], then move on to next place
-	if ( this.x - xpositions[onPos] < 2 && 
-	     this.y - ypositions[onPos+1] < 2){
-	    onPos += 1;
-	}
+	// ............
     };
 }
 
@@ -49,6 +57,10 @@ var add = function(){
     PLAYERS.push(PLAYER);
 }
 
+
+
+// "run"button should call main() 
+// windows.addEventListener(
 function main(){
     
     var i;
@@ -58,5 +70,7 @@ function main(){
     var requestID = window.requestAnimationFrame( main );
 }
 
-// "run"button should call main() 
-// windows.addEventListener(
+document.onmousemove = function(e){
+    cursorX = e.pageX;
+    cursorY = e.pageY;
+}
