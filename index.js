@@ -1,5 +1,5 @@
-//var c = document.getElementById("playground");
-//var ctx = c.getContext("2d");
+var c = document.getElementById("field");
+var ctx = c.getContext("2d");
 
 var PLAYERS = new Array();
 var cursorX;
@@ -8,33 +8,46 @@ var Xs = new Array();
 var Ys = new Array();
 var mouseDown = false;
 
-function PLAYER(){
+//Takes the initial x and y as parameters for testing purposes
+var makePlayer = function(startX, startY){
     
     var xpositions = new Array();
-    var ypositions = new Array(); 
+    xpositions.push(startX);
+    var ypositions = new Array();
+    ypositions.push(startY);
     var onPos = 0;
     var x = 0;
     var y = 0; 
-    var move = true;
 
-    this.move = function(){
-
+    var move = function(){
+	
 	x = xpositions[onPos];
 	y = ypositions[onPos];
 	if (onPos > xpositions.length){
 	    onPos += 1;
 	}
 
-	// draw
-	// ............
+	ctx.fillStyle = "red";
+	ctx.beginPath();
+	ctx.arc(x, y, 10, 0, Math.PI * 2);
+	ctx.stroke();
+	ctx.fill();
     };
-}
+
+    return {
+	move: move
+    };
+};
+
+//Creates a test player at (100, 50) on the field
+var player1 = makePlayer(100, 50);
+PLAYERS.push(player1);
 
 var add = function(){
     // Assuming this will be called when "Add Player" is pressed
     
     //Create a new player that may be added.
-    var player = PLAYER();
+    var player = makePlayer(0, 0);
     
     var creation = function(){
 	/*
@@ -44,19 +57,22 @@ var add = function(){
     };
     
     // if add is pressed again, add the character with those the positions?
-    PLAYERS.push(PLAYER);
-}
+    PLAYERS.push(player);
+};
 
 // "run"button should call main() 
 // windows.addEventListener(
-function main(){
+var main = function(){
     
     var i;
     for (i = 0; i<PLAYERS.length; i++){
 	PLAYERS[i].move();
     }
     var requestID = window.requestAnimationFrame( main );
-}
+};
+
+//Call main() to draw initial players
+main();
 
 window.onmousemove = function(e){
     if ( mouseDown ){
