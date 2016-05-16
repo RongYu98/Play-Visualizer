@@ -4,5 +4,5 @@ var field = new Image();
 field.src = "static/field.jpg";
 
 field.onload = function(){
-    ctx.drawImage(field,0,0,1000,500);
+    ctx.drawImage(field,0,0,1024,768);
 };
