@@ -9,6 +9,6 @@ __Team:__ Vivian Li, Isaac Gerstein, Rong Yu, Eric Stringham
 | Rong          | Middleware    |
 | Eric          | Backend       |
 
-__Description:__ Sports Play Visualizer
+__Description:__ Sports Play Visualizer (Soccer)
 
-__Client:__ Mr. Higgins
+__Client:__ Vandana (vagarwala@stuy.edu)

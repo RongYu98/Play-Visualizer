@@ -4,6 +4,7 @@
 var PLAYERS = new Array();
 var cursorX;
 var cursorY;
+var mouseDown = false;
 
 function PLAYER(){
     
@@ -15,26 +16,13 @@ function PLAYER(){
     var move = true;
 
     this.move = function(){
-	
-	// if it is before the last position
-	if (onPos < xpositions.length)
-	{
-	    // if arrived at postions[onPos], then move on to next place
-	    if ( this.x - xpositions[onPos] < 2 && 
-		 this.y - ypositions[onPos+1] < 2 ){
-		onPos += 1;
-	    }
 
-	    // will move, but if at end, do nothing
-	    if ( this.x - xpositions[onPos] > 2 || 
-		 this.y - ypositions[onPos+1] > 2 ){ 
-		
-		//move 
-		//...................
-		
-	    }
+	x = xpositions[onPos];
+	y = ypositions[onPos];
+	if (onPos > xpositions.length){
+	    onPos += 1;
+	}
 
-	};    
 	// draw
 	// ............
     };
@@ -71,6 +59,9 @@ function main(){
 }
 
 document.onmousemove = function(e){
-    cursorX = e.pageX;
-    cursorY = e.pageY;
+    if ( mouseDown ){
+	cursorX = e.pageX;
+	cursorY = e.pageY;
+	//record stuff onto something
+    }
 }
