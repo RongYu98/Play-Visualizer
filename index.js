@@ -4,6 +4,8 @@
 var PLAYERS = new Array();
 var cursorX;
 var cursorY;
+var Xs = new Array();
+var Ys = new Array();
 var mouseDown = false;
 
 function PLAYER(){
@@ -45,8 +47,6 @@ var add = function(){
     PLAYERS.push(PLAYER);
 }
 
-
-
 // "run"button should call main() 
 // windows.addEventListener(
 function main(){
@@ -58,10 +58,20 @@ function main(){
     var requestID = window.requestAnimationFrame( main );
 }
 
-document.onmousemove = function(e){
+window.onmousemove = function(e){
     if ( mouseDown ){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
+	Xs.push( cursorX );
+	Ys.push( cursorY );
+	console.log(cursorX, cursorY);
 	//record stuff onto something
     }
 }
+
+window.addEventListener("mousedown", function(e){
+    mouseDown = true;
+});
+window.addEventListener("mouseup", function(e){
+    mouseDown = false;
+});
