@@ -15,21 +15,34 @@ var makePlayer = function(startX, startY){
     xpositions.push(startX);
     var ypositions = new Array();
     ypositions.push(startY);
-    var onPos = 0;
+    var onPos;
     var x = 0;
     var y = 0; 
+    this.onPos = 1;
 
     var move = function(){
 	
-	x = xpositions[onPos];
-	y = ypositions[onPos];
-	if (onPos > xpositions.length){
-	    onPos += 1;
-	}
+	this.x = this.xpositions[this.onPos];
+	this.y = this.ypositions[this.onPos];
+	//console.log(x, xpositions[onPos], onPos);
+	//console.log(this.onPos + " here1");
+	this.onPos+=1;
+	//console.log(this.onPos + " here2");
 
+	if (this.onPos > this.xpositions.length-1){
+	    this.onPos = this.xpositions.length-1;
+	}
+	//console.log(this.xpositions);
+	//console.log(this.onPos + " here3");
+	
+	//onPos = xpositions.length-1;
+	console.log(this.x);
+	console.log(this.y);
+	
+	//ctx.clearRect(0,0,1024,786);
 	ctx.fillStyle = "red";
 	ctx.beginPath();
-	ctx.arc(x, y, 10, 0, Math.PI * 2);
+	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
 	ctx.stroke();
 	ctx.fill();
     };
@@ -72,7 +85,7 @@ var main = function(){
 };
 
 //Call main() to draw initial players
-main();
+//main();
 
 window.onmousemove = function(e){
     if ( mouseDown ){
@@ -80,7 +93,7 @@ window.onmousemove = function(e){
 	cursorY = e.pageY;
 	Xs.push( cursorX );
 	Ys.push( cursorY );
-	console.log(cursorX, cursorY);
+	//console.log(cursorX, cursorY);
 	//record stuff onto something
     }
 }
@@ -90,4 +103,21 @@ window.addEventListener("mousedown", function(e){
 });
 window.addEventListener("mouseup", function(e){
     mouseDown = false;
+    player1.xpositions = Xs;
+    player1.ypositions = Ys;
+    //console.log(Xs);
+    //console.log(Ys);
+    //console.log(PLAYERS[0]);
+    //PLAYERS[0].xpositions = Xs;
+    //PLAYERS[0].ypositions = Ys;
+    //console.log(PLAYERS[0].xpositions);
+    //console.log(player1);
+    Xs = new Array();
+    Ys = new Array();
+    //main();
+    player1.onPos = 1;
+    for (var i = 0; i<100; i++){
+	player1.move();
+	player1.onPos+= 1;
+    }
 });
