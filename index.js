@@ -30,12 +30,37 @@ var makePlayer = function(playerID){
     var move = function(){
 
 	path = PATHS[ID];
+		
+	if ( this.onPos <= 1){
+	    this.x = path[0][this.onPos];
+	    this.y = path[1][this.onPos];
+	}
 	
-	this.x = path[0][this.onPos];
-	this.y = path[1][this.onPos];
-	//console.log(x, xpositions[onPos], onPos);
+	if ( Math.abs( this.x - path[0][this.onPos] ) < 5 ){
+	    this.x = path[0][this.onPos];
+	} else {
+	    if (this.x > path[0][this.onPos]){
+		this.x -= 5;
+	    } else {
+		this.x += 5;
+	    }
+	}
+
+ 	if ( Math.abs( this.y - path[1][this.onPos] ) < 5 ){
+	    this.y = path[1][this.onPos];
+	} else {
+	    if (this.y > path[1][this.onPos]){
+		this.y -= 5;
+	    } else {
+		this.y += 5;
+	    }
+	}	
+	//console.log(x, path[0][this.onPos], onPos);
 	//console.log(this.onPos + " here1");
-	this.onPos+=1;
+
+	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
+	    this.onPos+=1;
+	}
 	//console.log(this.onPos + " here2");
 
 	if (this.onPos > path[0].length-1){
@@ -92,9 +117,6 @@ var add = function(){
 var main = function(){
     var i=0;
     for (i = 0; i<PLAYERS.length; i++){
-	//console.log(i);
-	//console.log(PLAYERS[i]);
-	//console.log(PLAYERS[i].undone);
 	if (PLAYERS[i].undone){
 	    PLAYERS[i].move();
 	}
