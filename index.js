@@ -87,6 +87,38 @@ var add = function(){
     PLAYERS.push(player);
 };
 
+var drawArrow = function(arrayX, arrayY){
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = "5";
+    for (var i = 1; i < arrayX.length; i++){
+	ctx.beginPath();
+	ctx.moveTo(arrayX[i - 1], arrayY[i - 1]);
+	ctx.lineTo(arrayX[i], arrayY[i]);
+	ctx.stroke();
+    }
+    var xDiff = arrayX[arrayX.length - 1] - arrayX[arrayX.length - 2];
+    var yDiff = arrayY[arrayY.length - 1] - arrayY[arrayY.length - 2];
+    var slope = 9999;
+    if (xDiff != 0){
+	slope = yDiff / xDiff;
+    }
+    var angle = Math.atan(slope);
+    var angleA = angle + 3 * Math.PI / 4;
+    var angleB = angle - 3 * Math.PI / 4;
+    if (xDiff <= 0){
+	angleA += Math.PI;
+	angleB += Math.PI;
+    }
+    ctx.beginPath();
+    ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
+    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleA) * 20), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleA) * 20));
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
+    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleB) * 20), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleB) * 20));
+    ctx.stroke();
+};
+
 // "run"button should call main() 
 // windows.addEventListener(
 var main = function(){
@@ -105,25 +137,17 @@ var main = function(){
 //Call main() to draw initial players
 //main();
 
-var drawArrow = function(arrayX, arrayY){
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = "5";
-    for (var i = 1; i < arrayX.length; i++){
-	ctx.beginPath();
-	ctx.moveTo(arrayX[i - 1], arrayY[i - 1]);
-	ctx.lineTo(arrayX[i], arrayY[i]);
-	ctx.stroke();
-    }
-};
-
 window.onmousemove = function(e){
     if ( mouseDown ){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
-	Xs.push( cursorX );
-	Ys.push( cursorY );
-	if (Xs.length > 0 && Ys.length > 0){
-	    drawArrow(Xs, Ys);
+	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
+	    Xs.push( cursorX );
+	    Ys.push( cursorY );
+	    if (Xs.length > 0){
+		ctx.drawImage(field,0,0,1024,768);
+		drawArrow(Xs, Ys);
+	    }
 	}
 	//console.log(cursorX, cursorY);
 	//record stuff onto something
