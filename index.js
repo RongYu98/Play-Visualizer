@@ -10,6 +10,7 @@ var cursorY;
 var Xs = new Array();
 var Ys = new Array();
 var mouseDown = false;
+var uninitiated = true;
 
 field.onload = function(){
     ctx.drawImage(field,0,0,1024,768);
@@ -36,23 +37,23 @@ var makePlayer = function(playerID){
 	    this.y = path[1][this.onPos];
 	}
 	
-	if ( Math.abs( this.x - path[0][this.onPos] ) < 5 ){
+	if ( Math.abs( this.x - path[0][this.onPos] ) < 3 ){
 	    this.x = path[0][this.onPos];
 	} else {
 	    if (this.x > path[0][this.onPos]){
-		this.x -= 5;
+		this.x -= 3;
 	    } else {
-		this.x += 5;
+		this.x += 3;
 	    }
 	}
 
- 	if ( Math.abs( this.y - path[1][this.onPos] ) < 5 ){
+ 	if ( Math.abs( this.y - path[1][this.onPos] ) < 3 ){
 	    this.y = path[1][this.onPos];
 	} else {
 	    if (this.y > path[1][this.onPos]){
-		this.y -= 5;
+		this.y -= 3;
 	    } else {
-		this.y += 5;
+		this.y += 3;
 	    }
 	}	
 	//console.log(x, path[0][this.onPos], onPos);
@@ -202,9 +203,12 @@ window.addEventListener("mouseup", function(e){
     PLAYERS[0].undone = true;
     //console.log(PLAYERS[0].xpositions);
     //console.log(player1);
+    if (uninitiated){
+    	main();
+	uninitiated = false;
+    }
     Xs = new Array();
     Ys = new Array();
-    main();
     //player1.onPos = 1;
     //main2();
 });
