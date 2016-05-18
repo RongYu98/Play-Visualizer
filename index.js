@@ -25,7 +25,7 @@ var makePlayer = function(startX, startY){
     var x = 0;
     var y = 0; 
     this.onPos = 1;
-    var undone = true;
+    var undone;
     this.undone = true;
 
     var move = function(){
@@ -45,8 +45,8 @@ var makePlayer = function(startX, startY){
 	//console.log(this.onPos + " here3");
 	
 	//onPos = xpositions.length-1;
-	console.log(this.x);
-	console.log(this.y);
+	//console.log(this.x);
+	//console.log(this.y);
 	
 	//ctx.clearRect(0,0,1024,786);
 	ctx.drawImage(field,0,0,1024,768);
@@ -58,7 +58,8 @@ var makePlayer = function(startX, startY){
     };
 
     return {
-	move: move
+	move: move,
+	undone: this.undone
     };
 };
 
@@ -86,10 +87,14 @@ var add = function(){
 // "run"button should call main() 
 // windows.addEventListener(
 var main = function(){
-    
-    var i;
+    var i=0;
     for (i = 0; i<PLAYERS.length; i++){
-	PLAYERS[i].move();
+	//console.log(i);
+	//console.log(PLAYERS[i]);
+	console.log(PLAYERS[i].undone);
+	if (PLAYERS[i].undone){
+	    PLAYERS[i].move();
+	}
     }
     var requestID = window.requestAnimationFrame( main );
 };
@@ -121,18 +126,21 @@ var main2 = function(){
 };
 window.addEventListener("mouseup", function(e){
     mouseDown = false;
-    player1.xpositions = Xs;
-    player1.ypositions = Ys;
+    //player1.xpositions = Xs;
+    //player1.ypositions = Ys;
     //console.log(Xs);
     //console.log(Ys);
     //console.log(PLAYERS[0]);
-    //PLAYERS[0].xpositions = Xs;
-    //PLAYERS[0].ypositions = Ys;
+    PLAYERS[0] = player1
+    PLAYERS[0].xpositions = Xs;
+    PLAYERS[0].ypositions = Ys;
+    PLAYERS[0].onPos = 1;
+    PLAYERS[0].undone = true;
     //console.log(PLAYERS[0].xpositions);
     //console.log(player1);
     Xs = new Array();
     Ys = new Array();
-    //main();
-    player1.onPos = 1;
-    main2();
+    main();
+    //player1.onPos = 1;
+    //main2();
 });
