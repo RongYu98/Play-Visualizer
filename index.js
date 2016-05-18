@@ -19,6 +19,8 @@ var makePlayer = function(startX, startY){
     var x = 0;
     var y = 0; 
     this.onPos = 1;
+    var undone = true;
+    this.undone = true;
 
     var move = function(){
 	
@@ -31,6 +33,7 @@ var makePlayer = function(startX, startY){
 
 	if (this.onPos > this.xpositions.length-1){
 	    this.onPos = this.xpositions.length-1;
+	    this.undone = false;
 	}
 	//console.log(this.xpositions);
 	//console.log(this.onPos + " here3");
@@ -101,6 +104,14 @@ window.onmousemove = function(e){
 window.addEventListener("mousedown", function(e){
     mouseDown = true;
 });
+var main2 = function(){
+    
+    var i;
+    if (player1.undone){
+	player1.move();
+    }
+    var requestID = window.requestAnimationFrame( main );
+};
 window.addEventListener("mouseup", function(e){
     mouseDown = false;
     player1.xpositions = Xs;
@@ -116,8 +127,5 @@ window.addEventListener("mouseup", function(e){
     Ys = new Array();
     //main();
     player1.onPos = 1;
-    for (var i = 0; i<100; i++){
-	player1.move();
-	player1.onPos+= 1;
-    }
+    main2();
 });
