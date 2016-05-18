@@ -4,7 +4,6 @@ var field = new Image();
 field.src = "static/field.jpg";
 
 var PLAYERS = new Array();
-var PATHS = new Array();
 var cursorX;
 var cursorY;
 var Xs = new Array();
@@ -16,30 +15,30 @@ field.onload = function(){
 };
 
 //Takes the initial x and y as parameters for testing purposes
-var makePlayer = function(playerID){
-
-    var ID = playerID;
-    var path;
+var makePlayer = function(startX, startY){
+    
+    var xpositions = new Array();
+    xpositions.push(startX);
+    var ypositions = new Array();
+    ypositions.push(startY);
     var onPos;
     var x = 0;
     var y = 0; 
-    this.onPos = 0;
+    this.onPos = 1;
     var undone;
     this.undone = true;
 
     var move = function(){
-
-	path = PATHS[ID];
 	
-	this.x = path[0][this.onPos];
-	this.y = path[1][this.onPos];
+	this.x = this.xpositions[this.onPos];
+	this.y = this.ypositions[this.onPos];
 	//console.log(x, xpositions[onPos], onPos);
 	//console.log(this.onPos + " here1");
 	this.onPos+=1;
 	//console.log(this.onPos + " here2");
 
-	if (this.onPos > path[0].length-1){
-	    this.onPos = path[0].length-1;
+	if (this.onPos > this.xpositions.length-1){
+	    this.onPos = this.xpositions.length-1;
 	    this.undone = false;
 	}
 	//console.log(this.xpositions);
@@ -51,9 +50,7 @@ var makePlayer = function(playerID){
 	
 	//ctx.clearRect(0,0,1024,786);
 	ctx.drawImage(field,0,0,1024,768);
-	drawArrow(path[0], path[1]);
 	ctx.fillStyle = "red";
-	ctx.lineWidth = "1";
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
 	ctx.stroke();
@@ -67,7 +64,7 @@ var makePlayer = function(playerID){
 };
 
 //Creates a test player at (100, 50) on the field
-var player1 = makePlayer(PLAYERS.length);
+var player1 = makePlayer(100, 50);
 PLAYERS.push(player1);
 
 var add = function(){
@@ -94,7 +91,7 @@ var main = function(){
     for (i = 0; i<PLAYERS.length; i++){
 	//console.log(i);
 	//console.log(PLAYERS[i]);
-	//console.log(PLAYERS[i].undone);
+	console.log(PLAYERS[i].undone);
 	if (PLAYERS[i].undone){
 	    PLAYERS[i].move();
 	}
@@ -105,26 +102,12 @@ var main = function(){
 //Call main() to draw initial players
 //main();
 
-var drawArrow = function(arrayX, arrayY){
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = "5";
-    for (var i = 1; i < arrayX.length; i++){
-	ctx.beginPath();
-	ctx.moveTo(arrayX[i - 1], arrayY[i - 1]);
-	ctx.lineTo(arrayX[i], arrayY[i]);
-	ctx.stroke();
-    }
-};
-
 window.onmousemove = function(e){
     if ( mouseDown ){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	Xs.push( cursorX );
 	Ys.push( cursorY );
-	if (Xs.length > 0 && Ys.length > 0){
-	    drawArrow(Xs, Ys);
-	}
 	//console.log(cursorX, cursorY);
 	//record stuff onto something
     }
@@ -143,7 +126,6 @@ var main2 = function(){
 };
 window.addEventListener("mouseup", function(e){
     mouseDown = false;
-    PATHS[0] = [Xs, Ys];
     //player1.xpositions = Xs;
     //player1.ypositions = Ys;
     //console.log(Xs);
