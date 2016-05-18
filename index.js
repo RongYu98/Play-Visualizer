@@ -1,5 +1,7 @@
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
+var field = new Image();
+field.src = "static/field.jpg";
 
 var PLAYERS = new Array();
 var cursorX;
@@ -7,6 +9,10 @@ var cursorY;
 var Xs = new Array();
 var Ys = new Array();
 var mouseDown = false;
+
+field.onload = function(){
+    ctx.drawImage(field,0,0,1024,768);
+};
 
 //Takes the initial x and y as parameters for testing purposes
 var makePlayer = function(startX, startY){
@@ -43,6 +49,7 @@ var makePlayer = function(startX, startY){
 	console.log(this.y);
 	
 	//ctx.clearRect(0,0,1024,786);
+	ctx.drawImage(field,0,0,1024,768);
 	ctx.fillStyle = "red";
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
