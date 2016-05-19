@@ -27,50 +27,79 @@ var makePlayer = function(playerID){
     this.onPos = 0;
     var undone;
     this.undone = true;
+    var speed = 30;
 
     var move = function(){
 
 	path = PATHS[ID];
-		
+			
 	if ( this.onPos <= 1){
 	    this.x = path[0][this.onPos];
 	    this.y = path[1][this.onPos];
 	}
-	
-	if ( Math.abs( this.x - path[0][this.onPos] ) < 3 ){
+
+	var imove = 0;
+	for ( imove = 0; imove < speed; imove++ ){
+
+	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
+	    this.x = path[0][this.onPos];
+	} else if ( Math.abs( this.x - path[0][this.onPos] ) >= 
+	 	    Math.abs( this.y - path[1][this.onPos] ) ){
+	    //console.log("moved x, Distance from:" + Math.abs( this.x - path[0][this.onPos]) + " "+this.x+ " " +path[0][this.onPos]);
+	    //console.log("did not move y, distance:" + Math.abs( this.y - path[1][this.onPos]) + " "+this.y+ " " +path[1][this.onPos]);
+	    if (this.x > path[0][this.onPos]){
+		this.x -= .1;
+	    } else {
+		this.x += .1;
+	    }
+	}
+	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
+	    this.y = path[1][this.onPos];
+	} else if ( Math.abs( this.x - path[0][this.onPos] ) < 
+	 	    Math.abs( this.y - path[1][this.onPos] ) ){
+	    //console.log("moved y");
+	    if (this.y > path[1][this.onPos]){
+		this.y -= .1;
+	    } else {
+		this.y += .1;
+	    }
+	}		
+
+
+	/*
+	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else {
 	    if (this.x > path[0][this.onPos]){
-		this.x -= 3;
+		this.x -= .1;
 	    } else {
-		this.x += 3;
+		this.x += .1;
 	    }
 	}
 
- 	if ( Math.abs( this.y - path[1][this.onPos] ) < 3 ){
+ 	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
 	    this.y = path[1][this.onPos];
 	} else {
 	    if (this.y > path[1][this.onPos]){
-		this.y -= 3;
+		this.y -= .1;
 	    } else {
-		this.y += 3;
+		this.y += .1;
 	    }
 	}	
+	*/
 	//console.log(x, path[0][this.onPos], onPos);
-	//console.log(this.onPos + " here1");
 
 	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
 	    this.onPos+=1;
 	}
-	//console.log(this.onPos + " here2");
 
 	if (this.onPos > path[0].length-1){
 	    this.onPos = path[0].length-1;
 	    this.undone = false;
 	}
 	//console.log(this.xpositions);
-	//console.log(this.onPos + " here3");
-	
+
+	}	
 	//onPos = xpositions.length-1;
 	//console.log(this.x);
 	//console.log(this.y);
