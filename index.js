@@ -160,7 +160,7 @@ var drawArrow = function(arrayX, arrayY){
     var angle = Math.atan(slope);
     var angleA = angle + 3 * Math.PI / 4;
     var angleB = angle - 3 * Math.PI / 4;
-    if (xDiff <= 0){
+    if (xDiff < 0){
 	angleA += Math.PI;
 	angleB += Math.PI;
     }
