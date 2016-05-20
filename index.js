@@ -11,36 +11,48 @@ var Xs = new Array();
 var Ys = new Array();
 var mouseDown = false;
 var uninitiated = true;
+var drawingPath = false;
+
+var player;
 
 $(document).ready(function(){
-    console.log("ready!");
+    //console.log("ready!");
 });
 
 var winHeight = $(window).height();
 var winWidth = $(window).width();
 
-console.log(winHeight, winWidth);
+//console.log(winHeight, winWidth);
 
 field.onload = function(){
     ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
 };
 
-//Takes the initial x and y as parameters for testing purposes
 var makePlayer = function(playerID){
 
-    var ID = playerID;
+    var ID;
+    this.ID = playerID;
+    var x;
+    var y; 
     var path;
     var onPos;
-    var x = 0;
-    var y = 0; 
     this.onPos = 0;
     var undone;
     this.undone = true;
     var speed = 30;
 
+    var draw = function(){
+	ctx.fillStyle = "red";
+	ctx.lineWidth = "1";
+	ctx.beginPath();
+	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+	ctx.stroke();
+	ctx.fill();
+    };
+    
     var move = function(){
 
-	path = PATHS[ID];
+	path = PATHS[this.ID];
 			
 	if ( this.onPos <= 1){
 	    this.x = path[0][this.onPos];
@@ -114,44 +126,38 @@ var makePlayer = function(playerID){
 	//console.log(this.y);
 	
 	//ctx.clearRect(0,0,1024,786);
-	ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
-	drawArrow(path[0], path[1]);
-	ctx.fillStyle = "red";
-	ctx.lineWidth = "1";
-	ctx.beginPath();
-	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
-	ctx.stroke();
-	ctx.fill();
+	this.draw();
+	drawPath(path[0], path[1]);
     };
 
     return {
+	draw: draw,
 	move: move,
-	undone: this.undone
+	undone: this.undone,
+	onPos: this.onPos,
+	ID: this.ID,
+	x: this.x,
+	y: this.y,
+	speed: this.speed
     };
 };
 
-//Creates a test player at (100, 50) on the field
-var player1 = makePlayer(PLAYERS.length);
-PLAYERS.push(player1);
-
-var add = function(){
-    // Assuming this will be called when "Add Player" is pressed
-    
-    //Create a new player that may be added.
-    var player = makePlayer(0, 0);
-    
-    var creation = function(){
-	/*
-	  If mouse is clicked, added mouseX and mouseY to the player's 
-	  2 arrays..., figure out how to get the eventListener here...
-	*/
-    };
-    
-    // if add is pressed again, add the character with those the positions?
-    PLAYERS.push(player);
+var add = function(){  
+    player = makePlayer(PLAYERS.length);
+    drawingPath = true;
 };
 
-var drawArrow = function(arrayX, arrayY){
+var drawSetup = function(){
+    ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
+    for (var i = 0; i < PLAYERS.length; i++){
+	PLAYERS[i].draw();
+    }
+    for (var i = 0; i < PATHS.length; i++){
+	drawPath(PATHS[i][0], PATHS[i][1]);
+    }
+};
+
+var drawPath = function(arrayX, arrayY){
     ctx.strokeStyle = "red";
     ctx.lineWidth = "5";
     for (var i = 1; i < arrayX.length; i++){
@@ -186,28 +192,24 @@ var drawArrow = function(arrayX, arrayY){
 // "run"button should call main() 
 // windows.addEventListener(
 var main = function(){
-    var i=0;
-    for (i = 0; i<PLAYERS.length; i++){
+    for (var i = 0; i < PLAYERS.length; i++){
 	if (PLAYERS[i].undone){
 	    PLAYERS[i].move();
 	}
     }
-    var requestID = window.requestAnimationFrame( main );
+    var requestID = window.requestAnimationFrame(main);
 };
 
-//Call main() to draw initial players
-//main();
-
 window.onmousemove = function(e){
-    if ( mouseDown ){
+    if (mouseDown && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
 	    if (Xs.length > 0){
-		ctx.drawImage(field,0,0,1024,768);
-		drawArrow(Xs, Ys);
+		drawSetup();
+		drawPath(Xs, Ys);
 	    }
 	}
 	//console.log(cursorX, cursorY);
@@ -217,36 +219,25 @@ window.onmousemove = function(e){
 
 window.addEventListener("mousedown", function(e){
     mouseDown = true;
-});
-var main2 = function(){
-    
-    var i;
-    if (player1.undone){
-	player1.move();
+    if (drawingPath){
+	player.x = e.pageX;
+	player.y = e.pageY;
     }
-    var requestID = window.requestAnimationFrame( main );
-};
+});
+
 window.addEventListener("mouseup", function(e){
     mouseDown = false;
-    PATHS[0] = [Xs, Ys];
-    //player1.xpositions = Xs;
-    //player1.ypositions = Ys;
-    //console.log(Xs);
-    //console.log(Ys);
-    //console.log(PLAYERS[0]);
-    PLAYERS[0] = player1
-    PLAYERS[0].xpositions = Xs;
-    PLAYERS[0].ypositions = Ys;
-    PLAYERS[0].onPos = 1;
-    PLAYERS[0].undone = true;
-    //console.log(PLAYERS[0].xpositions);
-    //console.log(player1);
-    if (uninitiated){
-    	main();
-	uninitiated = false;
+    if (drawingPath){
+	PATHS[player.ID] = [Xs, Ys];
+	player.onPos = 0;
+	player.undone = true;
+	PLAYERS.push(player);
+	drawSetup();
+	drawingPath = false;
+	Xs = new Array();
+	Ys = new Array();
     }
-    Xs = new Array();
-    Ys = new Array();
-    //player1.onPos = 1;
-    //main2();
 });
+
+addButton = document.getElementById("add");
+addButton.addEventListener("click", add);
