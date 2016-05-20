@@ -12,8 +12,17 @@ var Ys = new Array();
 var mouseDown = false;
 var uninitiated = true;
 
+$(document).ready(function(){
+    console.log("ready!");
+});
+
+var winHeight = $(window).height();
+var winWidth = $(window).width();
+
+console.log(winHeight, winWidth);
+
 field.onload = function(){
-    ctx.drawImage(field,0,0,1024,768);
+    ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
 };
 
 //Takes the initial x and y as parameters for testing purposes
@@ -105,7 +114,7 @@ var makePlayer = function(playerID){
 	//console.log(this.y);
 	
 	//ctx.clearRect(0,0,1024,786);
-	ctx.drawImage(field,0,0,1024,768);
+	ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
 	drawArrow(path[0], path[1]);
 	ctx.fillStyle = "red";
 	ctx.lineWidth = "1";
