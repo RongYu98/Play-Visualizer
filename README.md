@@ -1,4 +1,4 @@
-# Planned CrashCourse
+# Play Visualizer
 
 __Team:__ Vivian Li, Isaac Gerstein, Rong Yu, Eric Stringham
 
