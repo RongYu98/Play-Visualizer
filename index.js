@@ -3,6 +3,8 @@ var ctx = c.getContext("2d");
 var field = new Image();
 field.src = "static/field.jpg";
 
+var requestID;
+
 var PLAYERS = new Array();
 var PATHS = new Array();
 var cursorX;
@@ -12,6 +14,7 @@ var Ys = new Array();
 var mouseDown = false;
 var uninitiated = true;
 var drawingPath = false;
+var running = false;
 
 var player;
 
@@ -126,8 +129,7 @@ var makePlayer = function(playerID){
 	//console.log(this.y);
 	
 	//ctx.clearRect(0,0,1024,786);
-	this.draw();
-	drawPath(path[0], path[1]);
+	drawSetup();
     };
 
     return {
@@ -140,11 +142,6 @@ var makePlayer = function(playerID){
 	y: this.y,
 	speed: this.speed
     };
-};
-
-var add = function(){  
-    player = makePlayer(PLAYERS.length);
-    drawingPath = true;
 };
 
 var drawSetup = function(){
@@ -189,15 +186,41 @@ var drawPath = function(arrayX, arrayY){
     ctx.stroke();
 };
 
-// "run"button should call main() 
-// windows.addEventListener(
+var add = function(){  
+    player = makePlayer(PLAYERS.length);
+    drawingPath = true;
+    help.innerHTML = "Click and drag to create a player and a path";
+};
+
+var run = function(){
+    if (!running){
+	running = true;
+	main();
+    }
+};
+
 var main = function(){
     for (var i = 0; i < PLAYERS.length; i++){
 	if (PLAYERS[i].undone){
 	    PLAYERS[i].move();
 	}
     }
-    var requestID = window.requestAnimationFrame(main);
+    requestID = window.requestAnimationFrame(main);
+};
+
+var stop = function(){
+    window.cancelAnimationFrame(requestID);
+    running = false;
+};
+
+var reset = function(){
+    for (var i = 0; i < PLAYERS.length; i++){
+	PLAYERS[i].undone = true;
+	PLAYERS[i].onPos = 0;
+	PLAYERS[i].x = PATHS[i][0][0];
+	PLAYERS[i].y = PATHS[i][1][0];
+    }
+    drawSetup();
 };
 
 window.onmousemove = function(e){
@@ -236,8 +259,17 @@ window.addEventListener("mouseup", function(e){
 	drawingPath = false;
 	Xs = new Array();
 	Ys = new Array();
+	help.innerHTML = "";
     }
 });
 
-addButton = document.getElementById("add");
+var addButton = document.getElementById("add");
 addButton.addEventListener("click", add);
+var runButton = document.getElementById("run");
+runButton.addEventListener("click", run);
+var stopButton = document.getElementById("stop");
+stopButton.addEventListener("click", stop);
+var resetButton = document.getElementById("reset");
+resetButton.addEventListener("click", reset);
+
+var help = document.getElementById("help");
