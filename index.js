@@ -24,11 +24,25 @@ $(document).ready(function(){
 
 var winHeight = $(window).height();
 var winWidth = $(window).width();
+var imgHeight = 768;
+var imgWidth = 1024;
 
-//console.log(winHeight, winWidth);
+if( winWidth/imgWidth <= winHeight/imgHeight ){
+    $("canvas").attr("width", winWidth);
+    $("canvas").attr("height", imgHeight * (winWidth/imgWidth));
+} else {
+    $("canvas").attr("width", imgWidth * (winHeight/imgHeight));
+    $("canvas").attr("height", winHeight);
+}
+
+//console.log($("canvas").prop("width") , $("canvas").prop("height") );
 
 field.onload = function(){
-    ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
+    if(winWidth/imgWidth <= winHeight/imgHeight){
+	ctx.drawImage(field,0,0,winWidth,imgHeight * (winWidth/imgWidth));
+    } else {
+	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
+    }
 };
 
 var makePlayer = function(playerID){
