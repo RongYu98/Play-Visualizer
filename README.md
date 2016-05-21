@@ -13,7 +13,8 @@ __Description:__ Sports Play Visualizer (Soccer)
 
 __Client:__ Vandana (vagarwala@stuy.edu)
 
-__As of 5/21/16:__
+__Change Log__
+As of 5/21/16:
 - Draws Player Object
 - Drag using mouse
 - Creates path of the dragging movement, which the Player will then follow
