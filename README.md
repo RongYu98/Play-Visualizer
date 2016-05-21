@@ -13,7 +13,8 @@ __Description:__ Sports Play Visualizer (Soccer)
 
 __Client:__ Vandana (vagarwala@stuy.edu)
 
-__Change Log__
+
+__Change Log:__
 
 As of 5/21/16:
 - Draws Player Object
