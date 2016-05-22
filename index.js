@@ -43,6 +43,26 @@ var resize = function(){
 	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
     }
 };
+function iOS() {
+
+  var iDevices = [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ];
+
+  if (!!navigator.platform) {
+    while (iDevices.length) {
+      if (navigator.platform === iDevices.pop()){ return true; }
+    }
+  }
+
+  return false;
+}
+var ios = iOS();
 
 var makePlayer = function(playerID){
 
@@ -100,26 +120,34 @@ var makePlayer = function(playerID){
 		this.y += .1;
 	    }
 	}		
-	
 
-	/*
+	/*	
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else {
-	    if ( this	
- 	    this.x += Math.cos(this.angle)*this.v;
-	    this.y += Math.sin(this.angle)*this.v;
+	    if ( this.x - path[0][this.onPos] > 0 ){ 
+		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+		this.x += Math.cos(this.angle)*5;
+	    } else {
+ 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+		this.x += -1*Math.cos(this.angle)*5;
+	    }
+ 	    //this.x += Math.cos(this.angle)*this.v;
+	
+	    //this.y += Math.sin(this.angle)*this.v;
 	}
  	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
 	    this.y = path[1][this.onPos];
-	} else {
-	    if (this.y > path[1][this.onPos]){
-		this.y -= .1;
+	}  else {
+	    if ( this.x - path[0][this.onPos] > 0 ){ 
+		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+		this.y += Math.sin(this.angle)*5;
 	    } else {
-		this.y += .1;
+ 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+		this.y += -1*Math.sin(this.angle)*5;
 	    }
-	}	
-	*/	
+	}
+	*/		
 	//console.log(x, path[0][this.onPos], onPos);
 
 	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
@@ -234,7 +262,7 @@ var reset = function(){
 };
 
 window.onmousemove = function(e){
-    console.log(mouse_Down);
+    //console.log(mouse_Down);
     if (mouse_Down && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
@@ -251,8 +279,8 @@ window.onmousemove = function(e){
     }
 }
 window.ontouchmove = function(e){
-    console.log(e.pageX);
-    console.log(mouse_Down);
+    //console.log(e.pageX);
+    //console.log(mouse_Down);
     if (mouse_Down && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
@@ -270,17 +298,24 @@ window.ontouchmove = function(e){
 }
 
 window.addEventListener("mousedown", function(e){
-    console.log(e.pageX);
-    mouse_Down = true;
-    console.log(mouse_Down);
+    //console.log(e.pageX);
+    console.log(e.pageX + " "+e.pageY);
+    console.log( c.width + " " + c.height);
+    if (e.pageX < c.width && e.pageY < c.height ){
+	mouse_Down = true;
+	console.log("True");
+    }
+    //console.log(e.pageX < c.width);
+    //console.log(e.pageY < c.height);
+    //console.log(mouse_Down);
     if (drawingPath){
 	player.x = e.pageX;
 	player.y = e.pageY;
     }
 });
 window.addEventListener("ontouchstart", function(e){
-    console.log(e.pageX);
-    console.log("DOWN!!!!!!!!!!!");
+    //console.log(e.pageX);
+    //console.log("DOWN!!!!!!!!!!!");
     mouse_Down = true;
     if (drawingPath){
 	player.x = e.pageX;
@@ -289,7 +324,7 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
-    console.log("Ended");
+    //console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
        console.log("changed to false")
@@ -305,7 +340,7 @@ window.addEventListener("mouseup", function(e){
 	Ys = new Array();
 	help.innerHTML = "";
     }
-    console.log("WENT UP");
+    //console.log("WENT UP");
 });
 ///THIS doesn't work...... need to fix
 window.addEventListener("ontouchend", function(e){
