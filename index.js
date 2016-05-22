@@ -234,6 +234,7 @@ var reset = function(){
 };
 
 window.onmousemove = function(e){
+    console.log(e.pageX);
     if (mouseDown && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
@@ -250,6 +251,7 @@ window.onmousemove = function(e){
     }
 }
 window.ontouchmove = function(e){
+    console.log(e.pageX);
     if (mouseDown && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
@@ -267,6 +269,7 @@ window.ontouchmove = function(e){
 }
 
 window.addEventListener("mousedown", function(e){
+    console.log(e.pageX);
     mouseDown = true;
     if (drawingPath){
 	player.x = e.pageX;
@@ -274,6 +277,7 @@ window.addEventListener("mousedown", function(e){
     }
 });
 window.addEventListener("ontouchstart", function(e){
+    console.log(e.pageX);
     mouseDown = true;
     if (drawingPath){
 	player.x = e.pageX;
