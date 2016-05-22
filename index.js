@@ -271,6 +271,7 @@ window.ontouchmove = function(e){
 window.addEventListener("mousedown", function(e){
     console.log(e.pageX);
     mouseDown = true;
+    console.log(mouseDown);
     if (drawingPath){
 	player.x = e.pageX;
 	player.y = e.pageY;
