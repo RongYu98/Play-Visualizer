@@ -253,8 +253,31 @@ window.onmousemove = function(e){
 	//record stuff onto something
     }
 }
+window.ontouchmove = function(e){
+    if (mouseDown && drawingPath){
+	cursorX = e.pageX;
+	cursorY = e.pageY;
+	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
+	    Xs.push( cursorX );
+	    Ys.push( cursorY );
+	    if (Xs.length > 0){
+		drawSetup();
+		drawPath(Xs, Ys);
+	    }
+	}
+	//console.log(cursorX, cursorY);
+	//record stuff onto something
+    }
+}
 
 window.addEventListener("mousedown", function(e){
+    mouseDown = true;
+    if (drawingPath){
+	player.x = e.pageX;
+	player.y = e.pageY;
+    }
+});
+window.addEventListener("ontouchstart", function(e){
     mouseDown = true;
     if (drawingPath){
 	player.x = e.pageX;
@@ -276,6 +299,21 @@ window.addEventListener("mouseup", function(e){
 	help.innerHTML = "";
     }
 });
+window.addEventListener("ontouchend", function(e){
+    mouseDown = false;
+    if (drawingPath){
+	PATHS[player.ID] = [Xs, Ys];
+	player.onPos = 0;
+	player.undone = true;
+	PLAYERS.push(player);
+	drawSetup();
+	drawingPath = false;
+	Xs = new Array();
+	Ys = new Array();
+	help.innerHTML = "";
+    }
+});
+
 
 window.addEventListener("resize", resize);
 
