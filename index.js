@@ -307,6 +307,7 @@ window.addEventListener("mouseup", function(e){
     }
     console.log("WENT UP");
 });
+///THIS doesn't work...... need to fix
 window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
