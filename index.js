@@ -289,6 +289,7 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
+    console.log("Ended");
     mouse_Down = false;
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
