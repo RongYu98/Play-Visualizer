@@ -11,7 +11,7 @@ var cursorX;
 var cursorY;
 var Xs = new Array();
 var Ys = new Array();
-var mouseDown = false;
+var mouse_Down = false;
 var uninitiated = true;
 var drawingPath = false;
 var running = false;
@@ -234,7 +234,8 @@ var reset = function(){
 };
 
 window.onmousemove = function(e){
-    if (mouseDown && drawingPath){
+    console.log(mouse_Down);
+    if (mouse_Down && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
@@ -251,8 +252,8 @@ window.onmousemove = function(e){
 }
 window.ontouchmove = function(e){
     console.log(e.pageX);
-    console.log(mouseDown);
-    if (mouseDown && drawingPath){
+    console.log(mouse_Down);
+    if (mouse_Down && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
@@ -270,8 +271,8 @@ window.ontouchmove = function(e){
 
 window.addEventListener("mousedown", function(e){
     console.log(e.pageX);
-    mouseDown = true;
-    console.log(mouseDown);
+    mouse_Down = true;
+    console.log(mouse_Down);
     if (drawingPath){
 	player.x = e.pageX;
 	player.y = e.pageY;
@@ -280,7 +281,7 @@ window.addEventListener("mousedown", function(e){
 window.addEventListener("ontouchstart", function(e){
     console.log(e.pageX);
     console.log("DOWN!!!!!!!!!!!");
-    mouseDown = true;
+    mouse_Down = true;
     if (drawingPath){
 	player.x = e.pageX;
 	player.y = e.pageY;
@@ -288,11 +289,7 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
-    if ( Xs.length > 3 ){
-       mouseDown = false;
-       console.log("FALSE, ended touch");
-    }
-    //mouseDown = false;
+    mouse_Down = false;
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
@@ -308,7 +305,7 @@ window.addEventListener("mouseup", function(e){
 window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
-       mouseDown = false;
+       mouse_Down = false;
        console.log("FALSE, ended touch");
     }
     if (drawingPath){
