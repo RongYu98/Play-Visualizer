@@ -144,7 +144,6 @@ var makePlayer = function(playerID){
 	    } else {
  		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
 		this.y += -1*Math.sin(this.angle)*.1;
-	        console.log("under");
 	    }
 	}
 	//console.log(x, path[0][this.onPos], onPos);
@@ -260,6 +259,8 @@ var reset = function(){
     drawSetup();
 };
 
+
+//pressing the buttons is mouse, touching the canvas is onTouchMove
 window.onmousemove = function(e){
     //console.log(mouse_Down);
     if (mouse_Down && drawingPath){
@@ -278,9 +279,10 @@ window.onmousemove = function(e){
     }
 }
 window.ontouchmove = function(e){
+    e.preventDefault()
     //console.log(e.pageX);
     console.log(mouse_Down);
-    if (mouse_Down && drawingPath){
+    if (drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
@@ -376,3 +378,4 @@ var resetButton = document.getElementById("reset");
 resetButton.addEventListener("click", reset);
 
 var help = document.getElementById("help");
+//1
