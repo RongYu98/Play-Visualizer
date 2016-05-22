@@ -18,15 +18,20 @@ var running = false;
 
 var player;
 
+var winHeight = $(window).height();
+var winWidth = $(window).width();
+var imgHeight = 768;
+var imgWidth = 1024;
+
 field.onload = function(){
     resize();
 };
 
 var resize = function(){
-    var winHeight = $(window).height();
-    var winWidth = $(window).width();
-    var imgHeight = 768;
-    var imgWidth = 1024;
+    winHeight = $(window).height();
+    winWidth = $(window).width();
+    imgHeight = 768;
+    imgWidth = 1024;
 
     if( winWidth/imgWidth <= winHeight/imgHeight ){
 	$("canvas").attr("width", winWidth);
@@ -153,7 +158,8 @@ var makePlayer = function(playerID){
 };
 
 var drawSetup = function(){
-    ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
+    //ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
+    resize();
     for (var i = 0; i < PLAYERS.length; i++){
 	PLAYERS[i].draw();
     }
