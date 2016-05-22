@@ -303,7 +303,9 @@ window.addEventListener("mouseup", function(e){
 });
 window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
-    mouseDown = false;
+    if ( Xs.length > 3 ){
+       mouseDown = false;
+    }
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
