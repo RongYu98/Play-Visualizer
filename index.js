@@ -255,8 +255,8 @@ window.onmousemove = function(e){
 }
 window.ontouchmove = function(e){
     if (mouseDown && drawingPath){
-	cursorX = e.pageX;
-	cursorY = e.pageY;
+	cursorX = e.clientX;
+	cursorY = e.clientY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -280,8 +280,8 @@ window.addEventListener("mousedown", function(e){
 window.addEventListener("ontouchstart", function(e){
     mouseDown = true;
     if (drawingPath){
-	player.x = e.pageX;
-	player.y = e.pageY;
+	player.x = e.clientX;
+	player.y = e.clientY;
     }
 });
 
