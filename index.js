@@ -292,6 +292,7 @@ window.addEventListener("mouseup", function(e){
     console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
+       console.log("changed to false")
     }
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
