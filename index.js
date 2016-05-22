@@ -234,7 +234,7 @@ var reset = function(){
 };
 
 window.onmousemove = function(e){
-    console.log(e.pageX);
+    //console.log(e.pageX);
     if (mouseDown && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
