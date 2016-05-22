@@ -288,7 +288,11 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
-    mouseDown = false;
+    if ( Xs.length > 3 ){
+       mouseDown = false;
+       console.log("FALSE, ended touch");
+    }
+    //mouseDown = false;
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
@@ -305,6 +309,7 @@ window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
        mouseDown = false;
+       console.log("FALSE, ended touch");
     }
     if (drawingPath){
 	PATHS[player.ID] = [Xs, Ys];
