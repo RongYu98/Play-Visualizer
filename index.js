@@ -56,6 +56,7 @@ var makePlayer = function(playerID){
     var undone;
     this.undone = true;
     var speed = 30;
+    var angle = 0;
 
     var draw = function(){
 	ctx.fillStyle = "red";
@@ -77,13 +78,11 @@ var makePlayer = function(playerID){
 
 	var imove = 0;
 	for ( imove = 0; imove < speed; imove++ ){
-
+	
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else if ( Math.abs( this.x - path[0][this.onPos] ) >= 
 	 	    Math.abs( this.y - path[1][this.onPos] ) ){
-	    //console.log("moved x, Distance from:" + Math.abs( this.x - path[0][this.onPos]) + " "+this.x+ " " +path[0][this.onPos]);
-	    //console.log("did not move y, distance:" + Math.abs( this.y - path[1][this.onPos]) + " "+this.y+ " " +path[1][this.onPos]);
 	    if (this.x > path[0][this.onPos]){
 		this.x -= .1;
 	    } else {
@@ -101,19 +100,16 @@ var makePlayer = function(playerID){
 		this.y += .1;
 	    }
 	}		
-
+	
 
 	/*
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else {
-	    if (this.x > path[0][this.onPos]){
-		this.x -= .1;
-	    } else {
-		this.x += .1;
-	    }
+	    if ( this	
+ 	    this.x += Math.cos(this.angle)*this.v;
+	    this.y += Math.sin(this.angle)*this.v;
 	}
-
  	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
 	    this.y = path[1][this.onPos];
 	} else {
@@ -123,7 +119,7 @@ var makePlayer = function(playerID){
 		this.y += .1;
 	    }
 	}	
-	*/
+	*/	
 	//console.log(x, path[0][this.onPos], onPos);
 
 	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
@@ -255,8 +251,8 @@ window.onmousemove = function(e){
 }
 window.ontouchmove = function(e){
     if (mouseDown && drawingPath){
-	cursorX = e.clientX;
-	cursorY = e.clientY;
+	cursorX = e.pageX;
+	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -280,8 +276,8 @@ window.addEventListener("mousedown", function(e){
 window.addEventListener("ontouchstart", function(e){
     mouseDown = true;
     if (drawingPath){
-	player.x = e.clientX;
-	player.y = e.clientY;
+	player.x = e.pageX;
+	player.y = e.pageY;
     }
 });
 
