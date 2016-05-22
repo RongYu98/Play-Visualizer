@@ -18,29 +18,23 @@ var running = false;
 
 var player;
 
-$(document).ready(function(){
-    //console.log("ready!");
-});
-
-var winHeight = $(window).height();
-var winWidth = $(window).width();
-var imgHeight = 768;
-var imgWidth = 1024;
-
-if( winWidth/imgWidth <= winHeight/imgHeight ){
-    $("canvas").attr("width", winWidth);
-    $("canvas").attr("height", imgHeight * (winWidth/imgWidth));
-} else {
-    $("canvas").attr("width", imgWidth * (winHeight/imgHeight));
-    $("canvas").attr("height", winHeight);
-}
-
-//console.log($("canvas").prop("width") , $("canvas").prop("height") );
-
 field.onload = function(){
-    if(winWidth/imgWidth <= winHeight/imgHeight){
+    resize();
+};
+
+var resize = function(){
+    var winHeight = $(window).height();
+    var winWidth = $(window).width();
+    var imgHeight = 768;
+    var imgWidth = 1024;
+
+    if( winWidth/imgWidth <= winHeight/imgHeight ){
+	$("canvas").attr("width", winWidth);
+	$("canvas").attr("height", imgHeight * (winWidth/imgWidth));
 	ctx.drawImage(field,0,0,winWidth,imgHeight * (winWidth/imgWidth));
     } else {
+	$("canvas").attr("width", imgWidth * (winHeight/imgHeight));
+	$("canvas").attr("height", winHeight);
 	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
     }
 };
@@ -276,6 +270,8 @@ window.addEventListener("mouseup", function(e){
 	help.innerHTML = "";
     }
 });
+
+window.addEventListener("resize", resize);
 
 var addButton = document.getElementById("add");
 addButton.addEventListener("click", add);
