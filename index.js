@@ -98,7 +98,8 @@ var makePlayer = function(playerID){
 
 	var imove = 0;
 	for ( imove = 0; imove < speed; imove++ ){
-	
+
+	/*	
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else if ( Math.abs( this.x - path[0][this.onPos] ) >= 
@@ -120,34 +121,32 @@ var makePlayer = function(playerID){
 		this.y += .1;
 	    }
 	}		
-
-	/*	
+	*/
+	
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else {
-	    if ( this.x - path[0][this.onPos] > 0 ){ 
+	    if ( this.x - path[0][this.onPos] < 0 ){ 
 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.x += Math.cos(this.angle)*5;
+		this.x += Math.cos(this.angle)*.1;
 	    } else {
  		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.x += -1*Math.cos(this.angle)*5;
+		this.x += -1*Math.cos(this.angle)*.1;
 	    }
- 	    //this.x += Math.cos(this.angle)*this.v;
-	
-	    //this.y += Math.sin(this.angle)*this.v;
+
 	}
  	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
 	    this.y = path[1][this.onPos];
 	}  else {
-	    if ( this.x - path[0][this.onPos] > 0 ){ 
+	    if ( this.x - path[0][this.onPos] < 0 ){ 
 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.y += Math.sin(this.angle)*5;
+		this.y += Math.sin(this.angle)*.1;
 	    } else {
  		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.y += -1*Math.sin(this.angle)*5;
+		this.y += -1*Math.sin(this.angle)*.1;
+	        console.log("under");
 	    }
 	}
-	*/		
 	//console.log(x, path[0][this.onPos], onPos);
 
 	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
