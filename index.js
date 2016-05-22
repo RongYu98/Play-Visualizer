@@ -279,7 +279,7 @@ window.onmousemove = function(e){
 }
 window.ontouchmove = function(e){
     //console.log(e.pageX);
-    //console.log(mouse_Down);
+    console.log(mouse_Down);
     if (mouse_Down && drawingPath){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
@@ -315,6 +315,8 @@ window.addEventListener("mousedown", function(e){
 window.addEventListener("ontouchstart", function(e){
     //console.log(e.pageX);
     //console.log("DOWN!!!!!!!!!!!");
+    console.log("Started");
+    console.log(mouse_Down);
     mouse_Down = true;
     if (drawingPath){
 	player.x = e.pageX;
