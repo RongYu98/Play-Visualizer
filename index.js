@@ -302,6 +302,7 @@ window.addEventListener("mouseup", function(e){
 	Ys = new Array();
 	help.innerHTML = "";
     }
+    console.log("WENT UP");
 });
 window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
