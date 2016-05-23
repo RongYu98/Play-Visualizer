@@ -239,6 +239,7 @@ var main = function(){
     for (var i = 0; i < PLAYERS.length; i++){
 	if (PLAYERS[i].undone){
 	    PLAYERS[i].move();
+	    drawPath(Xs, Ys);
 	}
     }
     requestID = window.requestAnimationFrame(main);
@@ -302,7 +303,7 @@ window.addEventListener("mousedown", function(e){
     //console.log(e.pageX);
     console.log(e.pageX + " "+e.pageY);
     console.log( c.width + " " + c.height);
-    if (e.pageX < c.width && e.pageY < c.height ){
+    if (e.pageX < c.width && e.pageY < c.height && drawingPath){
 	mouse_Down = true;
 	console.log("True");
     }
