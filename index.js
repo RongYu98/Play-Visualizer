@@ -85,7 +85,7 @@ var makePlayer = function(playerID){
 	ctx.fillStyle = "red";
 	ctx.lineWidth = "1";
 	ctx.beginPath();
-	ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
 	ctx.stroke();
 	ctx.fill();
     };
@@ -195,7 +195,7 @@ var drawSetup = function(){
 
 var drawPath = function(arrayX, arrayY){
     ctx.strokeStyle = "red";
-    ctx.lineWidth = "5";
+    ctx.lineWidth = "5" * playerRatio;
     for (var i = 1; i < arrayX.length; i++){
 	ctx.beginPath();
 	ctx.moveTo(arrayX[i - 1], arrayY[i - 1]);
@@ -217,11 +217,11 @@ var drawPath = function(arrayX, arrayY){
     }
     ctx.beginPath();
     ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
-    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleA) * 20), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleA) * 20));
+    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleA) * 20 * playerRatio), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleA) * 20 * playerRatio));
     ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
-    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleB) * 20), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleB) * 20));
+    ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleB) * 20 * playerRatio), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleB) * 20 * playerRatio));
     ctx.stroke();
 };
 
