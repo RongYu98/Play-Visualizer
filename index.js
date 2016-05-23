@@ -17,11 +17,12 @@ var drawingPath = false;
 var running = false;
 
 var player;
+var playerRatio;
 
-var winHeight = $(window).height();
-var winWidth = $(window).width();
-var imgHeight = 768;
-var imgWidth = 1024;
+var winHeight;
+var winWidth;
+var imgHeight;
+var imgWidth;
 
 field.onload = function(){
     resize();
@@ -32,6 +33,8 @@ var resize = function(){
     winWidth = $(window).width();
     imgHeight = 768;
     imgWidth = 1024;
+    playerRatio = $("canvas").attr("width")/1024;
+    console.log(playerRatio);
 
     if( winWidth/imgWidth <= winHeight/imgHeight ){
 	$("canvas").attr("width", winWidth);
