@@ -34,7 +34,7 @@ var resize = function(){
     imgHeight = 768;
     imgWidth = 1024;
     playerRatio = $("canvas").attr("width")/1024;
-    console.log(playerRatio);
+    //console.log(playerRatio);
 
     if( winWidth/imgWidth <= winHeight/imgHeight ){
 	$("canvas").attr("width", winWidth);
@@ -67,7 +67,9 @@ function iOS() {
 }
 var ios = iOS();
 
-var makePlayer = function(playerID){
+var team1;
+
+var makePlayer = function(playerID, team){
 
     var ID;
     this.ID = playerID;
@@ -78,54 +80,39 @@ var makePlayer = function(playerID){
     this.onPos = 0;
     var undone;
     this.undone = true;
-    var speed = 30;
+    var speed = 30 * playerRatio;
     var angle = 0;
 
+   //console.log(this.team1);
+
     var draw = function(){
-	ctx.fillStyle = "red";
-	ctx.lineWidth = "1";
-	ctx.beginPath();
-	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
-	ctx.stroke();
-	ctx.fill();
+	team1 = team;
+	if(team1){
+	    ctx.fillStyle = "red";
+	}else{
+	    ctx.fillStyle = "blue";
+	}
+	    ctx.lineWidth = "1";
+	    ctx.beginPath();
+	    ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
+	    ctx.stroke();
+	    ctx.fill();
     };
+
     
     var move = function(){
 
 	path = PATHS[this.ID];
 			
+	this.speed = 30 * playerRatio;
+
 	if ( this.onPos <= 1){
 	    this.x = path[0][this.onPos];
 	    this.y = path[1][this.onPos];
 	}
 
 	var imove = 0;
-	for ( imove = 0; imove < speed; imove++ ){
-
-	/*	
-	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
-	    this.x = path[0][this.onPos];
-	} else if ( Math.abs( this.x - path[0][this.onPos] ) >= 
-	 	    Math.abs( this.y - path[1][this.onPos] ) ){
-	    if (this.x > path[0][this.onPos]){
-		this.x -= .1;
-	    } else {
-		this.x += .1;
-	    }
-	}
-	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
-	    this.y = path[1][this.onPos];
-	} else if ( Math.abs( this.x - path[0][this.onPos] ) < 
-	 	    Math.abs( this.y - path[1][this.onPos] ) ){
-	    //console.log("moved y");
-	    if (this.y > path[1][this.onPos]){
-		this.y -= .1;
-	    } else {
-		this.y += .1;
-	    }
-	}		
-	*/
-	
+	for ( imove = 0; imove < speed; imove++ ){	
 	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
 	    this.x = path[0][this.onPos];
 	} else {
@@ -226,10 +213,17 @@ var drawPath = function(arrayX, arrayY){
 };
 
 var add = function(){  
-    player = makePlayer(PLAYERS.length);
+    player = makePlayer(PLAYERS.length, true);
     drawingPath = true;
     help.innerHTML = "Click and drag to create a player and a path";
 };
+
+var add2 = function(){  
+    player = makePlayer(PLAYERS.length, false);
+    drawingPath = true;
+    help.innerHTML = "Click and drag to create a player and a path";
+};
+
 
 var run = function(){
     if (!running){
@@ -308,7 +302,7 @@ window.addEventListener("mousedown", function(e){
     console.log( c.width + " " + c.height);
     if (e.pageX < c.width && e.pageY < c.height && drawingPath){
 	mouse_Down = true;
-	console.log("True");
+	//console.log("True");
     }
     //console.log(e.pageX < c.width);
     //console.log(e.pageY < c.height);
@@ -374,6 +368,8 @@ window.addEventListener("resize", resize);
 
 var addButton = document.getElementById("add");
 addButton.addEventListener("click", add);
+var addButton2 = document.getElementById("add2");
+addButton2.addEventListener("click", add2);
 var runButton = document.getElementById("run");
 runButton.addEventListener("click", run);
 var stopButton = document.getElementById("stop");
