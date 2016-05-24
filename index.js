@@ -15,6 +15,7 @@ var mouse_Down = false;
 var uninitiated = true;
 var drawingPath = false;
 var running = false;
+var creatingTeam1;
 
 var player;
 var playerRatio;
@@ -67,8 +68,6 @@ function iOS() {
 }
 var ios = iOS();
 
-var team1;
-
 var makePlayer = function(playerID, team){
 
     var ID;
@@ -82,21 +81,22 @@ var makePlayer = function(playerID, team){
     this.undone = true;
     var speed = 30 * playerRatio;
     var angle = 0;
+    var team;
+    this.team = team;
 
    //console.log(this.team1);
 
     var draw = function(){
-	team1 = team;
-	if(team1){
+	if(this.team){
 	    ctx.fillStyle = "red";
 	}else{
 	    ctx.fillStyle = "blue";
 	}
-	    ctx.lineWidth = "1";
-	    ctx.beginPath();
-	    ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
-	    ctx.stroke();
-	    ctx.fill();
+	ctx.lineWidth = "1";
+	ctx.beginPath();
+	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
+	ctx.stroke();
+	ctx.fill();
     };
 
     
@@ -165,7 +165,8 @@ var makePlayer = function(playerID, team){
 	ID: this.ID,
 	x: this.x,
 	y: this.y,
-	speed: this.speed
+	speed: this.speed,
+	team: this.team
     };
 };
 
@@ -176,12 +177,16 @@ var drawSetup = function(){
 	PLAYERS[i].draw();
     }
     for (var i = 0; i < PATHS.length; i++){
-	drawPath(PATHS[i][0], PATHS[i][1]);
+	drawPath(PATHS[i][0], PATHS[i][1], PLAYERS[i].team);
     }
 };
 
-var drawPath = function(arrayX, arrayY){
-    ctx.strokeStyle = "red";
+var drawPath = function(arrayX, arrayY, team){
+    if (team){
+	ctx.strokeStyle = "red";
+    }else{
+	ctx.strokeStyle = "blue";
+    }
     ctx.lineWidth = "5" * playerRatio;
     for (var i = 1; i < arrayX.length; i++){
 	ctx.beginPath();
@@ -215,12 +220,14 @@ var drawPath = function(arrayX, arrayY){
 var add = function(){  
     player = makePlayer(PLAYERS.length, true);
     drawingPath = true;
+    creatingTeam1 = true;
     help.innerHTML = "Click and drag to create a player and a path";
 };
 
 var add2 = function(){  
     player = makePlayer(PLAYERS.length, false);
     drawingPath = true;
+    creatingTeam1 = false;
     help.innerHTML = "Click and drag to create a player and a path";
 };
 
@@ -269,7 +276,7 @@ window.onmousemove = function(e){
 	    Ys.push( cursorY );
 	    if (Xs.length > 0){
 		drawSetup();
-		drawPath(Xs, Ys);
+		drawPath(Xs, Ys, creatingTeam1);
 	    }
 	}
 	//console.log(cursorX, cursorY);
@@ -288,7 +295,7 @@ window.ontouchmove = function(e){
 	    Ys.push( cursorY );
 	    if (Xs.length > 0){
 		drawSetup();
-		drawPath(Xs, Ys);
+		drawPath(Xs, Ys, creatingTeam1);
 	    }
 	}
 	//console.log(cursorX, cursorY);
