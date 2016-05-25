@@ -17,6 +17,9 @@ var drawingPath = false;
 var running = false;
 var creatingTeam1;
 
+var selected = false;
+var select = -1;
+
 var player;
 var playerRatio;
 
@@ -84,6 +87,11 @@ var makePlayer = function(playerID, team){
     var team;
     this.team = team;
 
+    var redo = function(){
+	this.onPos = 0;
+	this.x = PATHS[this.ID][0][onPos];
+	this.y = PATHS[this.ID][1][onPos];
+   }
    //console.log(this.team1);
 
     var draw = function(){
@@ -166,7 +174,8 @@ var makePlayer = function(playerID, team){
 	x: this.x,
 	y: this.y,
 	speed: this.speed,
-	team: this.team
+	team: this.team,
+	redo: this.redo
     };
 };
 
@@ -268,7 +277,7 @@ var reset = function(){
 //pressing the buttons is mouse, touching the canvas is onTouchMove
 window.onmousemove = function(e){
     //console.log(mouse_Down);
-    if (mouse_Down && drawingPath){
+    if ( (mouse_Down && drawingPath) || select > -1 ){
 	cursorX = e.pageX;
 	cursorY = e.pageY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
@@ -281,6 +290,9 @@ window.onmousemove = function(e){
 	}
 	//console.log(cursorX, cursorY);
 	//record stuff onto something
+    }
+    if (mouse_Down && select > -1){
+	console.log("selected");
     }
 }
 window.ontouchmove = function(e){
@@ -314,6 +326,29 @@ window.addEventListener("mousedown", function(e){
     //console.log(e.pageX < c.width);
     //console.log(e.pageY < c.height);
     //console.log(mouse_Down);
+    if (selected){ 
+	var xcor;
+	this.xcor = e.pageX;
+	var ycor;
+	this.ycor = e.pageY;
+	var i = 0;
+	console.log("started select");
+	console.log( PLAYERS.length);
+	for (this.i = 0;this.i < PLAYERS.length; this.i++){
+		//console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
+		//console.log( "COORDS: "+e.pageX + " " + e.pageY);
+		//console.log(( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ));
+		console.log(this.xcor);
+		if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ) < (10 * playerRatio) &&
+		     ( PLAYERS[i].y - this.ycor )*( PLAYERS[i].y - this.ycor ) < (10 * playerRatio) ){
+			select = this.i;
+			console.log(PLAYERS[select]);
+			console.log("select is "+select);
+			break;
+		};
+	}
+	selected = false;
+    }
     if (drawingPath){
 	player.x = e.pageX;
 	player.y = e.pageY;
@@ -324,6 +359,7 @@ window.addEventListener("ontouchstart", function(e){
     //console.log("DOWN!!!!!!!!!!!");
     console.log("Started");
     console.log(mouse_Down);
+
     mouse_Down = true;
     if (drawingPath){
 	player.x = e.pageX;
@@ -332,18 +368,32 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
+    console.log("mouseup");
+    console.log(select); //select is true or false?????
     //console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
        console.log("changed to false")
     }
-    if (drawingPath){
+    if (drawingPath && select == -1){
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
 	player.undone = true;
 	PLAYERS.push(player);
 	drawSetup();
 	drawingPath = false;
+	Xs = new Array();
+	Ys = new Array();
+	help.innerHTML = "";
+    } else if ( select > -1){
+	//console.log("got to else if");
+	console.log(Xs);
+	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
+	PLAYERS[select].redo;
+	PLAYERS[select].undone = true;
+	drawSetup();
+	drawingPath = false;
+	select = -1;
 	Xs = new Array();
 	Ys = new Array();
 	help.innerHTML = "";
@@ -368,6 +418,26 @@ window.addEventListener("ontouchend", function(e){
 	Ys = new Array();
 	help.innerHTML = "";
     }
+});
+
+var selectButton = document.getElementById("select");
+selectButton.addEventListener("click", function(e){
+	selected = !selected
+	/*
+	var xcor = e.pageX;
+	var ycor = e.pageY;
+	var i = 0;
+	console.log("started select");
+	for (this.i = 0;this.i < PLAYERS.length; this.i++){
+		console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
+		if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ) < (10 * playerRatio) &&
+		     ( PLAYERS[i].y - this.ycor )*( PLAYERS[i].y - this.ycor ) < (10 * playerRatio) ){
+			select = this.i;
+			console.log(PLAYER[select]);
+			break;
+		};
+	}
+	*/
 });
 
 
