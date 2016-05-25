@@ -278,8 +278,8 @@ var reset = function(){
 window.onmousemove = function(e){
     //console.log(mouse_Down);
     if ( (mouse_Down && drawingPath) || select > -1 ){
-	cursorX = e.pageX;
-	cursorY = e.pageY;
+	cursorX = e.offsetX;
+	cursorY = e.offsetY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -300,8 +300,8 @@ window.ontouchmove = function(e){
     //console.log(e.pageX);
     console.log(mouse_Down);
     if (drawingPath){
-	cursorX = e.pageX;
-	cursorY = e.pageY;
+	cursorX = e.offsetX;
+	cursorY = e.offsetY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -317,9 +317,9 @@ window.ontouchmove = function(e){
 
 window.addEventListener("mousedown", function(e){
     //console.log(e.pageX);
-    console.log(e.pageX + " "+e.pageY);
+    //console.log(e.pageX + " "+e.pageY);
     console.log( c.width + " " + c.height);
-    if (e.pageX < c.width && e.pageY < c.height && drawingPath){
+    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
 	mouse_Down = true;
 	//console.log("True");
     }
@@ -328,9 +328,9 @@ window.addEventListener("mousedown", function(e){
     //console.log(mouse_Down);
     if (selected){ 
 	var xcor;
-	this.xcor = e.pageX;
+	this.xcor = e.offsetX;
 	var ycor;
-	this.ycor = e.pageY;
+	this.ycor = e.offsetY;
 	var i = 0;
 	console.log("started select");
 	console.log( PLAYERS.length);
@@ -350,8 +350,8 @@ window.addEventListener("mousedown", function(e){
 	selected = false;
     }
     if (drawingPath){
-	player.x = e.pageX;
-	player.y = e.pageY;
+	player.x = e.offsetX;
+	player.y = e.offsetY;
     }
 });
 window.addEventListener("ontouchstart", function(e){
@@ -362,8 +362,8 @@ window.addEventListener("ontouchstart", function(e){
 
     mouse_Down = true;
     if (drawingPath){
-	player.x = e.pageX;
-	player.y = e.pageY;
+	player.x = e.offsetX;
+	player.y = e.offsetY;
     }
 });
 
