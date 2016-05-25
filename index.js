@@ -91,9 +91,8 @@ var makePlayer = function(playerID, team){
 	this.onPos = 0;
 	this.x = PATHS[this.ID][0][onPos];
 	this.y = PATHS[this.ID][1][onPos];
-   }
-   //console.log(this.team1);
-
+    }
+    
     var draw = function(){
 	if(this.team){
 	    ctx.fillStyle = "red";
@@ -278,8 +277,8 @@ var reset = function(){
 window.onmousemove = function(e){
     //console.log(mouse_Down);
     if ( (mouse_Down && drawingPath) || select > -1 ){
-	cursorX = e.pageX;
-	cursorY = e.pageY;
+	cursorX = e.offsetX;
+	cursorY = e.offsetY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -300,8 +299,8 @@ window.ontouchmove = function(e){
     //console.log(e.pageX);
     console.log(mouse_Down);
     if (drawingPath){
-	cursorX = e.pageX;
-	cursorY = e.pageY;
+	cursorX = e.offsetX;
+	cursorY = e.offsetY;
 	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
@@ -318,7 +317,7 @@ window.ontouchmove = function(e){
 window.addEventListener("mousedown", function(e){
     //console.log(e.pageX + " "+e.pageY);
     //console.log( c.width + " " + c.height);
-    if (e.pageX < c.width && e.pageY < c.height && drawingPath){
+    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
 	mouse_Down = true;
 	//console.log("True");
     }
@@ -327,14 +326,14 @@ window.addEventListener("mousedown", function(e){
     //console.log(mouse_Down);
     if (selected){ 
 	var xcor;
-	this.xcor = e.pageX;
+	this.xcor = e.offsetX;
 	var ycor;
-	this.ycor = e.pageY;
+	this.ycor = e.offsetY;
 	var i = 0;
 	console.log("finding players at: "+this.xcor+" "+this.ycor);
 	//console.log( PLAYERS.length);
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
-	    console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
+	    console.log( "mouse x,y: "+e.offsetX + " " + e.offsetY);
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
 	    console.log(( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
@@ -349,8 +348,8 @@ window.addEventListener("mousedown", function(e){
 	selected = false;
     }
     if (drawingPath){
-	player.x = e.pageX;
-	player.y = e.pageY;
+	player.x = e.offsetX;
+	player.y = e.offsetY;
     }
 });
 window.addEventListener("ontouchstart", function(e){
@@ -361,14 +360,14 @@ window.addEventListener("ontouchstart", function(e){
 
     mouse_Down = true;
     if (drawingPath){
-	player.x = e.pageX;
-	player.y = e.pageY;
+	player.x = e.offsetX;
+	player.y = e.offsetY;
     }
 });
 
 window.addEventListener("mouseup", function(e){
-    console.log("mouseup");
-    console.log(select); //select is true or false?????
+    //console.log("mouseup");
+    //console.log(select); //select is true or false?????
     //console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
