@@ -295,7 +295,7 @@ window.onmousemove = function(e){
 	console.log("selected");
     }
 }
-window.addEventListener("ontouchmove", function(e){
+window.ontouchmove =  function(e){
     e.preventDefault();
     //console.log(e.pageX);
     console.log("touchmove: "+drawingPath);
@@ -313,7 +313,7 @@ window.addEventListener("ontouchmove", function(e){
 	//console.log(cursorX, cursorY);
 	//record stuff onto something
     }
-});
+}
 
 window.addEventListener("mousedown", function(e){
     console.log("mouseDown");
@@ -402,7 +402,7 @@ window.addEventListener("mouseup", function(e){
 });
 
 ///THIS doesn't work...... need to fix
-window.addEventListener("ontouchend", function(e){
+window.ontouchend = function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
        mouse_Down = false;
@@ -419,7 +419,7 @@ window.addEventListener("ontouchend", function(e){
 	Ys = new Array();
 	help.innerHTML = "";
     }
-});
+};
 
 var selectButton = document.getElementById("select");
 selectButton.addEventListener("click", function(e){
