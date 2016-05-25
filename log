@@ -1,3 +1,6 @@
+5/25/16
+select now works better, because a^2 + b^2 == c^2 != c -RY
+
 5/24/16
 added in select and ability to route, a bit buggy if changed halfway RY
 added team 2, they're blue -VL

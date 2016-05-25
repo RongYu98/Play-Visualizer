@@ -316,9 +316,8 @@ window.ontouchmove = function(e){
 }
 
 window.addEventListener("mousedown", function(e){
-    //console.log(e.pageX);
-    console.log(e.pageX + " "+e.pageY);
-    console.log( c.width + " " + c.height);
+    //console.log(e.pageX + " "+e.pageY);
+    //console.log( c.width + " " + c.height);
     if (e.pageX < c.width && e.pageY < c.height && drawingPath){
 	mouse_Down = true;
 	//console.log("True");
@@ -332,20 +331,20 @@ window.addEventListener("mousedown", function(e){
 	var ycor;
 	this.ycor = e.pageY;
 	var i = 0;
-	console.log("started select");
-	console.log( PLAYERS.length);
+	console.log("finding players at: "+this.xcor+" "+this.ycor);
+	//console.log( PLAYERS.length);
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
-		//console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
-		//console.log( "COORDS: "+e.pageX + " " + e.pageY);
-		//console.log(( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ));
-		console.log(this.xcor);
-		if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ) < (10 * playerRatio) &&
-		     ( PLAYERS[i].y - this.ycor )*( PLAYERS[i].y - this.ycor ) < (10 * playerRatio) ){
-			select = this.i;
-			console.log(PLAYERS[select]);
-			console.log("select is "+select);
-			break;
-		};
+	    console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
+	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
+	    console.log(( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
+	    console.log( "Compare with playerRatio of: "+playerRatio);
+	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
+		     ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
+		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
+		select = this.i;
+		console.log("Selected Player is: "+select+" "+PLAYERS[select]);
+		break;
+	    };
 	}
 	selected = false;
     }
@@ -422,7 +421,8 @@ window.addEventListener("ontouchend", function(e){
 
 var selectButton = document.getElementById("select");
 selectButton.addEventListener("click", function(e){
-	selected = !selected
+    selected = !selected;
+    
 	/*
 	var xcor = e.pageX;
 	var ycor = e.pageY;
