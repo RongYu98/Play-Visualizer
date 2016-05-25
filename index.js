@@ -89,8 +89,9 @@ var makePlayer = function(playerID, team){
 
     var redo = function(){
 	this.onPos = 0;
-	this.x = PATHS[this.ID][0][onPos];
-	this.y = PATHS[this.ID][1][onPos];
+	this.x = PATHS[this.ID][0][this.onPos];
+	this.y = PATHS[this.ID][1][this.onPos];
+	console.log("redo done, onPos: "+this.onPos);
    }
    //console.log(this.team1);
 
@@ -157,10 +158,7 @@ var makePlayer = function(playerID, team){
 	//console.log(this.xpositions);
 
 	}	
-	//onPos = xpositions.length-1;
-	//console.log(this.x);
-	//console.log(this.y);
-	
+
 	//ctx.clearRect(0,0,1024,786);
 	drawSetup();
     };
@@ -175,7 +173,7 @@ var makePlayer = function(playerID, team){
 	y: this.y,
 	speed: this.speed,
 	team: this.team,
-	redo: this.redo
+	redo: redo
     };
 };
 
@@ -228,7 +226,8 @@ var drawPath = function(arrayX, arrayY, team){
 
 var add = function(){  
     player = makePlayer(PLAYERS.length, true);
-    drawingPath = true;
+    drawingPath = true; ///////
+    //drawingPath = !drawingPath;
     creatingTeam1 = true;
     help.innerHTML = "Click and drag to create a player and a path";
 };
@@ -316,15 +315,12 @@ window.ontouchmove = function(e){
 }
 
 window.addEventListener("mousedown", function(e){
-    //console.log(e.pageX + " "+e.pageY);
-    //console.log( c.width + " " + c.height);
+
     if (e.pageX < c.width && e.pageY < c.height && drawingPath){
 	mouse_Down = true;
 	//console.log("True");
     }
-    //console.log(e.pageX < c.width);
-    //console.log(e.pageY < c.height);
-    //console.log(mouse_Down);
+
     if (selected){ 
 	var xcor;
 	this.xcor = e.pageX;
@@ -336,17 +332,19 @@ window.addEventListener("mousedown", function(e){
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
 	    console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
-	    console.log(( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
+	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
 	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
-		     ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
+		 ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
 		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
 		select = this.i;
-		console.log("Selected Player is: "+select+" "+PLAYERS[select]);
+		console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
+		console.log("Selected Player's team1 is: "+ PLAYERS[select].team);
+		creatingTeam1 = PLAYERS[select].team;
 		break;
 	    };
 	}
-	selected = false;
+	//selected = false;
     }
     if (drawingPath){
 	player.x = e.pageX;
@@ -357,7 +355,7 @@ window.addEventListener("ontouchstart", function(e){
     //console.log(e.pageX);
     //console.log("DOWN!!!!!!!!!!!");
     console.log("Started");
-    console.log(mouse_Down);
+    console.log("Mouse_Down is: "+mouse_Down);
 
     mouse_Down = true;
     if (drawingPath){
@@ -368,18 +366,20 @@ window.addEventListener("ontouchstart", function(e){
 
 window.addEventListener("mouseup", function(e){
     console.log("mouseup");
-    console.log(select); //select is true or false?????
+    //console.log(select); 
     //console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
-       console.log("changed to false")
+       console.log("Mouse_Down has been changed to false")
     }
     if (drawingPath && select == -1){
+	//console.log(  PLAYERS[ PLAYERS.length -1] );
+	//player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
 	player.undone = true;
 	PLAYERS.push(player);
-	drawSetup();
+	drawSetup(); ////////
 	drawingPath = false;
 	Xs = new Array();
 	Ys = new Array();
@@ -388,7 +388,7 @@ window.addEventListener("mouseup", function(e){
 	//console.log("got to else if");
 	console.log(Xs);
 	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
-	PLAYERS[select].redo;
+	PLAYERS[select].redo();
 	PLAYERS[select].undone = true;
 	drawSetup();
 	drawingPath = false;
@@ -399,6 +399,7 @@ window.addEventListener("mouseup", function(e){
     }
     //console.log("WENT UP");
 });
+
 ///THIS doesn't work...... need to fix
 window.addEventListener("ontouchend", function(e){
     console.log("ENDED");
@@ -423,21 +424,6 @@ var selectButton = document.getElementById("select");
 selectButton.addEventListener("click", function(e){
     selected = !selected;
     
-	/*
-	var xcor = e.pageX;
-	var ycor = e.pageY;
-	var i = 0;
-	console.log("started select");
-	for (this.i = 0;this.i < PLAYERS.length; this.i++){
-		console.log( "mouse x,y: "+e.pageX + " " + e.pageY);
-		if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[i].x - this.xcor ) < (10 * playerRatio) &&
-		     ( PLAYERS[i].y - this.ycor )*( PLAYERS[i].y - this.ycor ) < (10 * playerRatio) ){
-			select = this.i;
-			console.log(PLAYER[select]);
-			break;
-		};
-	}
-	*/
 });
 
 
