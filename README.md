@@ -22,12 +22,48 @@ __Change Log:__
 5/24/16:
 - Added in select and ability to route, a bit buggy if changed halfway RY
 - Added team 2, they're blue -VL
+- Made arrow color change based on team -IG
 - Speed is now related to the size and not a number -VL
 
+5/23/16:
+- Fixed bugs with adding players -IG
+- Players and paths resize along with field -VL
+
+5/22/16:
+- Animation works on iOS -RY
+- Fixed resizing bug -VL
+
+5/21/16:
+- Field resizes based on window size -VL
+
+5/20/16:
+- Added functions for running animation, stopping, and resetting -IG
+- Fixed arrow bugs -IG
+- Changed size of field image -VL
+
 5/18/16:
+- Added array to store player paths -IG
+- Draws an arrow when setting a player path -IG
+- Clears screen in between drawing player dots -VL
 - Made animation smoother by adding more inbetween frames -RY
 - Window.request is only called once, speed no longer speeds up -RY
-- Added a speed componenet, need to rework the movement to make it independent of number of points RY
+- Added a speed componenet, need to rework the movement to make it independent of number of points -RY
 
 5/17/16:
+- Players move along a path set by the user -IG -RY
 - Changed from all-at-once to quasi-animation -RY
+
+5/16/16:
+- Changed to soccer field and fixed field dimensions -IG
+- Created arrays to store x and y coordinates -RY
+- Players are represented with red dots -IG
+
+5/13/16:
+- Set up cursor interaction with field -RY
+
+5/12/16:
+- Created basic js functions -RY
+- Added picture of football field -VL
+
+5/5/16:
+- Set up basic html and js files -VL
