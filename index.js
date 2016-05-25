@@ -296,7 +296,7 @@ window.onmousemove = function(e){
     }
 }
 window.addEventListener("ontouchmove", function(e){
-    e.preventDefault()
+    e.preventDefault();
     //console.log(e.pageX);
     console.log("touchmove: "+drawingPath);
     if (drawingPath){
@@ -313,7 +313,7 @@ window.addEventListener("ontouchmove", function(e){
 	//console.log(cursorX, cursorY);
 	//record stuff onto something
     }
-}
+});
 
 window.addEventListener("mousedown", function(e){
     console.log("mouseDown");
