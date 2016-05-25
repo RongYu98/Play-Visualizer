@@ -295,10 +295,10 @@ window.onmousemove = function(e){
 	console.log("selected");
     }
 }
-window.ontouchmove = function(e){
+window.addEventListener("ontouchmove", function(e){
     e.preventDefault()
     //console.log(e.pageX);
-    console.log(drawingPath);
+    console.log("touchmove: "+drawingPath);
     if (drawingPath){
 	cursorX = e.offsetX;
 	cursorY = e.offsetY;
