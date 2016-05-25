@@ -316,7 +316,6 @@ window.addEventListener("ontouchmove", function(e){
 }
 
 window.addEventListener("mousedown", function(e){
-
     console.log("mouseDown");
     if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
 	mouse_Down = true;
