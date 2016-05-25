@@ -298,7 +298,7 @@ window.onmousemove = function(e){
 window.ontouchmove = function(e){
     e.preventDefault()
     //console.log(e.pageX);
-    console.log(mouse_Down);
+    console.log(drawingPath);
     if (drawingPath){
 	cursorX = e.offsetX;
 	cursorY = e.offsetY;
@@ -317,8 +317,8 @@ window.ontouchmove = function(e){
 
 window.addEventListener("mousedown", function(e){
 
+    console.log("mouseDown");
     if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
-
 	mouse_Down = true;
 	//console.log("True");
     }
