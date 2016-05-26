@@ -295,23 +295,23 @@ window.onmousemove = function(e){
 	console.log("selected");
     }
 }
-window.ontouchmove =  function(e){
+
+window.ontouchmove = function(e){
     e.preventDefault();
-    //console.log(e.pageX);
-    console.log("touchmove: "+drawingPath);
+
+    var cursorX;
+    var cursorY;
+    
+    var touch = e.touches[0];
+
+    console.log(touch);
     if (drawingPath){
-	cursorX = e.offsetX;
-	cursorY = e.offsetY;
-	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
-	    Xs.push( cursorX );
-	    Ys.push( cursorY );
-	    if (Xs.length > 0){
-		drawSetup();
-		drawPath(Xs, Ys, creatingTeam1);
-	    }
-	}
-	//console.log(cursorX, cursorY);
-	//record stuff onto something
+	this.cursorX = touch.clientX;
+	this.cursorY = touch.clientY;
+	Xs.push( this.cursorX );
+	Ys.push( this.cursorY );
+	drawSetup();
+	drawPath(Xs, Ys, creatingTeam1);
     }
 }
 
@@ -405,10 +405,13 @@ window.addEventListener("mouseup", function(e){
 window.ontouchend = function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
-       mouse_Down = false;
-       console.log("FALSE, ended touch");
+	mouse_Down = false;
+	console.log("FALSE, ended touch");
     }
     if (drawingPath){
+	console.log("Drawing Path");
+	console.log("Xs: "+Xs);
+	console.log("Ys: "+Ys);
 	PATHS[player.ID] = [Xs, Ys];
 	player.onPos = 0;
 	player.undone = true;

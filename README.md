@@ -18,6 +18,8 @@ __Change Log:__
 
 5/25/16:
 - Select now works better, because a^2 + b^2 == c^2 != c -RY
+- Fixed mobile version, note: don't add a listener when you can force it -RY
+- From now on, mobile is behind normal, so it will be like a branch in a seperate file -RY
 
 5/24/16:
 - Added in select and ability to route, a bit buggy if changed halfway RY
