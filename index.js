@@ -17,8 +17,10 @@ var drawingPath = false;
 var running = false;
 var creatingTeam1;
 
-var selected = false;
+var selecting = false;
 var select = -1;
+
+var deleting = false;
 
 var player;
 var playerRatio;
@@ -322,7 +324,7 @@ window.addEventListener("mousedown", function(e){
 	//console.log("True");
     }
 
-    if (selected){ 
+    if (selecting || deleting){ 
 	var xcor;
 	this.xcor = e.offsetX;
 	var ycor;
@@ -341,11 +343,15 @@ window.addEventListener("mousedown", function(e){
 		select = this.i;
 		console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
 		console.log("Selected Player's team1 is: "+ PLAYERS[select].team);
-		creatingTeam1 = PLAYERS[select].team;
+		if (deleting){
+		    //Remove selected player from players array
+		} else {
+		    creatingTeam1 = PLAYERS[select].team;
+		}
+		
 		break;
 	    };
 	}
-	//selected = false;
     }
     if (drawingPath){
 	player.x = e.offsetX;
@@ -424,13 +430,6 @@ window.ontouchend = function(e){
     }
 };
 
-var selectButton = document.getElementById("select");
-selectButton.addEventListener("click", function(e){
-    selected = !selected;
-    
-});
-
-
 window.addEventListener("resize", resize);
 
 var addButton = document.getElementById("add");
@@ -443,6 +442,19 @@ var stopButton = document.getElementById("stop");
 stopButton.addEventListener("click", stop);
 var resetButton = document.getElementById("reset");
 resetButton.addEventListener("click", reset);
+var selectButton = document.getElementById("select");
+selectButton.addEventListener("click", function(e){
+    selecting = !selecting;
+    if (selecting){
+	deleting = false;
+    }
+});
+var deleteButton = document.getElementById("delete");
+deleteButton.addEventListener("click", function(e){
+    deleting = !deleting;
+    if (deleting){
+	selecting = false;
+    }
+});
 
 var help = document.getElementById("help");
-//1
