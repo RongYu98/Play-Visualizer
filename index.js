@@ -419,11 +419,7 @@ window.addEventListener("mouseup", function(e){
 	Xs = new Array();
 	Ys = new Array();
 	help.innerHTML = "";
-<<<<<<< HEAD
-    } else if ( select > -1 && Xs.length > 3){
-=======
     } else if ( select > -1 && !deleting){
->>>>>>> 43d0613ef659b2a0036b2471bc133772825616c1
 	//console.log("got to else if");
 	//console.log(Xs);
 	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
