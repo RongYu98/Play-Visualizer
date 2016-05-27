@@ -361,11 +361,11 @@ window.addEventListener("mousedown", function(e){
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
 	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
-	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
+	    if ( ( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
 		 ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
 		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
 		select = this.i;
-		var selectedPlayer = PLAYERS[this.i];
+		var selectedPlayer = PLAYERS[select];
 		console.log(select);
 		console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
 		console.log("Selected Player's team1 is: "+ selectedPlayer.team);
