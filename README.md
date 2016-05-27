@@ -27,11 +27,14 @@ __Change Log:__
 
 5/26/16:
 - Select works every way indended, i != this.i
+- Added ability to delete individual players or all players -IG
+- Changed paths array to an object with IDs as keys -IG
 
 5/25/16:
 - Select now works better, because a^2 + b^2 == c^2 != c -RY
 - Fixed mobile version, note: don't add a listener when you can force it -RY
 - From now on, mobile is behind normal, so it will be like a branch in a seperate file -RY
+- Centered field and buttons -VL
 
 5/24/16:
 - Added in select and ability to route, a bit buggy if changed halfway RY
