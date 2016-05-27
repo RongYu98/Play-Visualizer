@@ -333,9 +333,9 @@ window.addEventListener("mousedown", function(e){
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
 	    console.log( "mouse x,y: "+e.offsetX + " " + e.offsetY);
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
-	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
+	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
-	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
+	    if ( ( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
 		 ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
 		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
 		select = this.i;
@@ -385,9 +385,9 @@ window.addEventListener("mouseup", function(e){
 	Xs = new Array();
 	Ys = new Array();
 	help.innerHTML = "";
-    } else if ( select > -1){
+    } else if ( select > -1 && Xs.length > 3){
 	//console.log("got to else if");
-	console.log(Xs);
+	//console.log(Xs);
 	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
 	PLAYERS[select].redo();
 	PLAYERS[select].undone = true;
@@ -401,7 +401,6 @@ window.addEventListener("mouseup", function(e){
     //console.log("WENT UP");
 });
 
-///THIS doesn't work...... need to fix
 window.ontouchend = function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
@@ -445,4 +444,3 @@ var resetButton = document.getElementById("reset");
 resetButton.addEventListener("click", reset);
 
 var help = document.getElementById("help");
-//1

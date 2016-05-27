@@ -13,8 +13,20 @@ __Description:__ Sports Play Visualizer (Soccer)
 
 __Client:__ Vandana (vagarwala@stuy.edu)
 
+__Work__:
+- Delete: IG
+  Delete All
+  DeletePlayer
+- Run:
+  RunPlayer
+Speed:
+  Slider VL
+  Using Slider 
 
 __Change Log:__
+
+5/26/16:
+- Select works every way indended, i != this.i
 
 5/25/16:
 - Select now works better, because a^2 + b^2 == c^2 != c -RY
