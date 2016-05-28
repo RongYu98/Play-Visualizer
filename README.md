@@ -25,6 +25,10 @@ Speed:
 
 __Change Log:__
 
+5/28/16:
+- Selected player is highlighted in yellow -IG
+- Prevented paths from being drawn outside of field -IG
+
 5/26/16:
 - Select works every way indended, i != this.i
 - Added ability to delete individual players or all players -IG

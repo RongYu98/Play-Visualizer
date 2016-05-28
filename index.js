@@ -31,6 +31,8 @@ var winHeight;
 var winWidth;
 var imgHeight;
 var imgWidth;
+var currentHeight;
+var currentWidth;
 
 field.onload = function(){
     resize();
@@ -66,12 +68,16 @@ var resize = function(){
     //console.log(playerRatio);
 
     if( winWidth/imgWidth <= winHeight/imgHeight ){
-	$("canvas").attr("width", winWidth);
-	$("canvas").attr("height", imgHeight * (winWidth/imgWidth));
+	currentWidth = winWidth;
+	currentHeight = imgHeight * (winWidth/imgWidth);
+	$("canvas").attr("width", currentWidth);
+	$("canvas").attr("height", currentHeight);
 	ctx.drawImage(field,0,0,winWidth,imgHeight * (winWidth/imgWidth));
     } else {
-	$("canvas").attr("width", imgWidth * (winHeight/imgHeight));
-	$("canvas").attr("height", winHeight);
+	currentWidth = imgWidth * (winHeight/imgHeight);
+	currentHeight = winHeight;
+	$("canvas").attr("width", currentWidth);
+	$("canvas").attr("height", currentHeight);
 	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
     }
 };
@@ -316,7 +322,7 @@ window.onmousemove = function(e){
     if ( (mouse_Down && drawingPath) || select > -1 ){
 	cursorX = e.offsetX;
 	cursorY = e.offsetY;
-	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
+	if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) && e.pageX >= (winWidth - currentWidth) / 2 && e.pageX <= (winWidth + currentWidth) / 2 && e.pageY > 0 && e.pageY <= currentHeight){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
 	    if (Xs.length > 0){
