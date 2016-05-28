@@ -6,7 +6,7 @@ field.src = "static/field.jpg";
 var requestID;
 
 var PLAYERS = new Array();
-var PATHS = {};
+var PATHS = new Array();
 var cursorX;
 var cursorY;
 var Xs = new Array();
@@ -15,14 +15,10 @@ var mouse_Down = false;
 var uninitiated = true;
 var drawingPath = false;
 var running = false;
-var creatingTeam1 = true;
+var creatingTeam1;
 
-var selecting = false;
+var selected = false;
 var select = -1;
-
-var deleting = false;
-
-var totalCreated = 0;
 
 var player;
 var playerRatio;
@@ -31,32 +27,9 @@ var winHeight;
 var winWidth;
 var imgHeight;
 var imgWidth;
-var currentHeight;
-var currentWidth;
 
 field.onload = function(){
     resize();
-};
-
-var deleteAll = function(){
-    PLAYERS = new Array();
-    PATHS = {};
-    var Xs = new Array();
-    var Ys = new Array();
-    var mouse_Down = false;
-    var uninitiated = true;
-    var drawingPath = false;
-    var running = false;
-    var creatingTeam1 = true;
-
-    var selecting = false;
-    var select = -1;
-
-    var deleting = false;
-
-    var totalCreated = 0;
-
-    drawSetup();
 };
 
 var resize = function(){
@@ -68,16 +41,12 @@ var resize = function(){
     //console.log(playerRatio);
 
     if( winWidth/imgWidth <= winHeight/imgHeight ){
-	currentWidth = winWidth;
-	currentHeight = imgHeight * (winWidth/imgWidth);
-	$("canvas").attr("width", currentWidth);
-	$("canvas").attr("height", currentHeight);
+	$("canvas").attr("width", winWidth);
+	$("canvas").attr("height", imgHeight * (winWidth/imgWidth));
 	ctx.drawImage(field,0,0,winWidth,imgHeight * (winWidth/imgWidth));
     } else {
-	currentWidth = imgWidth * (winHeight/imgHeight);
-	currentHeight = winHeight;
-	$("canvas").attr("width", currentWidth);
-	$("canvas").attr("height", currentHeight);
+	$("canvas").attr("width", imgWidth * (winHeight/imgHeight));
+	$("canvas").attr("height", winHeight);
 	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
     }
 };
@@ -128,22 +97,12 @@ var makePlayer = function(playerID, team){
     
 
     var draw = function(){
-	if (this == PLAYERS[select]){
-	    ctx.strokeStyle = "yellow";
-	    ctx.lineWidth = Math.round(10 * playerRatio);
-	} else {
-	    ctx.lineWidth = 1;
-	    if (this.team){
-		ctx.strokeStyle = "red";
-	    } else {
-		ctx.strokeStyle = "blue";
-	    }
+	if(this.team){
+	    ctx.fillStyle = "red";
+	}else{
+	    ctx.fillStyle = "blue";
 	}
-	if (this.team){
-	    ctx.fillStyle = "red";	    
-	} else {
-	    ctx.fillStyle = "blue";	    
-	}
+	ctx.lineWidth = "1";
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
 	ctx.stroke();
@@ -223,9 +182,10 @@ var drawSetup = function(){
     //ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
     resize();
     for (var i = 0; i < PLAYERS.length; i++){
-	var current = PLAYERS[i];
-	current.draw();
-	drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team);
+	PLAYERS[i].draw();
+    }
+    for (var i = 0; i < PATHS.length; i++){
+	drawPath(PATHS[i][0], PATHS[i][1], PLAYERS[i].team);
     }
 };
 
@@ -266,16 +226,15 @@ var drawPath = function(arrayX, arrayY, team){
 };
 
 var add = function(){  
-    player = makePlayer(totalCreated, true);
-    totalCreated++;
-    drawingPath = true;
+    player = makePlayer(PLAYERS.length, true);
+    drawingPath = true; ///////
+    //drawingPath = !drawingPath;
     creatingTeam1 = true;
     help.innerHTML = "Click and drag to create a player and a path";
 };
 
 var add2 = function(){  
-    player = makePlayer(totalCreated, false);
-    totalCreated++;
+    player = makePlayer(PLAYERS.length, false);
     drawingPath = true;
     creatingTeam1 = false;
     help.innerHTML = "Click and drag to create a player and a path";
@@ -306,11 +265,10 @@ var stop = function(){
 
 var reset = function(){
     for (var i = 0; i < PLAYERS.length; i++){
-	var current = PLAYERS[i];
-	current.undone = true;
-	current.onPos = 0;
-	current.x = PATHS[current.ID][0][0];
-	current.y = PATHS[current.ID][1][0];
+	PLAYERS[i].undone = true;
+	PLAYERS[i].onPos = 0;
+	PLAYERS[i].x = PATHS[i][0][0];
+	PLAYERS[i].y = PATHS[i][1][0];
     }
     drawSetup();
 };
@@ -322,7 +280,7 @@ window.onmousemove = function(e){
     if ( (mouse_Down && drawingPath) || select > -1 ){
 	cursorX = e.offsetX;
 	cursorY = e.offsetY;
-	if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) && e.pageX >= (winWidth - currentWidth) / 2 && e.pageX <= (winWidth + currentWidth) / 2 && e.pageY > 0 && e.pageY <= currentHeight){
+	if (Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20){
 	    Xs.push( cursorX );
 	    Ys.push( cursorY );
 	    if (Xs.length > 0){
@@ -364,7 +322,7 @@ window.addEventListener("mousedown", function(e){
 	//console.log("True");
     }
 
-    if (selecting || deleting){ 
+    if (selected){ 
 	var xcor;
 	this.xcor = e.offsetX;
 	var ycor;
@@ -375,28 +333,19 @@ window.addEventListener("mousedown", function(e){
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
 	    console.log( "mouse x,y: "+e.offsetX + " " + e.offsetY);
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
-	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor ));
+	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
-	    if ( ( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
+	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
 		 ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
 		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
 		select = this.i;
-		var selectedPlayer = PLAYERS[select];
-		console.log(select);
 		console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
-		console.log("Selected Player's team1 is: "+ selectedPlayer.team);
-		if (deleting){
-		    PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
-		    delete PATHS[selectedPlayer.ID];
-		    select = -1;
-		    drawSetup();
-		} else {
-		    creatingTeam1 = selectedPlayer.team;
-		}
-		
+		console.log("Selected Player's team1 is: "+ PLAYERS[select].team);
+		creatingTeam1 = PLAYERS[select].team;
 		break;
 	    };
 	}
+	//selected = false;
     }
     if (drawingPath){
 	player.x = e.offsetX;
@@ -417,8 +366,9 @@ window.addEventListener("ontouchstart", function(e){
 });
 
 window.addEventListener("mouseup", function(e){
-    console.log(select);
-    console.log(selecting);
+    console.log("mouseup");
+
+    //console.log("Ended");
     if (Xs.length > 5){
        mouse_Down = false;
        console.log("Mouse_Down has been changed to false")
@@ -435,9 +385,9 @@ window.addEventListener("mouseup", function(e){
 	Xs = new Array();
 	Ys = new Array();
 	help.innerHTML = "";
-    } else if ( select > -1 && !deleting){
+    } else if ( select > -1){
 	//console.log("got to else if");
-	//console.log(Xs);
+	console.log(Xs);
 	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
 	PLAYERS[select].redo();
 	PLAYERS[select].undone = true;
@@ -451,6 +401,7 @@ window.addEventListener("mouseup", function(e){
     //console.log("WENT UP");
 });
 
+///THIS doesn't work...... need to fix
 window.ontouchend = function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
@@ -473,6 +424,13 @@ window.ontouchend = function(e){
     }
 };
 
+var selectButton = document.getElementById("select");
+selectButton.addEventListener("click", function(e){
+    selected = !selected;
+    
+});
+
+
 window.addEventListener("resize", resize);
 
 var addButton = document.getElementById("add");
@@ -485,22 +443,6 @@ var stopButton = document.getElementById("stop");
 stopButton.addEventListener("click", stop);
 var resetButton = document.getElementById("reset");
 resetButton.addEventListener("click", reset);
-var selectButton = document.getElementById("select");
-selectButton.addEventListener("click", function(e){
-    selecting = !selecting;
-    if (selecting){
-	deleting = false;
-    }
-});
-var deleteButton = document.getElementById("delete");
-deleteButton.addEventListener("click", function(e){
-    deleting = !deleting;
-    if (deleting){
-	selecting = false;
-	select = -1;
-    }
-});
-var deleteAllButton = document.getElementById("deleteAll");
-deleteAllButton.addEventListener("click", deleteAll);
 
 var help = document.getElementById("help");
+//1

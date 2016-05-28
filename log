@@ -1,7 +1,0 @@
-5/18/16
-made animation smoother by adding more inbetween frames -RY
-window.request is only called once, speed no longer speeds up -RY
-added a speed componenet, need to rework the movement to make it independent of number of points RY
-
-5/17/16
-changed from all-at-once to quasi-animation -RY

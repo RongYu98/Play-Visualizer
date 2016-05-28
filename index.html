@@ -1,16 +1,51 @@
 <!DOCTYPE HTML>
 <head>
-  <meta name="google-signin-scope" content="https://www.googleapis.com/auth/drive.appdata">
-  <meta name="google-signin-client_id" content="988111073774-65isrk26ehhuu9e2c66a7grrdl4mj2h3.apps.googleusercontent.com">
+  <meta name="viewport"
+    content="user-scalable=no, width=device-width" />
+  <meta name="google-signin-scope"
+    content="https://www.googleapis.com/auth/drive.appdata" />
+  <meta name="google-signin-client_id"
+    content="988111073774-65isrk26ehhuu9e2c66a7grrdl4mj2h3.apps.googleusercontent.com" />
+  
+  <!-- Custom Style Sheet -->
   <link rel="stylesheet" type="text/css" href="static/css/style.css">
+   
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> 
+
+  <!-- Mobile JQuery
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+  -->
 </head>
-<body>
-  <canvas id="field" width="1024" height="768" style="border:1px solid #000000"></canvas>
+<body ontouchmove="BlockMove(event);">
+  <center>
+    <canvas id="field" width="1024" height="768" style="border:1px solid #000000"></canvas>
+  </center>
+  <center>
+    <button id="add">Add Player Team 1</button>
+    <button id="add2">Add Player Team 2</button>
+    <button id="run">Run</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+    <button id="select">Select Player</button>
+    <button id="delete">Delete Player</button>
+    <button id="deleteAll">Delete All</button>
+    <br>
+    <h3 id="help"></h3>
+  </center>
   <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 </body>
+
+<!-- Custom Javascript -->
 <script src="index.js"></script>
 <script src="oauth.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://apis.google.com/js/client:platform.js" async defer></script>
 <!--<script src="front.js"></script>-->
-
+<script>
+ function BlockMove(event) {
+  // Tell Safari not to move the window.
+  event.preventDefault() ;
+ }
+</script>
