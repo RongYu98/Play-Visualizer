@@ -122,12 +122,22 @@ var makePlayer = function(playerID, team){
     
 
     var draw = function(){
-	if(this.team){
-	    ctx.fillStyle = "red";
-	}else{
-	    ctx.fillStyle = "blue";
+	if (this == PLAYERS[select]){
+	    ctx.strokeStyle = "yellow";
+	    ctx.lineWidth = Math.round(10 * playerRatio);
+	} else {
+	    ctx.lineWidth = 1;
+	    if (this.team){
+		ctx.strokeStyle = "red";
+	    } else {
+		ctx.strokeStyle = "blue";
+	    }
 	}
-	ctx.lineWidth = "1";
+	if (this.team){
+	    ctx.fillStyle = "red";	    
+	} else {
+	    ctx.fillStyle = "blue";	    
+	}
 	ctx.beginPath();
 	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
 	ctx.stroke();
