@@ -369,13 +369,13 @@ window.addEventListener("mousedown", function(e){
 	for (this.i = 0;this.i < PLAYERS.length; this.i++){
 	    console.log( "mouse x,y: "+e.offsetX + " " + e.offsetY);
 	    //console.log( "COORDS: "+e.pageX + " " + e.pageY);
-	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ));
+	    console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor ));
 	    console.log( "Compare with playerRatio of: "+playerRatio);
-	    if ( ( PLAYERS[i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
+	    if ( ( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
 		 ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
 		 ( (10 * playerRatio) * (10 * playerRatio) ) ){
 		select = this.i;
-		var selectedPlayer = PLAYERS[this.i];
+		var selectedPlayer = PLAYERS[select];
 		console.log(select);
 		console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
 		console.log("Selected Player's team1 is: "+ selectedPlayer.team);
@@ -431,7 +431,7 @@ window.addEventListener("mouseup", function(e){
 	help.innerHTML = "";
     } else if ( select > -1 && !deleting){
 	//console.log("got to else if");
-	console.log(Xs);
+	//console.log(Xs);
 	PATHS[ PLAYERS[select].ID] = [Xs, Ys];
 	PLAYERS[select].redo();
 	PLAYERS[select].undone = true;
@@ -445,7 +445,6 @@ window.addEventListener("mouseup", function(e){
     //console.log("WENT UP");
 });
 
-///THIS doesn't work...... need to fix
 window.ontouchend = function(e){
     console.log("ENDED");
     if ( Xs.length > 3 ){
