@@ -1,13 +1,12 @@
 /* global $, navigator */
 
+// Initialization
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
 
-var field = document.createElement('img');
-field.src = "static/field.jpg";
-field.onload = function() {
-    resize();
-};
+var field = $('<img>');
+field.attr('src', 'static/field.jpg');
+field.on('load', resize);
 
 var help = document.getElementById('help');
 
@@ -36,6 +35,9 @@ var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
 
+
+
+// Field Resize Function
 function resize() {
     winHeight = $(window).height();
     winWidth = $(window).width();
@@ -53,9 +55,12 @@ function resize() {
     
     $("canvas").attr("width", currentWidth);
     $("canvas").attr("height", currentHeight);
-    ctx.drawImage(field, 0, 0, currentWidth, currentHeight);
+    ctx.drawImage(field.get(0), 0, 0, currentWidth, currentHeight);
 }
 
+
+
+// Player creation function
 function makePlayer(playerID, team) {
     this.ID = playerID;
     this.onPos = 0;
@@ -159,6 +164,9 @@ function makePlayer(playerID, team) {
     };
 }
 
+
+
+// Path Drawing Functions
 function drawSetup() {
     resize();
     for (var i = 0; i < PLAYERS.length; i++) {
@@ -209,15 +217,7 @@ function drawPath(arrayX, arrayY, team) {
     ctx.stroke();
 }
 
-function main() {
-    for (var i = 0; i < PLAYERS.length; i++) {
-        if (PLAYERS[i].undone){
-            PLAYERS[i].move();
-            drawPath(Xs, Ys);
-        }
-    }
-    requestID = window.requestAnimationFrame(main);
-}
+
 
 // Window Event Handler Assignment
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
@@ -382,7 +382,6 @@ $(window).on('touchend', function(e) {
 });
 
 $(window).resize(resize);
-// (End)
 
 
 
@@ -451,7 +450,19 @@ $('#deleteAll').click(function() {
     totalCreated = 0;
     drawSetup();
 });
-// (End)
+
+
+
+// Main Animation Function
+function main() {
+    for (var i = 0; i < PLAYERS.length; i++) {
+        if (PLAYERS[i].undone){
+            PLAYERS[i].move();
+            drawPath(Xs, Ys);
+        }
+    }
+    requestID = window.requestAnimationFrame(main);
+}
 
 
 
@@ -478,4 +489,3 @@ function iOS() {
     }
     return false;
 } var ios = iOS();
-// (End)
