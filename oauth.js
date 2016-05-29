@@ -1,4 +1,4 @@
-/* global gapi */
+/* global gapi, $ */
 
 // { spaces: 'appDataFolder' };
 
@@ -12,18 +12,15 @@ function renderSignIn() {
     'longtitle': true,
     'theme': 'dark',
     'onsuccess': onSuccess,
-    'onfailure': onFailure,
-  })
+    'onfailure': function(e) { console.log('Unable to sign in: ' + e.reason); },
+  });
 }
 
 function onSuccess(googleUser) {
   user = googleUser;
   profile = googleUser.getBasicProfile();
+  $('#drive-data > p').text('Loaded profile of ' + profile.getName());
   loadDriveAPI();
-}
-
-function onFailure(e) {
-  console.log('Unable to sign in:' + e.reason);
 }
 
 function loadDriveAPI() {
