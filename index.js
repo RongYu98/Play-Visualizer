@@ -216,22 +216,6 @@ var drawPath = function(arrayX, arrayY, team) {
     ctx.stroke();
 };
 
-var add2 = function(){  
-    player = makePlayer(totalCreated, false);
-    totalCreated++;
-    drawingPath = true;
-    creatingTeam1 = false;
-    help.innerHTML = "Click and drag to create a player and a path";
-};
-
-
-var run = function(){
-    if (!running){
-    running = true;
-    main();
-    }
-};
-
 var main = function(){
     for (var i = 0; i < PLAYERS.length; i++){
     if (PLAYERS[i].undone){
@@ -242,46 +226,35 @@ var main = function(){
     requestID = window.requestAnimationFrame(main);
 };
 
-function stop() {
-    window.cancelAnimationFrame(requestID);
-    running = false;
-}
-
-var reset = function(){
-    for (var i = 0; i < PLAYERS.length; i++){
-    var current = PLAYERS[i];
-    current.undone = true;
-    current.onPos = 0;
-    current.x = PATHS[current.ID][0][0];
-    current.y = PATHS[current.ID][1][0];
-    }
-    drawSetup();
-};
-
-
-//pressing the buttons is mouse, touching the canvas is onTouchMove
-window.onmousemove = function(e){
-    //console.log(mouse_Down);
-    if ( (mouse_Down && drawingPath) || select > -1 ){
-    cursorX = e.offsetX;
-    cursorY = e.offsetY;
-    if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) && e.pageX >= (winWidth - currentWidth) / 2 && e.pageX <= (winWidth + currentWidth) / 2 && e.pageY > 0 && e.pageY <= currentHeight){
-        Xs.push( cursorX );
-        Ys.push( cursorY );
-        if (Xs.length > 0){
-        drawSetup();
-        drawPath(Xs, Ys, creatingTeam1);
+// Window Event Handler Assignment
+//     (pressing the buttons is mouse, touching the canvas is onTouchMove)
+$(window).on('mousemove', function(e) {
+    if ((mouse_Down && drawingPath) || select > -1 ) {
+        cursorX = e.offsetX;
+        cursorY = e.offsetY;
+        
+        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || 
+            Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
+            e.pageX >= (winWidth - currentWidth) / 2 &&
+            e.pageX <= (winWidth + currentWidth) / 2 &&
+            e.pageY > 0 && e.pageY <= currentHeight) {
+            
+            Xs.push( cursorX );
+            Ys.push( cursorY );
+            if (Xs.length > 0) {
+                drawSetup();
+                drawPath(Xs, Ys, creatingTeam1);
+            }
         }
+        //console.log(cursorX, cursorY);
+        //record stuff onto something
     }
-    //console.log(cursorX, cursorY);
-    //record stuff onto something
+    if (mouse_Down && select > -1) {
+            console.log("selected");
     }
-    if (mouse_Down && select > -1){
-    console.log("selected");
-    }
-}
+});
 
-window.ontouchmove = function(e) {
+$(window).on('touchmove', function(e) {
     e.preventDefault();
     
     var cursorX;
@@ -298,7 +271,7 @@ window.ontouchmove = function(e) {
         drawSetup();
         drawPath(Xs, Ys, creatingTeam1);
     }
-}
+});
 
 $(window).on('mousedown', function(e) {
     console.log("mouseDown");
@@ -362,7 +335,7 @@ $(window).on('touchstart', function(e) {
     }
 });
 
-$(window).on('mouseup', function(e) {
+$(window).mouseup(function() {
     console.log(select);
     console.log(selecting);
     if (Xs.length > 5) {
@@ -397,7 +370,7 @@ $(window).on('mouseup', function(e) {
     //console.log("WENT UP");
 });
 
-window.ontouchend = function(e) {
+$(window).on('touchend', function(e) {
     console.log("ENDED");
     
     if (Xs.length > 3) {
@@ -419,34 +392,64 @@ window.ontouchend = function(e) {
         Ys = new Array();
         help.innerHTML = "";
     }
-};
+});
 
 $(window).resize(resize);
+// (End)
 
-function add() {  
-    player = makePlayer(totalCreated, true);
+
+
+// Button handler assignment
+var add = function(team1) {
+    player = makePlayer(totalCreated, team1);
     totalCreated++;
     drawingPath = true;
-    creatingTeam1 = true;
+    creatingTeam1 = team1;
     help.innerHTML = "Click and drag to create a player and a path";
 }
 
-function select_() {
+$('#add').click(function() { add(true); });
+$('#add2').click(function() { add(false); });
+
+$('#run').click(function() {
+    if (!running) {
+        running = true;
+        main();
+    }
+});
+
+$('#stop').click(function() {
+    window.cancelAnimationFrame(requestID);
+    running = false;
+});
+
+$('#reset').click(function() {
+    for (var i = 0; i < PLAYERS.length; i++) {
+        var current = PLAYERS[i];
+        current.undone = true;
+        current.onPos = 0;
+        current.x = PATHS[current.ID][0][0];
+        current.y = PATHS[current.ID][1][0];
+    }
+    drawSetup();
+});
+
+$('#select').click(function() {
     selecting = !selecting;
     if (selecting) {
         deleting = false;
     }
-}
+});
 
-function delete_() {
+$('#delete').click(function() {
     deleting = !deleting;
     if (deleting) {
         selecting = false;
         select = -1;
     }
-}
+});
 
-function deleteAll() {
+$('#deleteAll').click(function() {
     PLAYERS = new Array();
     PATHS = {};
     Xs = new Array();
@@ -456,26 +459,14 @@ function deleteAll() {
     drawingPath = false;
     running = false;
     creatingTeam1 = true;
-    
     selecting = false;
     select = -1;
-
     deleting = false;
-
     totalCreated = 0;
-
     drawSetup();
-}
+});
+// (End)
 
-// Button handler assignment
-$('#add').click(add);
-$('#add2').click(add2);
-$('#run').click(run);
-$('#stop').click(stop);
-$('#reset').click(reset);
-$('#select').click(select_);
-$('#delete').click(delete_);
-$('#deleteAll').click(deleteAll);
 
 
 // Compatibility functions (I assume...)
@@ -501,3 +492,4 @@ function iOS() {
     }
     return false;
 } var ios = iOS();
+// (End)
