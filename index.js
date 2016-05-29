@@ -1,3 +1,9 @@
+
+function BlockMove(event) {
+	// Tell Safari not to move the window.
+	event.preventDefault() ;
+}
+
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
 var field = new Image();

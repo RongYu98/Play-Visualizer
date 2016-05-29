@@ -4,10 +4,26 @@
 
 var user, profile, drive;
 
-function onSignIn(googleUser) {
+function renderSignIn() {
+  gapi.signin2.render('google-signin', {
+    'scope': 'profile email https://www.googleapis.com/auth/drive.appdata',
+    'width': 240,
+    'height': 50,
+    'longtitle': true,
+    'theme': 'dark',
+    'onsuccess': onSuccess,
+    'onfailure': onFailure,
+  })
+}
+
+function onSuccess(googleUser) {
   user = googleUser;
   profile = googleUser.getBasicProfile();
   loadDriveAPI();
+}
+
+function onFailure(e) {
+  console.log('Unable to sign in:' + e.reason);
 }
 
 function loadDriveAPI() {
