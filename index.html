@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<html>
 <head>
   <meta name="viewport"
     content="user-scalable=no, width=device-width" />
@@ -14,9 +15,6 @@
   -->
 </head>
 <body ontouchmove="BlockMove(event);">
-  <div id="drive" class="center">
-    <div id="google-signin"></div>
-  </div>
   <div id="game" style="text-align:center;">
     <canvas id="field" width="1024" height="768"
       style="border:1px solid #000000;"></canvas>
@@ -31,12 +29,22 @@
       <button type="button" id="deleteAll">Delete All</button>
     </div>
   </div>
+  <div id="drive" class="center">
+    <div id="google-signin"></div>
+  </div>
   <h3 id="help"></h3>
 
-  <script src="index.js"></script>
-  <script src="oauth.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=renderSignIn" async defer></script>
-  <script src="https://apis.google.com/js/client:platform.js" async defer></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-  <!-- <script src="front.js"></script> -->
+  <!-- Scripts -->
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    
+    <!-- Custom -->
+    <script src="index.js"></script>
+    <script src="oauth.js"></script>
+    <!-- <script src="front.js"></script> -->
+    
+    <!-- Google API -->
+    <script src="https://apis.google.com/js/platform.js?onload=renderSignIn" async defer></script>
+    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
 </body>
+</html>

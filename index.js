@@ -1,12 +1,13 @@
+/* global $, navigator */
 
 function BlockMove(event) {
 	// Tell Safari not to move the window.
-	event.preventDefault() ;
+	event.preventDefault();
 }
 
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
-var field = new Image();
+var field = document.createElement('img');
 field.src = "static/field.jpg";
 
 var requestID;
@@ -40,7 +41,7 @@ var imgWidth;
 var currentHeight;
 var currentWidth;
 
-field.onload = function(){
+field.onload = function() {
     resize();
 };
 
@@ -65,51 +66,45 @@ var deleteAll = function(){
     drawSetup();
 };
 
-var resize = function(){
+var resize = function() {
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight = 768;
     imgWidth = 1024;
     playerRatio = $("canvas").attr("width")/1024;
-    //console.log(playerRatio);
 
-    if( winWidth/imgWidth <= winHeight/imgHeight ){
-	currentWidth = winWidth;
-	currentHeight = imgHeight * (winWidth/imgWidth);
-	$("canvas").attr("width", currentWidth);
-	$("canvas").attr("height", currentHeight);
-	ctx.drawImage(field,0,0,winWidth,imgHeight * (winWidth/imgWidth));
+    if (winWidth/imgWidth <= winHeight/imgHeight) {
+		currentWidth = winWidth;
+		currentHeight = imgHeight * (winWidth/imgWidth);
     } else {
-	currentWidth = imgWidth * (winHeight/imgHeight);
-	currentHeight = winHeight;
+		currentWidth = imgWidth * (winHeight/imgHeight);
+		currentHeight = winHeight;
+    }
+    
 	$("canvas").attr("width", currentWidth);
 	$("canvas").attr("height", currentHeight);
-	ctx.drawImage(field,0,0,imgWidth * (winHeight/imgHeight),winHeight);
-    }
+    ctx.drawImage(field, 0, 0, currentWidth, currentHeight);
 };
+
 function iOS() {
+	var iDevices = [
+		'iPad Simulator',
+		'iPhone Simulator',
+		'iPod Simulator',
+		'iPad',
+		'iPhone',
+		'iPod',
+	];
+	
+	if (!!navigator.platform) {
+    	while (iDevices.length) {
+			if (navigator.platform === iDevices.pop()) { return true; }
+    	}
+	}
+	return false;
+} var ios = iOS();
 
-  var iDevices = [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ];
-
-  if (!!navigator.platform) {
-    while (iDevices.length) {
-      if (navigator.platform === iDevices.pop()){ return true; }
-    }
-  }
-
-  return false;
-}
-var ios = iOS();
-
-var makePlayer = function(playerID, team){
-
+var makePlayer = function(playerID, team) {
     var ID;
     this.ID = playerID;
     var x;
@@ -123,109 +118,103 @@ var makePlayer = function(playerID, team){
     var angle = 0;
     var team;
     this.team = team;
-
-    var redo = function(){
-	this.onPos = 0;
-	this.x = PATHS[this.ID][0][this.onPos];
-	this.y = PATHS[this.ID][1][this.onPos];
-	console.log("redo done, onPos: "+this.onPos);
-   }
-   //console.log(this.team1);
     
-
-    var draw = function(){
-	if (this == PLAYERS[select]){
-	    ctx.strokeStyle = "yellow";
-	    ctx.lineWidth = Math.round(10 * playerRatio);
-	} else {
-	    ctx.lineWidth = 1;
-	    if (this.team){
-		ctx.strokeStyle = "red";
-	    } else {
-		ctx.strokeStyle = "blue";
-	    }
+    var redo = function() {
+		this.onPos = 0;
+		this.x = PATHS[this.ID][0][this.onPos];
+		this.y = PATHS[this.ID][1][this.onPos];
+		console.log("redo done, onPos: "+this.onPos);
 	}
-	if (this.team){
-	    ctx.fillStyle = "red";	    
-	} else {
-	    ctx.fillStyle = "blue";	    
-	}
-	ctx.beginPath();
-	ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
-	ctx.stroke();
-	ctx.fill();
+    
+    var draw = function() {
+		if (this == PLAYERS[select]) {
+			ctx.strokeStyle = "yellow";
+			ctx.lineWidth = Math.round(10 * playerRatio);
+		} else {
+			ctx.lineWidth = 1;
+			if (this.team) {
+				ctx.strokeStyle = "red";
+			} else {
+				ctx.strokeStyle = "blue";
+			}
+		}
+		
+		if (this.team) {
+			ctx.fillStyle = "red";
+		} else {
+			ctx.fillStyle = "blue";
+		}
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.fill();
     };
-
     
-    var move = function(){
-
-	path = PATHS[this.ID];
+    var move = function() {
+		path = PATHS[this.ID];
+		this.speed = 30 * playerRatio;
+		
+		if (this.onPos <= 1) {
+			this.x = path[0][this.onPos];
+			this.y = path[1][this.onPos];
+		}
+		
+		var imove;
+		for (imove = 0; imove < speed; imove++) {	
 			
-	this.speed = 30 * playerRatio;
-
-	if ( this.onPos <= 1){
-	    this.x = path[0][this.onPos];
-	    this.y = path[1][this.onPos];
-	}
-
-	var imove = 0;
-	for ( imove = 0; imove < speed; imove++ ){	
-	if ( Math.abs( this.x - path[0][this.onPos] ) < .1 ){
-	    this.x = path[0][this.onPos];
-	} else {
-	    if ( this.x - path[0][this.onPos] < 0 ){ 
-		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.x += Math.cos(this.angle)*.1;
-	    } else {
- 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.x += -1*Math.cos(this.angle)*.1;
-	    }
-
-	}
- 	if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ){
-	    this.y = path[1][this.onPos];
-	}  else {
-	    if ( this.x - path[0][this.onPos] < 0 ){ 
-		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.y += Math.sin(this.angle)*.1;
-	    } else {
- 		this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
-		this.y += -1*Math.sin(this.angle)*.1;
-	    }
-	}
-	//console.log(x, path[0][this.onPos], onPos);
-
-	if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]){
-	    this.onPos+=1;
-	}
-
-	if (this.onPos > path[0].length-1){
-	    this.onPos = path[0].length-1;
-	    this.undone = false;
-	}
-	//console.log(this.xpositions);
-
-	}	
-
-	//ctx.clearRect(0,0,1024,786);
-	drawSetup();
+			if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
+				this.x = path[0][this.onPos];
+			} else {
+				if (this.x - path[0][this.onPos] < 0) {
+					this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+					this.x += Math.cos(this.angle)*.1;
+				} else {
+					this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+					this.x += -1*Math.cos(this.angle)*.1;
+				}
+			}
+			
+			if ( Math.abs( this.y - path[1][this.onPos] ) < .1 ) {
+				this.y = path[1][this.onPos];
+			} else {
+				if ( this.x - path[0][this.onPos] < 0 ) {
+					this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+					this.y += Math.sin(this.angle)*.1;
+				} else {
+					this.angle = Math.atan( ( this.y - path[1][this.onPos] )  / ( this.x - path[0][this.onPos]) );
+					this.y += -1*Math.sin(this.angle)*.1;
+				}
+			}
+			
+			if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]) {
+				this.onPos+=1;
+			}
+			
+			if (this.onPos > path[0].length-1) {
+				this.onPos = path[0].length-1;
+				this.undone = false;
+			}
+		}
+		
+		drawSetup();
     };
-
+    
     return {
-	draw: draw,
-	move: move,
-	undone: this.undone,
-	onPos: this.onPos,
-	ID: this.ID,
-	x: this.x,
-	y: this.y,
-	speed: this.speed,
-	team: this.team,
-	redo: redo
+		draw: draw,
+		move: move,
+		undone: this.undone,
+		onPos: this.onPos,
+		ID: this.ID,
+		x: this.x,
+		y: this.y,
+		speed: this.speed,
+		team: this.team,
+		redo: redo
     };
 };
 
-var drawSetup = function(){
+var drawSetup = function() {
     //ctx.drawImage(field,0,0,winWidth,field.height * (winWidth/field.width));
     resize();
     for (var i = 0; i < PLAYERS.length; i++){
@@ -344,7 +333,7 @@ window.onmousemove = function(e){
     }
 }
 
-window.ontouchmove = function(e){
+window.ontouchmove = function(e) {
     e.preventDefault();
 
     var cursorX;
@@ -363,13 +352,12 @@ window.ontouchmove = function(e){
     }
 }
 
-window.addEventListener("mousedown", function(e){
-    console.log("mouseDown");
-    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
-	mouse_Down = true;
-	//console.log("True");
+$(window).on('mousedown', function(e) {
+	console.log("mouseDown");
+	if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
+		mouse_Down = true;
     }
-
+    
     if (selecting || deleting){ 
 	var xcor;
 	this.xcor = e.offsetX;
@@ -409,7 +397,7 @@ window.addEventListener("mousedown", function(e){
 	player.y = e.offsetY;
     }
 });
-window.addEventListener("ontouchstart", function(e){
+$(window).on('ontouchstart', function(e) {
     //console.log(e.pageX);
     //console.log("DOWN!!!!!!!!!!!");
     console.log("Started");
@@ -422,7 +410,7 @@ window.addEventListener("ontouchstart", function(e){
     }
 });
 
-window.addEventListener("mouseup", function(e){
+$(window).on('mouseup', function(e) {
     console.log(select);
     console.log(selecting);
     if (Xs.length > 5){
@@ -481,32 +469,24 @@ window.ontouchend = function(e){
 
 window.addEventListener("resize", resize);
 
-var addButton = document.getElementById("add");
-addButton.addEventListener("click", add);
-var addButton2 = document.getElementById("add2");
-addButton2.addEventListener("click", add2);
-var runButton = document.getElementById("run");
-runButton.addEventListener("click", run);
-var stopButton = document.getElementById("stop");
-stopButton.addEventListener("click", stop);
-var resetButton = document.getElementById("reset");
-resetButton.addEventListener("click", reset);
-var selectButton = document.getElementById("select");
-selectButton.addEventListener("click", function(e){
-    selecting = !selecting;
-    if (selecting){
-	deleting = false;
+$('#add').click(add);
+$('#add2').click(add2);
+$('#run').click(run);
+$('#stop').click(stop);
+$('#reset').click(reset);
+$('#select').click(function(e) {
+	selecting = !selecting;
+    if (selecting) {
+		deleting = false;
     }
 });
-var deleteButton = document.getElementById("delete");
-deleteButton.addEventListener("click", function(e){
+$('#delete').click(function(e) {
     deleting = !deleting;
-    if (deleting){
-	selecting = false;
-	select = -1;
+    if (deleting) {
+		selecting = false;
+		select = -1;
     }
 });
-var deleteAllButton = document.getElementById("deleteAll");
-deleteAllButton.addEventListener("click", deleteAll);
+$('#deleteAll').click(deleteAll);
 
-var help = document.getElementById("help");
+var help = $('#help');
