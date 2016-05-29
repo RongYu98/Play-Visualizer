@@ -20,7 +20,6 @@ var cursorY;
 var Xs = new Array();
 var Ys = new Array();
 var mouse_Down = false;
-var uninitiated = true;
 var drawingPath = false;
 var running = false;
 var creatingTeam1 = true;
@@ -57,27 +56,21 @@ function resize() {
     ctx.drawImage(field, 0, 0, currentWidth, currentHeight);
 }
 
-var makePlayer = function(playerID, team) {
-    var ID;
+function makePlayer(playerID, team) {
     this.ID = playerID;
-    var x;
-    var y; 
-    var path;
-    var onPos;
     this.onPos = 0;
-    var undone;
     this.undone = true;
-    var speed = 30 * playerRatio;
-    var angle = 0;
-    var team;
     this.team = team;
+    var path;
+    var speed = 30 * playerRatio;
+    // var angle = 0;
     
     var redo = function() {
         this.onPos = 0;
         this.x = PATHS[this.ID][0][this.onPos];
         this.y = PATHS[this.ID][1][this.onPos];
         console.log("redo done, onPos: "+this.onPos);
-    }
+    };
     
     var draw = function() {
         if (this == PLAYERS[select]) {
@@ -164,18 +157,18 @@ var makePlayer = function(playerID, team) {
         team: this.team,
         redo: redo
     };
-};
+}
 
-var drawSetup = function() {
+function drawSetup() {
     resize();
     for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
         current.draw();
         drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team);
     }
-};
+}
 
-var drawPath = function(arrayX, arrayY, team) {
+function drawPath(arrayX, arrayY, team) {
     if (team) {
         ctx.strokeStyle = "red";
     } else {
@@ -214,17 +207,17 @@ var drawPath = function(arrayX, arrayY, team) {
     ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
     ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleB) * 20 * playerRatio), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleB) * 20 * playerRatio));
     ctx.stroke();
-};
+}
 
-var main = function(){
-    for (var i = 0; i < PLAYERS.length; i++){
-    if (PLAYERS[i].undone){
-        PLAYERS[i].move();
-        drawPath(Xs, Ys);
-    }
+function main() {
+    for (var i = 0; i < PLAYERS.length; i++) {
+        if (PLAYERS[i].undone){
+            PLAYERS[i].move();
+            drawPath(Xs, Ys);
+        }
     }
     requestID = window.requestAnimationFrame(main);
-};
+}
 
 // Window Event Handler Assignment
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
@@ -237,8 +230,8 @@ $(window).on('mousemove', function(e) {
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
             e.pageX >= (winWidth - currentWidth) / 2 &&
             e.pageX <= (winWidth + currentWidth) / 2 &&
-            e.pageY > 0 && e.pageY <= currentHeight) {
-            
+            e.pageY > 0 && e.pageY <= currentHeight
+        ) {
             Xs.push( cursorX );
             Ys.push( cursorY );
             if (Xs.length > 0) {
@@ -256,9 +249,6 @@ $(window).on('mousemove', function(e) {
 
 $(window).on('touchmove', function(e) {
     e.preventDefault();
-    
-    var cursorX;
-    var cursorY;
     
     var touch = e.touches[0];
     
@@ -280,11 +270,8 @@ $(window).on('mousedown', function(e) {
     }
     
     if (selecting || deleting) {
-        var xcor;
         this.xcor = e.offsetX;
-        var ycor;
         this.ycor = e.offsetY;
-        var i = 0;
         
         console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
@@ -311,7 +298,7 @@ $(window).on('mousedown', function(e) {
                     creatingTeam1 = selectedPlayer.team;
                 }
                 break;
-            };
+            }
         }
     }
     
@@ -340,7 +327,7 @@ $(window).mouseup(function() {
     console.log(selecting);
     if (Xs.length > 5) {
        mouse_Down = false;
-       console.log("Mouse_Down has been changed to false")
+       console.log("Mouse_Down has been changed to false");
     }
     if (drawingPath && select == -1) {
         //console.log(  PLAYERS[ PLAYERS.length -1] );
@@ -406,7 +393,7 @@ var add = function(team1) {
     drawingPath = true;
     creatingTeam1 = team1;
     help.innerHTML = "Click and drag to create a player and a path";
-}
+};
 
 $('#add').click(function() { add(true); });
 $('#add2').click(function() { add(false); });
@@ -455,7 +442,6 @@ $('#deleteAll').click(function() {
     Xs = new Array();
     Ys = new Array();
     mouse_Down = false;
-    uninitiated = true;
     drawingPath = false;
     running = false;
     creatingTeam1 = true;
