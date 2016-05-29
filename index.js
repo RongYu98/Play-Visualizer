@@ -33,13 +33,9 @@ var deleting = false;
 var totalCreated = 0;
 
 var player, playerRatio;
-
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
-
-
-
 
 function resize() {
     winHeight = $(window).height();
@@ -218,14 +214,6 @@ var drawPath = function(arrayX, arrayY, team) {
     ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
     ctx.lineTo(arrayX[arrayX.length - 1] + Math.round(Math.cos(angleB) * 20 * playerRatio), arrayY[arrayY.length - 1] + Math.round(Math.sin(angleB) * 20 * playerRatio));
     ctx.stroke();
-};
-
-var add = function(){  
-    player = makePlayer(totalCreated, true);
-    totalCreated++;
-    drawingPath = true;
-    creatingTeam1 = true;
-    help.innerHTML = "Click and drag to create a player and a path";
 };
 
 var add2 = function(){  
@@ -435,14 +423,22 @@ window.ontouchend = function(e) {
 
 $(window).resize(resize);
 
-function select() {
+function add() {  
+    player = makePlayer(totalCreated, true);
+    totalCreated++;
+    drawingPath = true;
+    creatingTeam1 = true;
+    help.innerHTML = "Click and drag to create a player and a path";
+}
+
+function select_() {
     selecting = !selecting;
     if (selecting) {
         deleting = false;
     }
 }
 
-function del() {
+function delete_() {
     deleting = !deleting;
     if (deleting) {
         selecting = false;
@@ -477,8 +473,8 @@ $('#add2').click(add2);
 $('#run').click(run);
 $('#stop').click(stop);
 $('#reset').click(reset);
-$('#select').click(select);
-$('#delete').click(del);
+$('#select').click(select_);
+$('#delete').click(delete_);
 $('#deleteAll').click(deleteAll);
 
 
