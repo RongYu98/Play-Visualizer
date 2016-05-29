@@ -1,14 +1,15 @@
 /* global $, navigator */
 
-function BlockMove(event) {
-    // Tell Safari not to move the window.
-    event.preventDefault();
-}
-
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
+
 var field = document.createElement('img');
 field.src = "static/field.jpg";
+field.onload = function() {
+    resize();
+};
+
+var help = document.getElementById('help');
 
 var requestID;
 
@@ -31,42 +32,16 @@ var deleting = false;
 
 var totalCreated = 0;
 
-var player;
-var playerRatio;
+var player, playerRatio;
 
-var winHeight;
-var winWidth;
-var imgHeight;
-var imgWidth;
-var currentHeight;
-var currentWidth;
+var winHeight, winWidth;
+var imgHeight, imgWidth;
+var currentHeight, currentWidth;
 
-field.onload = function() {
-    resize();
-};
 
-var deleteAll = function(){
-    PLAYERS = new Array();
-    PATHS = {};
-    var Xs = new Array();
-    var Ys = new Array();
-    var mouse_Down = false;
-    var uninitiated = true;
-    var drawingPath = false;
-    var running = false;
-    var creatingTeam1 = true;
 
-    var selecting = false;
-    var select = -1;
 
-    var deleting = false;
-
-    var totalCreated = 0;
-
-    drawSetup();
-};
-
-var resize = function() {
+function resize() {
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight = 768;
@@ -84,25 +59,7 @@ var resize = function() {
     $("canvas").attr("width", currentWidth);
     $("canvas").attr("height", currentHeight);
     ctx.drawImage(field, 0, 0, currentWidth, currentHeight);
-};
-
-function iOS() {
-    var iDevices = [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad',
-        'iPhone',
-        'iPod',
-    ];
-    
-    if (!!navigator.platform) {
-        while (iDevices.length) {
-            if (navigator.platform === iDevices.pop()) { return true; }
-        }
-    }
-    return false;
-} var ios = iOS();
+}
 
 var makePlayer = function(playerID, team) {
     var ID;
@@ -160,8 +117,7 @@ var makePlayer = function(playerID, team) {
             this.y = path[1][this.onPos];
         }
         
-        var imove;
-        for (imove = 0; imove < speed; imove++) {	
+        for (var imove = 0; imove < speed; imove++) {	
             
             if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
                 this.x = path[0][this.onPos];
@@ -298,10 +254,10 @@ var main = function(){
     requestID = window.requestAnimationFrame(main);
 };
 
-var stop = function(){
+function stop() {
     window.cancelAnimationFrame(requestID);
     running = false;
-};
+}
 
 var reset = function(){
     for (var i = 0; i < PLAYERS.length; i++){
@@ -339,20 +295,20 @@ window.onmousemove = function(e){
 
 window.ontouchmove = function(e) {
     e.preventDefault();
-
+    
     var cursorX;
     var cursorY;
     
     var touch = e.touches[0];
-
+    
     console.log(touch);
-    if (drawingPath){
-    this.cursorX = touch.clientX;
-    this.cursorY = touch.clientY;
-    Xs.push( this.cursorX );
-    Ys.push( this.cursorY );
-    drawSetup();
-    drawPath(Xs, Ys, creatingTeam1);
+    if (drawingPath) {
+        this.cursorX = touch.clientX;
+        this.cursorY = touch.clientY;
+        Xs.push( this.cursorX );
+        Ys.push( this.cursorY );
+        drawSetup();
+        drawPath(Xs, Ys, creatingTeam1);
     }
 }
 
@@ -362,135 +318,190 @@ $(window).on('mousedown', function(e) {
         mouse_Down = true;
     }
     
-    if (selecting || deleting){ 
-    var xcor;
-    this.xcor = e.offsetX;
-    var ycor;
-    this.ycor = e.offsetY;
-    var i = 0;
-    console.log("finding players at: "+this.xcor+" "+this.ycor);
-    //console.log( PLAYERS.length);
-    for (this.i = 0;this.i < PLAYERS.length; this.i++){
-        console.log( "mouse x,y: "+e.offsetX + " " + e.offsetY);
-        //console.log( "COORDS: "+e.pageX + " " + e.pageY);
-        console.log("Distance is: " +( PLAYERS[this.i].x - this.xcor ));
-        console.log( "Compare with playerRatio of: "+playerRatio);
-        if ( ( PLAYERS[this.i].x - this.xcor )*( PLAYERS[this.i].x - this.xcor ) +
-         ( PLAYERS[this.i].y - this.ycor )*( PLAYERS[this.i].y - this.ycor ) <
-         ( (10 * playerRatio) * (10 * playerRatio) ) ){
-        select = this.i;
-        var selectedPlayer = PLAYERS[select];
-        console.log(select);
-        console.log("Selected Player is: "+select+" "); //+PLAYERS[select]);
-        console.log("Selected Player's team1 is: "+ selectedPlayer.team);
-        if (deleting){
-            PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
-            delete PATHS[selectedPlayer.ID];
-            select = -1;
-            drawSetup();
-        } else {
-            creatingTeam1 = selectedPlayer.team;
-        }
+    if (selecting || deleting) {
+        var xcor;
+        this.xcor = e.offsetX;
+        var ycor;
+        this.ycor = e.offsetY;
+        var i = 0;
         
-        break;
-        };
+        console.log("finding players at: " + this.xcor + " " + this.ycor);
+        for (this.i = 0; this.i < PLAYERS.length; this.i++) {
+            console.log("mouse x,y: " + e.offsetX + " " + e.offsetY);
+            console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
+            console.log("Compare with playerRatio of: " + playerRatio);
+            
+            if (
+                (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
+                (PLAYERS[this.i].y - this.ycor) * (PLAYERS[this.i].y - this.ycor) <
+                (10 * playerRatio) * (10 * playerRatio)
+            ) {
+                select = this.i;
+                var selectedPlayer = PLAYERS[select];
+                console.log(select);
+                console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
+                console.log("Selected Player's team1 is: " + selectedPlayer.team);
+                if (deleting) {
+                    PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
+                    delete PATHS[selectedPlayer.ID];
+                    select = -1;
+                    drawSetup();
+                } else {
+                    creatingTeam1 = selectedPlayer.team;
+                }
+                break;
+            };
+        }
     }
-    }
-    if (drawingPath){
-    player.x = e.offsetX;
-    player.y = e.offsetY;
+    
+    if (drawingPath) {
+        player.x = e.offsetX;
+        player.y = e.offsetY;
     }
 });
-$(window).on('ontouchstart', function(e) {
+
+$(window).on('touchstart', function(e) {
     //console.log(e.pageX);
     //console.log("DOWN!!!!!!!!!!!");
     console.log("Started");
-    console.log("Mouse_Down is: "+mouse_Down);
+    console.log("Mouse_Down is: " + mouse_Down);
 
     mouse_Down = true;
-    if (drawingPath){
-    player.x = e.offsetX;
-    player.y = e.offsetY;
+    
+    if (drawingPath) {
+        player.x = e.offsetX;
+        player.y = e.offsetY;
     }
 });
 
 $(window).on('mouseup', function(e) {
     console.log(select);
     console.log(selecting);
-    if (Xs.length > 5){
+    if (Xs.length > 5) {
        mouse_Down = false;
        console.log("Mouse_Down has been changed to false")
     }
-    if (drawingPath && select == -1){
-    //console.log(  PLAYERS[ PLAYERS.length -1] );
-    //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
-    PATHS[player.ID] = [Xs, Ys];
-    player.onPos = 0;
-    player.undone = true;
-    PLAYERS.push(player);
-    drawSetup(); ////////
-    drawingPath = false;
-    Xs = new Array();
-    Ys = new Array();
-    help.innerHTML = "";
-    } else if ( select > -1 && !deleting){
-    //console.log("got to else if");
-    //console.log(Xs);
-    PATHS[ PLAYERS[select].ID] = [Xs, Ys];
-    PLAYERS[select].redo();
-    PLAYERS[select].undone = true;
-    drawSetup();
-    drawingPath = false;
-    select = -1;
-    Xs = new Array();
-    Ys = new Array();
-    help.innerHTML = "";
+    if (drawingPath && select == -1) {
+        //console.log(  PLAYERS[ PLAYERS.length -1] );
+        //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
+        PATHS[player.ID] = [Xs, Ys];
+        player.onPos = 0;
+        player.undone = true;
+        PLAYERS.push(player);
+        drawSetup(); ////////
+        drawingPath = false;
+        Xs = new Array();
+        Ys = new Array();
+        help.innerHTML = "";
+    } else if ( select > -1 && !deleting) {
+        //console.log("got to else if");
+        //console.log(Xs);
+        PATHS[ PLAYERS[select].ID] = [Xs, Ys];
+        PLAYERS[select].redo();
+        PLAYERS[select].undone = true;
+        drawSetup();
+        drawingPath = false;
+        select = -1;
+        Xs = new Array();
+        Ys = new Array();
+        help.innerHTML = "";
     }
     //console.log("WENT UP");
 });
 
-window.ontouchend = function(e){
+window.ontouchend = function(e) {
     console.log("ENDED");
-    if ( Xs.length > 3 ){
-    mouse_Down = false;
-    console.log("FALSE, ended touch");
+    
+    if (Xs.length > 3) {
+        mouse_Down = false;
+        console.log("FALSE, ended touch");
     }
+    
     if (drawingPath){
-    console.log("Drawing Path");
-    console.log("Xs: "+Xs);
-    console.log("Ys: "+Ys);
-    PATHS[player.ID] = [Xs, Ys];
-    player.onPos = 0;
-    player.undone = true;
-    PLAYERS.push(player);
-    drawSetup();
-    drawingPath = false;
-    Xs = new Array();
-    Ys = new Array();
-    help.innerHTML = "";
+        console.log("Drawing Path");
+        console.log("Xs: "+Xs);
+        console.log("Ys: "+Ys);
+        PATHS[player.ID] = [Xs, Ys];
+        player.onPos = 0;
+        player.undone = true;
+        PLAYERS.push(player);
+        drawSetup();
+        drawingPath = false;
+        Xs = new Array();
+        Ys = new Array();
+        help.innerHTML = "";
     }
 };
 
-window.addEventListener("resize", resize);
+$(window).resize(resize);
 
-$('#add').click(add);
-$('#add2').click(add2);
-$('#run').click(run);
-$('#stop').click(stop);
-$('#reset').click(reset);
-$('#select').click(function(e) {
+function select() {
     selecting = !selecting;
     if (selecting) {
         deleting = false;
     }
-});
-$('#delete').click(function(e) {
+}
+
+function del() {
     deleting = !deleting;
     if (deleting) {
         selecting = false;
         select = -1;
     }
-});
+}
+
+function deleteAll() {
+    PLAYERS = new Array();
+    PATHS = {};
+    Xs = new Array();
+    Ys = new Array();
+    mouse_Down = false;
+    uninitiated = true;
+    drawingPath = false;
+    running = false;
+    creatingTeam1 = true;
+    
+    selecting = false;
+    select = -1;
+
+    deleting = false;
+
+    totalCreated = 0;
+
+    drawSetup();
+}
+
+// Button handler assignment
+$('#add').click(add);
+$('#add2').click(add2);
+$('#run').click(run);
+$('#stop').click(stop);
+$('#reset').click(reset);
+$('#select').click(select);
+$('#delete').click(del);
 $('#deleteAll').click(deleteAll);
 
-var help = $('#help');
+
+// Compatibility functions (I assume...)
+function BlockMove(event) {
+    // Tell Safari not to move the window.
+    event.preventDefault();
+}
+
+function iOS() {
+    var iDevices = [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod',
+    ];
+    
+    if (!!navigator.platform) {
+        while (iDevices.length) {
+            if (navigator.platform === iDevices.pop()) { return true; }
+        }
+    }
+    return false;
+} var ios = iOS();
