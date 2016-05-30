@@ -332,11 +332,47 @@ $(window).mouseup(function() {
 * or anything that does not use the mouse, and 
 * therefore, does not support mouse functions
 **/
-$(window).on('touchstart', function(e) {
-    console.log("Started");
-    console.log("Mouse_Down is: " + mouse_Down);
 
-    mouse_Down = true;
+$(window).on('touchstart', function(e) {
+    console.log("touchStarted: Mouse_Down is: " + mouse_Down);
+
+    // if you're within boundaries
+    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
+        mouse_Down = true;
+    }
+
+    if (selecting || deleting) { // this will find the player
+        this.xcor = e.offsetX;
+        this.ycor = e.offsetY;
+        
+        console.log("finding players at: " + this.xcor + " " + this.ycor);
+        for (this.i = 0; this.i < PLAYERS.length; this.i++) {
+            console.log("mouse x,y: " + e.offsetX + " " + e.offsetY);
+            console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
+            console.log("Compare with playerRatio of: " + playerRatio);
+            
+            if (
+                (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
+                (PLAYERS[this.i].y - this.ycor) * (PLAYERS[this.i].y - this.ycor) <
+                (10 * playerRatio) * (10 * playerRatio)
+            ) {
+                select = this.i;
+                var selectedPlayer = PLAYERS[select];
+                console.log(select);
+                console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
+                console.log("Selected Player's team1 is: " + selectedPlayer.team);
+                if (deleting) {
+                    PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
+                    delete PATHS[selectedPlayer.ID];
+                    select = -1;
+                    drawSetup();
+                } else {
+                    creatingTeam1 = selectedPlayer.team;
+                }
+                break;
+            }
+        }
+    }
     
     if (drawingPath) {
         player.x = e.offsetX;
@@ -346,10 +382,13 @@ $(window).on('touchstart', function(e) {
 
 $(window).on('touchmove', function(e) {
     e.preventDefault();
+
+    console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
     
     var touch = e.touches[0];
     
     console.log(touch);
+/*
     if (drawingPath) {
         this.cursorX = touch.clientX;
         this.cursorY = touch.clientY;
@@ -358,30 +397,66 @@ $(window).on('touchmove', function(e) {
         drawSetup();
         drawPath(Xs, Ys, creatingTeam1);
     }
+*/
+    if ((mouse_Down && drawingPath) || select > -1 ) {
+        cursorX = touch.clientX;
+        cursorY = touch.clientY;
+        
+        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || 
+            Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
+            e.pageX >= (winWidth - currentWidth) / 2 &&
+            e.pageX <= (winWidth + currentWidth) / 2 &&
+            e.pageY > 0 && e.pageY <= currentHeight
+        ) {
+            Xs.push( cursorX );
+            Ys.push( cursorY );
+            if (Xs.length > 0) {
+                drawSetup();
+                drawPath(Xs, Ys, creatingTeam1);
+            }
+        }
+        //console.log(cursorX, cursorY);
+        //record stuff onto something
+    }
+    if (mouse_Down && select > -1) {
+            console.log("selected");
+    }
+
 });
 
 $(window).on('touchend', function(e) {
     console.log("ENDED");
     
-    if (Xs.length > 3) {
+    if (Xs.length > 1) {
         mouse_Down = false;
         console.log("FALSE, ended touch");
     }
     
-    if (drawingPath){
-        console.log("Drawing Path");
-        console.log("Xs: "+Xs);
-        console.log("Ys: "+Ys);
+    if (drawingPath && select == -1 && Xs.length > 1) {
+        //console.log(  PLAYERS[ PLAYERS.length -1] );
+        //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
+        //console.log("Xs: "+Xs);
+        //console.log("Ys: "+Ys);
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = 0;
         player.undone = true;
         PLAYERS.push(player);
-        drawSetup();
-        drawingPath = false;
-        Xs = new Array();
-        Ys = new Array();
-        help.text('');
+    } else if (select > -1 && !deleting) {
+        //console.log("got to else if");
+        //console.log(Xs);
+        PATHS[PLAYERS[select].ID] = [Xs, Ys];
+        PLAYERS[select].redo();
+        PLAYERS[select].undone = true;
+        select = -1;
     }
+
+    drawSetup();
+    add( lastTeam );
+    //drawingPath = false;
+    Xs = new Array();
+    Ys = new Array();
+    help.text('');
+    
 });
 
 $(window).resize(resize);
