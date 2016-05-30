@@ -25,12 +25,15 @@ Speed:
 
 __Change Log:__
 
+5/30/16
+- Add Players no longer needs to be constantly pressed -RY
+
 5/28/16:
 - Selected player is highlighted in yellow -IG
 - Prevented paths from being drawn outside of field -IG
 
 5/26/16:
-- Select works every way indended, i != this.i
+- Select works every way indended, i != this.i -RY
 - Added ability to delete individual players or all players -IG
 - Changed paths array to an object with IDs as keys -IG
 

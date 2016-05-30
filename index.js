@@ -222,7 +222,10 @@ function drawPath(arrayX, arrayY, team) {
 // Window Event Handler Assignment
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
 $(window).on('mousemove', function(e) {
+    console.log("Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
+
     if ((mouse_Down && drawingPath) || select > -1 ) {
+    //if ( mouse_Down || select > -1){
         cursorX = e.offsetX;
         cursorY = e.offsetY;
         
@@ -264,12 +267,13 @@ $(window).on('touchmove', function(e) {
 });
 
 $(window).on('mousedown', function(e) {
-    console.log("mouseDown");
+    //console.log("mouseDown");
+    // if you're within boundaries
     if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
         mouse_Down = true;
     }
     
-    if (selecting || deleting) {
+    if (selecting || deleting) { // this will find the player
         this.xcor = e.offsetX;
         this.ycor = e.offsetY;
         
@@ -309,8 +313,6 @@ $(window).on('mousedown', function(e) {
 });
 
 $(window).on('touchstart', function(e) {
-    //console.log(e.pageX);
-    //console.log("DOWN!!!!!!!!!!!");
     console.log("Started");
     console.log("Mouse_Down is: " + mouse_Down);
 
@@ -323,8 +325,8 @@ $(window).on('touchstart', function(e) {
 });
 
 $(window).mouseup(function() {
-    console.log(select);
-    console.log(selecting);
+    //console.log(select);
+    //console.log(selecting);
     if (Xs.length > 5) {
        mouse_Down = false;
        console.log("Mouse_Down has been changed to false");
@@ -345,7 +347,8 @@ $(window).mouseup(function() {
         select = -1;
     }
     drawSetup();
-    drawingPath = false;
+    //drawingPath = false;
+    add( lastTeam );
     Xs = new Array();
     Ys = new Array();
     help.text('');
@@ -379,11 +382,13 @@ $(window).on('touchend', function(e) {
 $(window).resize(resize);
 
 
-
+var lastTeam;
 // Button handler assignment
 var add = function(team1) {
+    mouse_Down = false;
     player = makePlayer(totalCreated, team1);
     totalCreated++;
+    lastTeam = team1;
     drawingPath = true;
     creatingTeam1 = team1;
     help.text("Click and drag to create a player and a path");
@@ -417,12 +422,14 @@ $('#reset').click(function() {
 
 $('#select').click(function() {
     selecting = !selecting;
+    drawingPath = false;
     if (selecting) {
         deleting = false;
     }
 });
 
 $('#delete').click(function() {
+    drawingPath = false;
     deleting = !deleting;
     if (deleting) {
         selecting = false;
@@ -431,6 +438,7 @@ $('#delete').click(function() {
 });
 
 $('#deleteAll').click(function() {
+    drawingPath = false;
     PLAYERS = new Array();
     PATHS = {};
     Xs = new Array();
