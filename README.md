@@ -27,6 +27,7 @@ __Change Log:__
 
 5/30/16
 - Add Players no longer needs to be constantly pressed -RY
+- Add buttons are now only change color buttons -RY
 
 5/28/16:
 - Selected player is highlighted in yellow -IG

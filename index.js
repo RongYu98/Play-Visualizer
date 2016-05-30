@@ -250,22 +250,6 @@ $(window).on('mousemove', function(e) {
     }
 });
 
-$(window).on('touchmove', function(e) {
-    e.preventDefault();
-    
-    var touch = e.touches[0];
-    
-    console.log(touch);
-    if (drawingPath) {
-        this.cursorX = touch.clientX;
-        this.cursorY = touch.clientY;
-        Xs.push( this.cursorX );
-        Ys.push( this.cursorY );
-        drawSetup();
-        drawPath(Xs, Ys, creatingTeam1);
-    }
-});
-
 $(window).on('mousedown', function(e) {
     //console.log("mouseDown");
     // if you're within boundaries
@@ -312,18 +296,6 @@ $(window).on('mousedown', function(e) {
     }
 });
 
-$(window).on('touchstart', function(e) {
-    console.log("Started");
-    console.log("Mouse_Down is: " + mouse_Down);
-
-    mouse_Down = true;
-    
-    if (drawingPath) {
-        player.x = e.offsetX;
-        player.y = e.offsetY;
-    }
-});
-
 $(window).mouseup(function() {
     //console.log(select);
     //console.log(selecting);
@@ -353,6 +325,38 @@ $(window).mouseup(function() {
     Ys = new Array();
     help.text('');
     //console.log("WENT UP");
+});
+
+/* The following functions are for mobile devices,
+* or anything that does not use the mouse, and 
+* therefore, does not support mouse functions
+**/
+$(window).on('touchstart', function(e) {
+    console.log("Started");
+    console.log("Mouse_Down is: " + mouse_Down);
+
+    mouse_Down = true;
+    
+    if (drawingPath) {
+        player.x = e.offsetX;
+        player.y = e.offsetY;
+    }
+});
+
+$(window).on('touchmove', function(e) {
+    e.preventDefault();
+    
+    var touch = e.touches[0];
+    
+    console.log(touch);
+    if (drawingPath) {
+        this.cursorX = touch.clientX;
+        this.cursorY = touch.clientY;
+        Xs.push( this.cursorX );
+        Ys.push( this.cursorY );
+        drawSetup();
+        drawPath(Xs, Ys, creatingTeam1);
+    }
 });
 
 $(window).on('touchend', function(e) {
@@ -393,9 +397,15 @@ var add = function(team1) {
     creatingTeam1 = team1;
     help.text("Click and drag to create a player and a path");
 };
+var changeColor = function(){
+    lastTeam = !lastTeam;
+    add( lastTeam );
+};
 
-$('#add').click(function() { add(true); });
-$('#add2').click(function() { add(false); });
+//$('#add').click(function() { add(true); });
+//$('#add2').click(function() { add(false); });
+add(true);
+$('#changeColor').click(function() { changeColor(); });
 
 $('#run').click(function() {
     if (!running) {
