@@ -335,26 +335,29 @@ $(window).mouseup(function() {
 
 $(window).on('touchstart', function(e) {
     console.log("touchStarted: Mouse_Down is: " + mouse_Down);
-
+    var E = e.originalEvent.touches[0];
+    
     // if you're within boundaries
-    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
+    //console.log("ClientX: +"+E.clientX);
+    if (E.pageX < c.width && E.pageY < c.height && drawingPath){
         mouse_Down = true;
+	//console.log("MOUSE_DOWN "+mouse_Down);
     }
 
     if (selecting || deleting) { // this will find the player
-        this.xcor = e.offsetX;
-        this.ycor = e.offsetY;
+        this.xcor = e.pageX;
+        this.ycor = e.pageY;
         
         console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
-            console.log("mouse x,y: " + e.offsetX + " " + e.offsetY);
+            console.log("mouse x,y: " + e.pageX + " " + e.pageY);
             console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
             console.log("Compare with playerRatio of: " + playerRatio);
             
             if (
                 (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
                 (PLAYERS[this.i].y - this.ycor) * (PLAYERS[this.i].y - this.ycor) <
-                (10 * playerRatio) * (10 * playerRatio)
+                (10 * playerRatio) * (10 * playerRatio) * 64
             ) {
                 select = this.i;
                 var selectedPlayer = PLAYERS[select];
@@ -381,11 +384,15 @@ $(window).on('touchstart', function(e) {
 });
 
 $(window).on('touchmove', function(e) {
+    //Because this is jquery, this isn't the original event
     e.preventDefault();
+    var E = e.originalEvent.touches;
+    //console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
 
-    console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
-    
-    var touch = e.touches[0];
+   // console.log("OffsetX: "+e.offsetX);
+    //console.log("PAGE: "+e.pageX);
+
+    var touch = e.originalEvent.touches[0];
     
     console.log(touch);
 /*
@@ -398,22 +405,26 @@ $(window).on('touchmove', function(e) {
         drawPath(Xs, Ys, creatingTeam1);
     }
 */
+    console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
     if ((mouse_Down && drawingPath) || select > -1 ) {
-        cursorX = touch.clientX;
-        cursorY = touch.clientY;
-        
+        cursorX = touch.pageX;
+        cursorY = touch.pageY;
+        //console.log("Not in: "+cursorX);
+	//console.log(E.pageX);
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
-            e.pageX >= (winWidth - currentWidth) / 2 &&
-            e.pageX <= (winWidth + currentWidth) / 2 &&
-            e.pageY > 0 && e.pageY <= currentHeight
+            cursorX >= (winWidth - currentWidth) / 2 &&
+            cursorX <= (winWidth + currentWidth) / 2 &&
+            cursorY > 0 && cursorY <= currentHeight
         ) {
-            Xs.push( cursorX );
+	    console.log("GOT HERE");
+	    Xs.push( cursorX );
             Ys.push( cursorY );
             if (Xs.length > 0) {
                 drawSetup();
                 drawPath(Xs, Ys, creatingTeam1);
             }
+	    console.log( cursorX );
         }
         //console.log(cursorX, cursorY);
         //record stuff onto something
@@ -427,7 +438,7 @@ $(window).on('touchmove', function(e) {
 $(window).on('touchend', function(e) {
     console.log("ENDED");
     
-    if (Xs.length > 1) {
+    if (Xs.length > 2) {
         mouse_Down = false;
         console.log("FALSE, ended touch");
     }
