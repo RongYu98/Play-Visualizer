@@ -8,7 +8,7 @@ var field = $('<img>');
 field.attr('src', 'static/field.jpg');
 field.on('load', resize);
 
-var help = document.getElementById('help');
+var help = $('#help');
 
 var requestID;
 
@@ -336,24 +336,19 @@ $(window).mouseup(function() {
         player.onPos = 0;
         player.undone = true;
         PLAYERS.push(player);
-        drawSetup(); ////////
-        drawingPath = false;
-        Xs = new Array();
-        Ys = new Array();
-        help.innerHTML = "";
-    } else if ( select > -1 && !deleting) {
+    } else if (select > -1 && !deleting) {
         //console.log("got to else if");
         //console.log(Xs);
-        PATHS[ PLAYERS[select].ID] = [Xs, Ys];
+        PATHS[PLAYERS[select].ID] = [Xs, Ys];
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
-        drawSetup();
-        drawingPath = false;
         select = -1;
-        Xs = new Array();
-        Ys = new Array();
-        help.innerHTML = "";
     }
+    drawSetup();
+    drawingPath = false;
+    Xs = new Array();
+    Ys = new Array();
+    help.text('');
     //console.log("WENT UP");
 });
 
@@ -377,7 +372,7 @@ $(window).on('touchend', function(e) {
         drawingPath = false;
         Xs = new Array();
         Ys = new Array();
-        help.innerHTML = "";
+        help.text('');
     }
 });
 
@@ -391,7 +386,7 @@ var add = function(team1) {
     totalCreated++;
     drawingPath = true;
     creatingTeam1 = team1;
-    help.innerHTML = "Click and drag to create a player and a path";
+    help.text("Click and drag to create a player and a path");
 };
 
 $('#add').click(function() { add(true); });

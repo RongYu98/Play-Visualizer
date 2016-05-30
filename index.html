@@ -5,6 +5,7 @@
     content="user-scalable=no, width=device-width" />
   <meta name="google-signin-client_id"
     content="988111073774-65isrk26ehhuu9e2c66a7grrdl4mj2h3.apps.googleusercontent.com" />
+  <title>Sports Play Visualizer</title>
   
   <!-- Custom Style Sheet -->
   <link rel="stylesheet" type="text/css" href="static/css/style.css" />
@@ -15,9 +16,8 @@
   -->
 </head>
 <body ontouchmove="BlockMove(event);">
-  <div id="game" style="text-align:center;">
-    <canvas id="field" width="1024" height="768"
-      style="border:1px solid #000000;"></canvas>
+  <div id="game">
+    <canvas id="field" width="1024" height="768"></canvas>
     <div id="buttons">
       <button type="button" id="add">Add Player Team 1</button>
       <button type="button" id="add2">Add Player Team 2</button>
@@ -28,12 +28,14 @@
       <button type="button" id="delete">Delete Player</button>
       <button type="button" id="deleteAll">Delete All</button>
     </div>
+    <h3 id="help"></h3>
   </div>
-  <h3 id="help"></h3>
-  <div style="border:10px dotted #CCC;">
+  <div id="drive-elements">
     <div id="google-signin" style="display:inline-block;"></div>
-    <div id="drive"
-      style="border:5px solid #000000;display:inline-block;vertical-align:top;padding:0 10px 0 10px;">
+    <button type="button" id="drive-save">New Save</button>
+    <button type="button" id="drive-save">Delete Save</button>
+    <br>
+    <div id="drive">
       <p>Not yet connected.</p>
     </div>
   </div>

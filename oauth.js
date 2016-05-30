@@ -7,11 +7,10 @@ var container = $('#drive');
 
 function renderSignIn() {
   gapi.signin2.render('google-signin', {
-    'scope': 'profile email https://www.googleapis.com/auth/drive.appdata',
+    'scope': 'https://www.googleapis.com/auth/drive.appdata',
     'width': 240,
     'height': 50,
     'longtitle': true,
-    'theme': 'dark',
     'onsuccess': onSuccess,
     'onfailure': onFailure,
   });
