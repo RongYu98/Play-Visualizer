@@ -299,11 +299,12 @@ $(window).on('mousedown', function(e) {
 $(window).mouseup(function() {
     //console.log(select);
     //console.log(selecting);
-    if (Xs.length > 5) {
+    if (Xs.length > 1) {
        mouse_Down = false;
        console.log("Mouse_Down has been changed to false");
     }
-    if (drawingPath && select == -1) {
+    console.log(Xs.length);
+    if (drawingPath && select == -1 && Xs.length > 1) {
         //console.log(  PLAYERS[ PLAYERS.length -1] );
         //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
         PATHS[player.ID] = [Xs, Ys];
