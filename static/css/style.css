@@ -18,16 +18,19 @@ button {
   border: 1px solid #000000;
 }
 
-#drive-elements {
+#drive {
   border: 10px dotted #CCC;
   padding: 10px;
+  min-height: 20em;
 }
 
-#drive {
-  padding: 0 10px 0 10px;
-}
-
-#drive-elements > button {
+#drive > button {
   height: 50px;
   vertical-align: top;
+}
+
+#drive-list {
+  display: none;
+  background: #EEEEEE;
+  padding: 0.1em;
 }
