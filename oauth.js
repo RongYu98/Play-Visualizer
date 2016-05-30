@@ -2,7 +2,8 @@
 
 // { spaces: 'appDataFolder' };
 
-var user, profile, drive;
+var profile, drive;
+var container = $('#drive');
 
 function renderSignIn() {
   gapi.signin2.render('google-signin', {
@@ -12,28 +13,45 @@ function renderSignIn() {
     'longtitle': true,
     'theme': 'dark',
     'onsuccess': onSuccess,
-    'onfailure': function(e) { console.log('Unable to sign in: ' + e.reason); },
+    'onfailure': onFailure,
   });
 }
 
 function onSuccess(googleUser) {
-  user = googleUser;
   profile = googleUser.getBasicProfile();
-  $('#drive-data > p').text('Loaded profile of ' + profile.getName());
-  loadDriveAPI();
+  container.empty().append(
+    $('<p>').text('Loaded profile of ' + profile.getName() + '.')
+  );
+  gapi.client.load('drive', 'v3', function() {
+    if (!drive)
+      drive = gapi.client.drive;
+    listFiles();
+  });
 }
 
-function loadDriveAPI() {
-  gapi.client.load('drive', 'v3', listFiles);
+function onFailure(e) {
+  container.empty().append(
+    $('<p>')
+      .attr('style', 'color:red;')
+      .text('Unable to connect: ' + e.reason)
+  );
 }
 
 function listFiles() {
-  drive = gapi.client.drive;
   var request = drive.files.list({
     spaces: 'appDataFolder',
   });
   request.execute(function(resp) {
-    console.log(resp);
+    if (resp.files.length > 0) {
+      var list = $('<ul>');
+      resp.files.every(function(e) {
+        list.append($('<li>').text(e.name + ' | ' + e.id));
+      });
+      container.append(list);
+    } else {
+      container.append(
+        $('<p>').text('No files found.')
+      );
+    }
   });
 }
-
