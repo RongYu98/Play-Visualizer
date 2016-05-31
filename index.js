@@ -304,16 +304,27 @@ $(window).mouseup(function() {
        console.log("Mouse_Down has been changed to false");
     }
     console.log(Xs.length);
-    if (drawingPath && select == -1 && Xs.length > 1) {
+    if (drawingPath && select == -1 && Xs.length > 1) { // not selecting, so adding
         //console.log(  PLAYERS[ PLAYERS.length -1] );
         //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = 0;
         player.undone = true;
         PLAYERS.push(player);
+
+	/*
+	  if (selectedPlayer != null ){
+	  PATHS[selectedPlayer.ID] = [Xs, Ys];
+          selectedPlayer.onPos = 0;
+	  selectedPlayer.undone = true;
+	  //should not need to push, it is apart of it already
+	  */
     } else if (select > -1 && !deleting) {
         //console.log("got to else if");
         //console.log(Xs);
+	
+	//selecting = true
+
         PATHS[PLAYERS[select].ID] = [Xs, Ys];
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
@@ -428,7 +439,6 @@ $(window).on('touchmove', function(e) {
 	    console.log( cursorX );
         }
         //console.log(cursorX, cursorY);
-        //record stuff onto something
     }
     if (mouse_Down && select > -1) {
             console.log("selected");
@@ -474,7 +484,6 @@ $(window).on('touchend', function(e) {
 
 $(window).resize(resize);
 
-
 var lastTeam;
 // Button handler assignment
 var add = function(team1) {
@@ -488,9 +497,7 @@ var add = function(team1) {
     help.text("Click and drag to create a player and a path");
 };
 var changeColor = function(){
-    //lastTeam = !lastTeam;
     creatingTeam1 = !creatingTeam1;
-    //add( lastTeam );
     add( creatingTeam1 );
 };
 
