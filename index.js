@@ -321,7 +321,8 @@ $(window).mouseup(function() {
     }
     drawSetup();
     //drawingPath = false;
-    add( lastTeam );
+    //add( lastTeam );
+    add( creatingTeam1 );
     Xs = new Array();
     Ys = new Array();
     help.text('');
@@ -329,8 +330,8 @@ $(window).mouseup(function() {
 });
 
 /* The following functions are for mobile devices,
-* or anything that does not use the mouse, and 
-* therefore, does not support mouse functions
+*  or anything that does not use the mouse, and 
+*  therefore, does not support mouse functions
 **/
 
 $(window).on('touchstart', function(e) {
@@ -462,7 +463,8 @@ $(window).on('touchend', function(e) {
     }
 
     drawSetup();
-    add( lastTeam );
+    //add( lastTeam );
+    add( creatingTeam1 );
     //drawingPath = false;
     Xs = new Array();
     Ys = new Array();
@@ -479,14 +481,17 @@ var add = function(team1) {
     mouse_Down = false;
     player = makePlayer(totalCreated, team1);
     totalCreated++;
-    lastTeam = team1;
+    //lastTeam = team1;
+    creatingTeam1 = team1;
     drawingPath = true;
     creatingTeam1 = team1;
     help.text("Click and drag to create a player and a path");
 };
 var changeColor = function(){
-    lastTeam = !lastTeam;
-    add( lastTeam );
+    //lastTeam = !lastTeam;
+    creatingTeam1 = !creatingTeam1;
+    //add( lastTeam );
+    add( creatingTeam1 );
 };
 
 //$('#add').click(function() { add(true); });
