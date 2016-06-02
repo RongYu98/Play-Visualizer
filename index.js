@@ -616,6 +616,13 @@ $('#deleteAll').click(function() {
     drawSetup();
 });
 
+$('#formations').change(function() {
+    var option = $('#formations option:selected').val();
+    if (option == 'option1'){
+	console.log('load formation 1');
+    }
+});
+
 
 
 // Main Animation Function
