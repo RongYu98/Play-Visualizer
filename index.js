@@ -157,28 +157,29 @@ function makePlayer(playerID, team) {
         ctx.fill();
     };
     
+    var save = function() {
+        return JSON.stringify({
+           'id': this.ID,
+           'team': this.team,
+           'speed': speed,
+        });
+    };
+    
     var move = function() {
         path = PATHS[this.ID];
         this.speed = speed * playerRatio;
         
         if (this.onPos < 0 ) {
-	    this.onPos = 0;
+            this.onPos = 0;
             this.x = path[0][this.onPos];
             this.y = path[1][this.onPos];
-	    console.log("This was onPos = -1, so setted it");
+            console.log("This was onPos = -1, so setted it");
         }
-    
-    var save = function() {
-        return JSON.stringify({
-           
-        });
-    };
         
-	console.log(path);
-        for (this.imove = 0; this.imove < this.speed; this.imove++) {	
-            
-	    //console.log("This is now on: "+this.x+" "+this.y);
-	    //console.log(path);
+        console.log(path);
+        for (this.imove = 0; this.imove < this.speed; this.imove++) {
+            //console.log("This is now on: "+this.x+" "+this.y);
+            //console.log(path);
             if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
                 this.x = path[0][this.onPos];
             } else {
@@ -206,16 +207,16 @@ function makePlayer(playerID, team) {
             if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]) {
                 this.onPos+=1;
             } else {
-		console.log("need "+(this.x-path[0][this.onPos])+" more for x");
-	    }
+                console.log("need "+(this.x-path[0][this.onPos])+" more for x");
+            }
             
             if (this.onPos > path[0].length-1) {
                 this.onPos = path[0].length-1;
                 this.undone = false;
             }
         }
-	console.log("DONE WITH LOOP");
-	console.log("This is it's speed: "+this.speed);
+        console.log("DONE WITH LOOP");
+        console.log("This is it's speed: "+this.speed);
         console.log("This is imove: "+this.imove);
         drawSetup();
     };
@@ -230,7 +231,8 @@ function makePlayer(playerID, team) {
         y: this.y,
         speed: this.speed,
         team: this.team,
-        redo: redo
+        redo: redo,
+        save: save,
     };
 }
 
