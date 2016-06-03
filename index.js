@@ -206,7 +206,7 @@ function makePlayer(playerID, team) {
             if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]) {
                 this.onPos+=1;
             } else {
-		console.log("need "+this.x-path[0][this.onPos]+" more for x");
+		console.log("need "+(this.x-path[0][this.onPos])+" more for x");
 	    }
             
             if (this.onPos > path[0].length-1) {
