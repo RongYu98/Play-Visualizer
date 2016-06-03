@@ -25,6 +25,9 @@ Speed:
 
 __Change Log:__
 
+6/2/16
+- Resizing doesn't kill everything, by finding the empirical formula -RY
+
 5/30/16
 - Add Players no longer needs to be constantly pressed -RY
 - Add buttons are now only change color buttons -RY

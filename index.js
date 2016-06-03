@@ -39,7 +39,7 @@ var currentHeight, currentWidth;
 
 // Field Resize Function
 function resize() {
-    console.log("RESIZED");
+    //console.log("RESIZED");
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight = 768;
@@ -49,7 +49,7 @@ function resize() {
     var i = 0;
     var a = 0;
 
-    console.log("The totalCreated is: "+totalCreated);
+    //console.log("The totalCreated is: "+totalCreated);
     //console.log("Length "+PATHS.length);//undefined
 
     
@@ -70,9 +70,9 @@ function resize() {
 	PLAYERS[i].y = PLAYERS[i].y / currentHeight;
     }
 
-    if (totalCreated > 1){
-        console.log("XY Empirical: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
-    }
+    //if (totalCreated > 1){
+        //console.log("XY Empirical: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
+    //}
 
     if (winWidth/imgWidth <= winHeight/imgHeight) {
         currentWidth = winWidth;
@@ -105,9 +105,9 @@ function resize() {
 	    PLAYERS[i].y = PLAYERS[i].y * currentHeight;
 	}
     }   
-    if (totalCreated > 1){
-	console.log("XY After: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
-    }
+    //if (totalCreated > 1){
+	//console.log("XY After: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
+    //}
     $("canvas").attr("width", currentWidth);
     $("canvas").attr("height", currentHeight);
     ctx.drawImage(field.get(0), 0, 0, currentWidth, currentHeight);
@@ -118,7 +118,7 @@ function resize() {
 // Player creation function
 function makePlayer(playerID, team) {
     this.ID = playerID;
-    this.onPos = 0;
+    this.onPos = -1;
     this.undone = true;
     this.team = team;
     var path;
@@ -161,17 +161,19 @@ function makePlayer(playerID, team) {
         path = PATHS[this.ID];
         this.speed = 30 * playerRatio;
         
-        if (this.onPos <= 1) {
+        if (this.onPos < 0 ) {
+	    this.onPos = 0;
             this.x = path[0][this.onPos];
             this.y = path[1][this.onPos];
-	    console.log("This was onPos = 0, so setted it");
+	    console.log("This was onPos = -1, so setted it");
         }
         
 	console.log(path);
-        for (var imove = 0; this.imove < this.speed; this.imove++) {	
+	var imove;
+        for (this.imove = 0; this.imove < this.speed; this.imove++) {	
             
-	    console.log("This is now on: "+this.x+" "+this.y);
-	    console.log(path);
+	    //console.log("This is now on: "+this.x+" "+this.y);
+	    //console.log(path);
             if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
                 this.x = path[0][this.onPos];
             } else {
@@ -208,7 +210,8 @@ function makePlayer(playerID, team) {
             }
         }
 	console.log("DONE WITH LOOP");
-        
+	console.log("This is it's speed: "+this.speed);
+        console.log("This is imove: "+this.imove);
         drawSetup();
     };
     
@@ -365,12 +368,12 @@ $(window).mouseup(function() {
        mouse_Down = false;
        console.log("Mouse_Down has been changed to false");
     }
-    console.log(Xs.length);
+    //console.log(Xs.length);
     if (drawingPath && select == -1 && Xs.length > 1) { // not selecting, so adding
         //console.log(  PLAYERS[ PLAYERS.length -1] );
         //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
         PATHS[player.ID] = [Xs, Ys];
-        player.onPos = 0;
+        player.onPos = -1;
         player.undone = true;
         PLAYERS.push(player);
 
@@ -424,9 +427,9 @@ $(window).on('touchstart', function(e) {
         
         console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
-            console.log("mouse x,y: " + e.pageX + " " + e.pageY);
-            console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
-            console.log("Compare with playerRatio of: " + playerRatio);
+            //console.log("mouse x,y: " + e.pageX + " " + e.pageY);
+            //console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
+            //console.log("Compare with playerRatio of: " + playerRatio);
             
             if (
                 (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
@@ -631,7 +634,6 @@ $('#formations').change(function() {
 	console.log('load formation 1');
     }
 });
-
 
 
 // Main Animation Function
