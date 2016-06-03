@@ -53,16 +53,16 @@ function resize() {
     //console.log("Length "+PATHS.length);//undefined
 
     
-    if (totalCreated > 1){
-	console.log("XY Before: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
-    }
+    //if (totalCreated > 1){
+	//console.log("XY Before: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
+    //}
 
-    for (i=0; i<totalCreated-1 && PATHS[i]!= null ; i++){
-	//console.log("i is: "+i+" a is: "+a+" total creaded is: "+totalCreated);
-	for (a=0; a<PATHS[i][0].length; a++){
-	//console.log("i2 is: "+i+" a is: "+a);
-	    PATHS[i][0][a] = PATHS[i][0][a] / currentWidth;
-	    PATHS[i][1][a] = PATHS[i][1][a] / currentHeight;
+    for (i=0; i<totalCreated-1; i++){// this not linear, sometimes wrong
+	if (PATHS[i]!=null){
+	    for (a=0; a<PATHS[i][0].length; a++){
+		PATHS[i][0][a] = PATHS[i][0][a] / currentWidth;
+		PATHS[i][1][a] = PATHS[i][1][a] / currentHeight;
+	    }
 	}
     }
     for (i=0; i<PLAYERS.length;i++){
@@ -78,10 +78,11 @@ function resize() {
         currentWidth = winWidth;
         currentHeight = imgHeight * (winWidth/imgWidth);
 	for (i=0; i<totalCreated-1; i++){
-	    for (a=0; a<PATHS[i][0].length && PATHS[i]!= null; a++){
-	        //console.log("XY After1: "+PATHS[i][0][a]+" "+PATHS[i][1][a]);
-		PATHS[i][0][a] = PATHS[i][0][a] * currentWidth;
-		PATHS[i][1][a] = PATHS[i][1][a] * currentHeight;
+	    if (PATHS[i]!=null){
+		for (a=0; a<PATHS[i][0].length; a++){
+		    PATHS[i][0][a] = PATHS[i][0][a] * currentWidth;
+		    PATHS[i][1][a] = PATHS[i][1][a] * currentHeight;
+		}
 	    }
 	}
 	for (i=0; i<PLAYERS.length;i++){
@@ -91,11 +92,12 @@ function resize() {
     } else {
         currentWidth = imgWidth * (winHeight/imgHeight);
         currentHeight = winHeight;
-	for (i=0; i<totalCreated-1  && PATHS[i] != null; i++){
-	    for (a=0; a<PATHS[i][0].length; a++){
-		//console.log("XY After1: "+PATHS[i][0][a]+" "+PATHS[i][1][a]);
-		PATHS[i][0][a] = PATHS[i][0][a] * currentWidth;
-		PATHS[i][1][a] = PATHS[i][1][a] * currentHeight;
+	for (i=0; i<totalCreated-1; i++){
+	    if (PATHS[i]!=null){
+		for (a=0; a<PATHS[i][0].length; a++){
+		    PATHS[i][0][a] = PATHS[i][0][a] * currentWidth;
+		    PATHS[i][1][a] = PATHS[i][1][a] * currentHeight;
+		}
 	    }
 	}
 	for (i=0; i<PLAYERS.length;i++){
@@ -162,10 +164,14 @@ function makePlayer(playerID, team) {
         if (this.onPos <= 1) {
             this.x = path[0][this.onPos];
             this.y = path[1][this.onPos];
+	    console.log("This was onPos = 0, so setted it");
         }
         
-        for (var imove = 0; imove < speed; imove++) {	
+	console.log(path);
+        for (var imove = 0; this.imove < this.speed; this.imove++) {	
             
+	    console.log("This is now on: "+this.x+" "+this.y);
+	    console.log(path);
             if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
                 this.x = path[0][this.onPos];
             } else {
@@ -192,13 +198,16 @@ function makePlayer(playerID, team) {
             
             if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]) {
                 this.onPos+=1;
-            }
+            } else {
+		console.log("need "+this.x-path[0][this.onPos]+" more for x");
+	    }
             
             if (this.onPos > path[0].length-1) {
                 this.onPos = path[0].length-1;
                 this.undone = false;
             }
         }
+	console.log("DONE WITH LOOP");
         
         drawSetup();
     };
