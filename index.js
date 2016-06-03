@@ -35,6 +35,316 @@ var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
 
+var FORMATION1 = {
+    'players': [
+	{
+	    'id': 0,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 1,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 2,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 3,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 4,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 5,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 6,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 7,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 8,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 9,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 10,
+	    'team': true,
+	    'speed': 30
+	}
+    ],
+    'paths': {
+	0: [
+	    [0.09, 0.13],
+	    [0.5, 0.5]
+	],
+	1: [
+	    [0.23, 0.27],
+	    [0.37, 0.37]
+	],
+	2: [
+	    [0.23, 0.27],
+	    [0.63, 0.63]
+	],
+	3: [
+	    [0.27, 0.31],
+	    [0.17, 0.17]
+	],
+	4: [
+	    [0.27, 0.31],
+	    [0.83, 0.83]
+	],
+	5: [
+	    [0.51, 0.55],
+	    [0.41, 0.41]
+	],
+	6: [
+	    [0.51, 0.55],
+	    [0.59, 0.59]
+	],
+	7: [
+	    [0.55, 0.59],
+	    [0.2, 0.2]
+	],
+	8: [
+	    [0.55, 0.59],
+	    [0.8, 0.8]
+	],
+	9: [
+	    [0.85, 0.89],
+	    [0.36, 0.36]
+	],
+	10: [
+	    [0.85, 0.89],
+	    [0.64, 0.64]
+	]
+    }
+};
+
+var FORMATION2 = {
+    'players': [
+	{
+	    'id': 0,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 1,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 2,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 3,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 4,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 5,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 6,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 7,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 8,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 9,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 10,
+	    'team': true,
+	    'speed': 30
+	},
+	{
+	    'id': 11,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 12,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 13,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 14,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 15,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 16,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 17,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 18,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 19,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 20,
+	    'team': false,
+	    'speed': 30
+	},
+	{
+	    'id': 21,
+	    'team': false,
+	    'speed': 30
+	}
+    ],
+    'paths': {
+	0: [
+	    [0.09, 0.13],
+	    [0.5, 0.5]
+	],
+	1: [
+	    [0.23, 0.27],
+	    [0.37, 0.37]
+	],
+	2: [
+	    [0.23, 0.27],
+	    [0.63, 0.63]
+	],
+	3: [
+	    [0.27, 0.31],
+	    [0.17, 0.17]
+	],
+	4: [
+	    [0.27, 0.31],
+	    [0.83, 0.83]
+	],
+	5: [
+	    [0.51, 0.55],
+	    [0.41, 0.41]
+	],
+	6: [
+	    [0.51, 0.55],
+	    [0.59, 0.59]
+	],
+	7: [
+	    [0.55, 0.59],
+	    [0.2, 0.2]
+	],
+	8: [
+	    [0.55, 0.59],
+	    [0.8, 0.8]
+	],
+	9: [
+	    [0.85, 0.89],
+	    [0.36, 0.36]
+	],
+	10: [
+	    [0.85, 0.89],
+	    [0.64, 0.64]
+	],
+	11: [
+	    [0.91, 0.87],
+	    [0.5, 0.5]
+	],
+	12: [
+	    [0.77, 0.73],
+	    [0.37, 0.37]
+	],
+	13: [
+	    [0.77, 0.73],
+	    [0.63, 0.63]
+	],
+	14: [
+	    [0.73, 0.69],
+	    [0.17, 0.17]
+	],
+	15: [
+	    [0.73, 0.69],
+	    [0.83, 0.83]
+	],
+	16: [
+	    [0.49, 0.45],
+	    [0.41, 0.41]
+	],
+	17: [
+	    [0.49, 0.45],
+	    [0.59, 0.59]
+	],
+	18: [
+	    [0.45, 0.41],
+	    [0.2, 0.2]
+	],
+	19: [
+	    [0.45, 0.41],
+	    [0.8, 0.8]
+	],
+	20: [
+	    [0.15, 0.11],
+	    [0.36, 0.36]
+	],
+	21: [
+	    [0.15, 0.11],
+	    [0.64, 0.64]
+	]
+    }
+};
 
 
 // Field Resize Function
@@ -301,8 +611,8 @@ $(window).on('mousemove', function(e) {
         cursorX = e.offsetX;
         cursorY = e.offsetY;
         
-        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || 
-            Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
+        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
+            Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
             e.pageX >= (winWidth - currentWidth) / 2 &&
             e.pageX <= (winWidth + currentWidth) / 2 &&
             e.pageY > 0 && e.pageY <= currentHeight
@@ -495,8 +805,8 @@ $(window).on('touchmove', function(e) {
         cursorY = touch.pageY;
         //console.log("Not in: "+cursorX);
 	//console.log(E.pageX);
-        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 20 || 
-            Math.abs(cursorY - Ys[Ys.length - 1]) >= 20) &&
+        if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
+            Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
             cursorX >= (winWidth - currentWidth) / 2 &&
             cursorX <= (winWidth + currentWidth) / 2 &&
             cursorY > 0 && cursorY <= currentHeight
@@ -619,6 +929,10 @@ $('#delete').click(function() {
 });
 
 $('#deleteAll').click(function() {
+    deleteAll();
+});
+
+function deleteAll() {
     drawingPath = false;
     PLAYERS = new Array();
     PATHS = {};
@@ -633,14 +947,39 @@ $('#deleteAll').click(function() {
     deleting = false;
     totalCreated = 0;
     drawSetup();
-});
+}
 
 $('#formations').change(function() {
     var option = $('#formations option:selected').val();
     if (option == 'option1'){
-	console.log('load formation 1');
+	deleteAll();
+	loadFormation(FORMATION1);
+    } else if (option == 'option2'){
+	deleteAll();
+	loadFormation(FORMATION2);
     }
 });
+
+function loadFormation(formation) {
+    for (var i = 0; i < formation['players'].length; i++){
+	var onPlayer = formation['players'][i];
+	var newPlayer = makePlayer(onPlayer['id'], onPlayer['team']);
+	newPlayer.speed = onPlayer['speed'];
+	var onPath = formation['paths'][onPlayer['id']];
+	newPlayer.x = onPath[0][0] * currentWidth;
+	newPlayer.y = onPath[1][0] * currentHeight;
+	PLAYERS.push(newPlayer);
+	totalCreated++;
+    }
+    for (id in formation['paths']){
+	var onPath = formation['paths'][id];
+	for (var i = 0; i < onPath[0].length; i++){
+	    onPath[0][i] *= currentWidth;
+	    onPath[1][i] *= currentHeight;
+	}
+	PATHS[id] = onPath;
+    }
+}
 
 
 // Main Animation Function
