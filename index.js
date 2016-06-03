@@ -122,7 +122,7 @@ function makePlayer(playerID, team) {
     this.undone = true;
     this.team = team;
     var path;
-    var speed = 30 * playerRatio;
+    var speed = 30;
     // var angle = 0;
     
     var redo = function() {
@@ -159,7 +159,7 @@ function makePlayer(playerID, team) {
     
     var move = function() {
         path = PATHS[this.ID];
-        this.speed = 30 * playerRatio;
+        this.speed = speed * playerRatio;
         
         if (this.onPos < 0 ) {
 	    this.onPos = 0;
@@ -167,9 +167,14 @@ function makePlayer(playerID, team) {
             this.y = path[1][this.onPos];
 	    console.log("This was onPos = -1, so setted it");
         }
+    
+    var save = function() {
+        return JSON.stringify({
+           
+        });
+    };
         
 	console.log(path);
-	var imove;
         for (this.imove = 0; this.imove < this.speed; this.imove++) {	
             
 	    //console.log("This is now on: "+this.x+" "+this.y);
