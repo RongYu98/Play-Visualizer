@@ -13,22 +13,16 @@ __Description:__ Sports Play Visualizer (Soccer)
 
 __Client:__ Vandana (vagarwala@stuy.edu)
 
-__Work__:
-- Delete: IG
-  Delete All
-  DeletePlayer
-- Run:
-  RunPlayer
-Speed:
-  Slider VL
-  Using Slider 
-
 __Change Log:__
 
-6/2/16
+6/3/16:
+- Can load built-in formations -IG
+- Fixed bug with path segments -IG
+
+6/2/16:
 - Resizing doesn't kill everything, by finding the empirical formula -RY
 
-5/30/16
+5/30/16:
 - Add Players no longer needs to be constantly pressed -RY
 - Add buttons are now only change color buttons -RY
 - If the mouse movement isn't big enough, it won't work, prevents spamming -RY 
