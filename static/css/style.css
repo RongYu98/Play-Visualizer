@@ -3,6 +3,12 @@ html, body {
   height: 100%;
   margin: 0px;
   font-family: sans-serif;
+  outline: 0px;
+}
+
+canvas {
+    outline: 0px;
+    stroke: 0px;
 }
 
 button {
@@ -33,4 +39,19 @@ button {
   display: none;
   background: #EEEEEE;
   padding: 0.1em;
+}
+
+#left {
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    outline: opx solid;
+    /*background: red;*/
+}
+
+#right {
+    width: 80%;
+    height: auto;
+    position: absolute;
+    right: 0;
 }

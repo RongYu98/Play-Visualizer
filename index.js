@@ -346,6 +346,7 @@ var FORMATION2 = {
     }
 };
 
+$("[name='my-checkbox']").bootstrapSwitch();
 
 // Field Resize Function
 function resize() {
@@ -545,8 +546,6 @@ function makePlayer(playerID, team) {
         save: save,
     };
 }
-
-
 
 // Path Drawing Functions
 function drawSetup() {

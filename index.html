@@ -10,25 +10,33 @@
   <!-- Custom Style Sheet -->
   <link rel="stylesheet" type="text/css" href="static/css/style.css" />
 
-  <!-- Mobile JQuery
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-  -->
-  <!-- <script src="http://jsconsole.com/js/remote.js?8366c6ab-e8f1-48f8-8c23-2aa572be61df"></script> -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!--Bootstrap switch -->
+  <link href="bootstrap-switch.css" rel="stylesheet">
+
 </head>
 <body ontouchmove="BlockMove(event);">
+
+<div id="left">
+  <center>
+    <button type="button" id="changeColor"> Change Team </button><br>
+    <button type="button" id="run">Run</button><br>
+    <button type="button" id="stop">Stop</button><br>
+    <button type="button" id="reset">Reset</button><br>
+    <button type="button" id="select">Select Player</button><br>
+    <button type="button" id="delete">Delete Player</button><br>
+    <button type="button" id="deleteAll">Delete All</button><br>
+    <input type="checkbox" name="my-checkbox" checked>
+  </center>
+</div>
+<div id="right">
   <div id="game">
     <canvas id="field" width="1024" height="768"></canvas>
     <div id="buttons">
 <!--      <button type="button" id="add">Add Player Team 1</button>
       <button type="button" id="add2">Add Player Team 2</button> -->
-      <button type="button" id="changeColor"> Change Team </button>
-      <button type="button" id="run">Run</button>
-      <button type="button" id="stop">Stop</button>
-      <button type="button" id="reset">Reset</button>
-      <button type="button" id="select">Select Player</button>
-      <button type="button" id="delete">Delete Player</button>
-      <button type="button" id="deleteAll">Delete All</button>
       <br><br>
       <select id="formations">
 	<option value="default">Load Built-In Formation...</option>
@@ -51,18 +59,26 @@
   </div>
 
   <p style="text-align:center;">© Stuyvesant Software Development 2016</p>
+</div>
 
   <!-- Scripts -->
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     
-    <!-- Custom -->
-    <script src="index.js"></script>
-    <script src="oauth.js"></script>
-    
     <!-- Google API -->
     <script src="https://apis.google.com/js/platform.js?onload=renderSignIn" async defer></script>
     <script src="https://apis.google.com/js/client:platform.js" async defer></script>
     <!-- http://jsconsole.com/?%3Alisten%208366c6ab-e8f1-48f8-8c23-2aa572be61df -->
+
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Switch -->
+    <script src="bootstrap-switch.js"></script>
+
+    <!-- Custom -->
+    <script src="index.js"></script>
+    <script src="oauth.js"></script>
+
 </body>
 </html>
