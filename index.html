@@ -21,30 +21,30 @@
 
 <div id="left">
   <center>
+    <br><br>
     <button type="button" id="changeColor"> Change Team </button><br>
-    <button type="button" id="run">Run</button><br>
-    <button type="button" id="stop">Stop</button><br>
+    <!--<button type="button" id="run">Run</button><br>
+    <button type="button" id="stop">Stop</button><br>-->
     <button type="button" id="reset">Reset</button><br>
     <button type="button" id="select">Select Player</button><br>
     <button type="button" id="delete">Delete Player</button><br>
     <button type="button" id="deleteAll">Delete All</button><br>
-    <input type="checkbox" name="my-checkbox" checked>
+    <select id="formations">
+      <option value="default">Load Built-In Formation...</option>
+      <option value="option1">Standard 11 Players</option>
+      <option value="option2">Standard 11 Players, 2 Teams</option>
+    </select>
+    <input type="checkbox" name="change" checked data-on-text="red team" data-on-color="danger" data-off-text="blue team" data-off-color="primary"><br>
+    <input type="checkbox" name="stopping" checked data-on-text="STOP" data-off-text="RUN" data-on-color="danger" data-off-color="success">
+
+    <h3 id="help"></h3>
+
   </center>
 </div>
+
 <div id="right">
   <div id="game">
     <canvas id="field" width="1024" height="768"></canvas>
-    <div id="buttons">
-<!--      <button type="button" id="add">Add Player Team 1</button>
-      <button type="button" id="add2">Add Player Team 2</button> -->
-      <br><br>
-      <select id="formations">
-	<option value="default">Load Built-In Formation...</option>
-	<option value="option1">Standard 11 Players</option>
-	<option value="option2">Standard 11 Players, 2 Teams</option>
-      </select>
-    </div>
-    <h3 id="help"></h3>
   </div>
   <div id="drive">
     <div id="google-signin" style="display:inline-block;"></div>

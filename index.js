@@ -346,7 +346,10 @@ var FORMATION2 = {
     }
 };
 
-$("[name='my-checkbox']").bootstrapSwitch();
+// Initialize Bootstrap Toggle Switch
+$("[name='change']").bootstrapSwitch();
+$("[name='stopping']").bootstrapSwitch();
+
 
 // Field Resize Function
 function resize() {
@@ -887,6 +890,7 @@ var changeColor = function(){
 add(true);
 $('#changeColor').click(function() { changeColor(); });
 
+/*
 $('#run').click(function() {
     if (!running) {
         running = true;
@@ -897,6 +901,16 @@ $('#run').click(function() {
 $('#stop').click(function() {
     window.cancelAnimationFrame(requestID);
     running = false;
+});
+
+*/
+
+$("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state){
+    if(!state){
+	main();
+    }else{
+	window.cancelAnimationFrame(requestID);
+    }
 });
 
 $('#reset').click(function() {
