@@ -888,7 +888,12 @@ var changeColor = function(){
 //$('#add').click(function() { add(true); });
 //$('#add2').click(function() { add(false); });
 add(true);
-$('#changeColor').click(function() { changeColor(); });
+//$('#changeColor').click(function() { changeColor(); });
+
+$("[name='change']").on('switchChange.bootstrapSwitch', function(event, state){
+    changeColor();
+});
+
 
 /*
 $('#run').click(function() {
