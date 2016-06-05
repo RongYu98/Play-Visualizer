@@ -1071,7 +1071,7 @@ function main() {
 
 
 
-// Compatibility functions (I assume...)
+// prevents one from moving the screen
 function BlockMove(event) {
     // Tell Safari not to move the window.
     event.preventDefault();
