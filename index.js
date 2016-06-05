@@ -12,6 +12,7 @@ var help = $('#help');
 
 var requestID;
 
+var drawingBall = false;
 var PLAYERS = new Array();
 var PATHS = {};
 var cursorX;
@@ -22,6 +23,7 @@ var mouse_Down = false;
 var drawingPath = false;
 var running = false;
 var creatingTeam1 = true;
+var BALL;
 
 var selecting = false;
 var select = -1;
@@ -91,6 +93,12 @@ var FORMATION1 = {
 	    'id': 10,
 	    'team': true,
 	    'speed': 30
+	},
+	{
+	    'id': 11,
+	    'team': false,
+	    'ball': true,
+	    'speed': 20
 	}
     ],
     'paths': {
@@ -137,6 +145,10 @@ var FORMATION1 = {
 	10: [
 	    [0.85, 0.89],
 	    [0.64, 0.64]
+	],
+	11: [
+	    [0.5, 0.5],
+	    [0.5, 0.5]
 	]
     }
 };
@@ -252,6 +264,12 @@ var FORMATION2 = {
 	    'id': 21,
 	    'team': false,
 	    'speed': 30
+	},
+	{
+	    'id': 22,
+	    'team': false,
+	    'ball': true,
+	    'speed': 30
 	}
     ],
     'paths': {
@@ -342,8 +360,13 @@ var FORMATION2 = {
 	21: [
 	    [0.15, 0.11],
 	    [0.64, 0.64]
-	]
+	],
+	22: [
+	    [0.5, 0.5],
+	    [0.5, 0.5]
+	    ]
     }
+	  
 };
 
 // Initialize Bootstrap Toggle Switch
@@ -423,7 +446,7 @@ function resize() {
     for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
         current.draw();
-        drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team);
+        drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team, current.ball);
     }
 }
 
@@ -438,6 +461,7 @@ function makePlayer(playerID, team) {
     var path;
     var speed = 30;
     // var angle = 0;    
+    this.ball = false;
 
     var redo = function() {
         this.onPos = 0;
@@ -452,17 +476,18 @@ function makePlayer(playerID, team) {
             ctx.lineWidth = Math.round(10 * playerRatio);
         } else {
             ctx.lineWidth = 1;
-            if (this.team) {
+            
+	    //console.log(this.ball);
+	    if (this.ball) {
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "black";
+	    } else if (this.team) {
                 ctx.strokeStyle = "red";
+		ctx.fillStyle = "red";
             } else {
                 ctx.strokeStyle = "blue";
+		ctx.fillStyle = "blue";
             }
-        }
-        
-        if (this.team) {
-            ctx.fillStyle = "red";
-        } else {
-            ctx.fillStyle = "blue";
         }
         
         ctx.beginPath();
@@ -472,8 +497,11 @@ function makePlayer(playerID, team) {
 	this.size = 25*playerRatio
 	this.size.toString();
         ctx.font = this.size+"px Arial";
-	ctx.fillText(speed,this.x - 15*playerRatio,this.y + 30*playerRatio);
-
+	if (this.ball){
+	    ctx.fillText("BALL",this.x - 30*playerRatio,this.y + 30*playerRatio);
+	} else {
+	    ctx.fillText(speed,this.x - 15*playerRatio,this.y + 30*playerRatio);
+	}
     };
     
     var save = function() {
@@ -481,6 +509,7 @@ function makePlayer(playerID, team) {
            'id': this.ID,
            'team': this.team,
            'speed': speed,
+	   'ball': this.ball
         });
     };
     
@@ -534,11 +563,6 @@ function makePlayer(playerID, team) {
                 this.undone = false;
             }
         }
-        //console.log("DONE WITH LOOP");
-        //console.log("This is it's speed: "+this.speed);
-        //console.log("This is imove: "+this.imove);
-        //drawSetup();
-	//draw();
     };
     
     return {
@@ -566,14 +590,16 @@ function drawSetup() {
     } */
 }
 
-function drawPath(arrayX, arrayY, team) {
+function drawPath(arrayX, arrayY, team, ball) {
     //console.log(team);
     if (team) {
         ctx.strokeStyle = "red";
     } else {
         ctx.strokeStyle = "blue";
     }
-    
+    if (ball){
+	ctx.strokeStyle = "black";
+    }
     ctx.lineWidth = "5" * playerRatio;
     
     for (var i = 1; i < arrayX.length; i++) {
@@ -626,11 +652,12 @@ $(window).on('mousemove', function(e) {
             e.pageX <= (winWidth + currentWidth) / 2 &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
+            console.log(cursorX);
             Xs.push( cursorX );
             Ys.push( cursorY );
             if (Xs.length > 0) {
                 drawSetup();
-                drawPath(Xs, Ys, creatingTeam1);
+                drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
         }
         //console.log(cursorX, cursorY);
@@ -693,7 +720,6 @@ $(window).mouseup(function() {
     
     if (Xs.length > 1) {
        mouse_Down = false;
-       //console.log("Mouse_Down has been changed to false");
     }
 
     if (drawingPath && select == -1 && Xs.length > 1) { // not selecting, so adding
@@ -702,6 +728,10 @@ $(window).mouseup(function() {
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = -1;
         player.undone = true;
+        if (drawingBall){
+	    player.ball = true;
+	    drawingBall = false;
+        }
         PLAYERS.push(player);
 
     } else if (select > -1 && !deleting && !selected) {
@@ -820,7 +850,7 @@ $(window).on('touchmove', function(e) {
             Ys.push( cursorY );
             if (Xs.length > 0) {
                 drawSetup();
-                drawPath(Xs, Ys, creatingTeam1);
+                drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
 	    console.log( cursorX );
         }
@@ -920,6 +950,11 @@ $("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state)
     }
 });
 
+$('#ball').click(function() {
+    drawingBall = !drawingBall;
+    add( false );
+});
+
 $('#reset').click(function() {
     for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
@@ -988,6 +1023,9 @@ function loadFormation(formation) {
 	var onPath = formation['paths'][onPlayer['id']];
 	newPlayer.x = onPath[0][0] * currentWidth;
 	newPlayer.y = onPath[1][0] * currentHeight;
+	if ( onPlayer['ball'] == true ){
+	    newPlayer.ball = true;
+	}
 	PLAYERS.push(newPlayer);
 	totalCreated++;
     }
@@ -1008,7 +1046,7 @@ function main() {
         if (PLAYERS[i].undone){
             PLAYERS[i].move();
 	    PLAYERS[i].draw();
-            drawPath(Xs, Ys);
+            drawPath(Xs, Ys, creatingTeam1, drawingBall);
         }
     }
     drawSetup();
