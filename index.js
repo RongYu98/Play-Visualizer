@@ -763,18 +763,18 @@ $(window).mouseup(function() {
 
 $(window).on('touchstart', function(e) {
     console.log("touchStarted: Mouse_Down is: " + mouse_Down);
-    var E = e.originalEvent.touches[0];
+    var touch = e.originalEvent.touches[0];
     
+    this.xcor = touch.pageX - canvas.offsetLeft;
+    this.ycor = touch.pageY - canvas.offsetTop;
+
     // if you're within boundaries
-    //console.log("ClientX: +"+E.clientX);
-    if (E.pageX < c.width && E.pageY < c.height && drawingPath){
+    if (x < c.width && y < c.height && drawingPath){
         mouse_Down = true;
 	//console.log("MOUSE_DOWN "+mouse_Down);
     }
 
     if (selecting || deleting) { // this will find the player
-        this.xcor = e.pageX;
-        this.ycor = e.pageY;
         
         //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
@@ -803,8 +803,8 @@ $(window).on('touchstart', function(e) {
     }
     
     if (drawingPath) {
-        player.x = e.offsetX;
-        player.y = e.offsetY;
+        player.x = this.xcor;
+        player.y = this.ycor;
     }
 
 });
