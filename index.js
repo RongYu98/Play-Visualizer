@@ -760,12 +760,14 @@ $(window).mouseup(function() {
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
 **/
-var offsetX = $(window).width() - currentWidth;
-var offsetX2 = screen.width - currentWidth;
+var offsetX = $(window).width() - c.width;
+var offsetX2 = screen.width - c.width - 2*offsetX;
+console.log("screen: "+screen.width);
+//console.log(currentWidth);
 //console.log("WindWidth: " +  $(window).width());
 //console.log("Canvas Width: "+c.width);
 //console.log("offSet is: "+offsetX);
-console.log("OffsetX2 is: "+offsetX2);
+//console.log("OffsetX2 is: "+offsetX2);
 
 $(window).on('touchstart', function(e) {
     console.log("touchStarted: Mouse_Down is: " + mouse_Down);
@@ -778,11 +780,18 @@ $(window).on('touchstart', function(e) {
     this.ycor = touch.pageY - c.offsetTop;
 
     //console.log("THIS IS canvasOffSet: "+c.offsetLeft);
-    
+
+    console.log("ycor: "+this.ycor);
+    console.log("c.height "+c.height);
+    //console.log("xcor: "+this.xcor);
+    //console.log("width: " + c.width);
     // if you're within boundaries
-    if (this.xcors < c.width && this.ycor < c.height && drawingPath){
+    //console.log("drawingPath "+drawingPath);
+    //console.log(this.xcors<c.width);
+    console.log("compare ycors "+(this.ycor < c.height));
+    if (this.xcor < c.width && this.ycor < c.height && drawingPath){
         mouse_Down = true;
-	//console.log("MOUSE_DOWN "+mouse_Down);
+	console.log("MOUSE_DOWN "+mouse_Down);
     }
 
     if (selecting || deleting) { // this will find the player
@@ -830,11 +839,14 @@ $(window).on('touchmove', function(e) {
     this.xcor = touch.pageX + offsetX2/2;
     this.ycor = touch.pageY - c.offsetTop;
 
+    //console.log("movex: "+ this.xcor);
+    //console.log("movey: "+ this.ycor);
     
-    //console.log(touch);
     //console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
+    console.log(mouse_Down);
     if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
-        cursorX = touch.pageX + offsetX2/2;
+	console.log("Adding");
+	cursorX = touch.pageX + offsetX2/2;
         cursorY = touch.pageY;
         //console.log("Not in: "+cursorX);
 	//console.log(E.pageX);
