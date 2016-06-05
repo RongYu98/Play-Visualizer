@@ -437,8 +437,8 @@ function makePlayer(playerID, team) {
     this.team = team;
     var path;
     var speed = 30;
-    // var angle = 0;
-    
+    // var angle = 0;    
+
     var redo = function() {
         this.onPos = 0;
         this.x = PATHS[this.ID][0][this.onPos];
@@ -469,6 +469,11 @@ function makePlayer(playerID, team) {
         ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
         ctx.stroke();
         ctx.fill();
+	this.size = 25*playerRatio
+	this.size.toString();
+        ctx.font = this.size+"px Arial";
+	ctx.fillText(speed,this.x - 15*playerRatio,this.y + 30*playerRatio);
+
     };
     
     var save = function() {
