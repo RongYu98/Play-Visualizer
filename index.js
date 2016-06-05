@@ -760,8 +760,8 @@ $(window).mouseup(function() {
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
 **/
-var offsetX = $(window).width() - c.width;
-var offsetX2 = screen.width - c.width;
+var offsetX = $(window).width() - currentWidth;
+var offsetX2 = screen.width - currentWidth;
 //console.log("WindWidth: " +  $(window).width());
 //console.log("Canvas Width: "+c.width);
 //console.log("offSet is: "+offsetX);
@@ -771,8 +771,8 @@ $(window).on('touchstart', function(e) {
     console.log("touchStarted: Mouse_Down is: " + mouse_Down);
     var touch = e.originalEvent.touches[0];
 
-    console.log("C offsetLeft: "+c.offsetLeft);
-    console.log("C.offsettop: "+c.offsetTop);
+    //console.log("C offsetLeft: "+c.offsetLeft);
+    //console.log("C.offsettop: "+c.offsetTop);
     
     this.xcor = touch.pageX + offsetX2/2;
     this.ycor = touch.pageY - c.offsetTop;
@@ -780,7 +780,7 @@ $(window).on('touchstart', function(e) {
     //console.log("THIS IS canvasOffSet: "+c.offsetLeft);
     
     // if you're within boundaries
-    if (this.xcor < c.width && this.ycor < c.height && drawingPath){
+    if (this.xcors < c.width && this.ycor < c.height && drawingPath){
         mouse_Down = true;
 	//console.log("MOUSE_DOWN "+mouse_Down);
     }
@@ -797,9 +797,6 @@ $(window).on('touchstart', function(e) {
             ) {
                 select = this.i;
                 var selectedPlayer = PLAYERS[select];
-                //console.log(select);
-                //console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
-                //console.log("Selected Player's team1 is: " + selectedPlayer.team);
                 if (deleting) {
                     PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
                     delete PATHS[selectedPlayer.ID];
@@ -830,11 +827,14 @@ $(window).on('touchmove', function(e) {
     //console.log("PAGE: "+e.pageX);
 
     var touch = e.originalEvent.touches[0];
+    this.xcor = touch.pageX + offsetX2/2;
+    this.ycor = touch.pageY - c.offsetTop;
+
     
-    console.log(touch);
-    console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
+    //console.log(touch);
+    //console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
     if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
-        cursorX = touch.pageX;
+        cursorX = touch.pageX + offsetX2/2;
         cursorY = touch.pageY;
         //console.log("Not in: "+cursorX);
 	//console.log(E.pageX);
@@ -863,7 +863,7 @@ $(window).on('touchmove', function(e) {
 
 $(window).on('touchend', function(e) {
     console.log("ENDED");
-    
+   
     if (Xs.length > 2) {
         mouse_Down = false;
         console.log("FALSE, ended touch");
