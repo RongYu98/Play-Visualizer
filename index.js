@@ -760,16 +760,27 @@ $(window).mouseup(function() {
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
 **/
+var offsetX = $(window).width() - c.width;
+var offsetX2 = screen.width - c.width;
+//console.log("WindWidth: " +  $(window).width());
+//console.log("Canvas Width: "+c.width);
+//console.log("offSet is: "+offsetX);
+console.log("OffsetX2 is: "+offsetX2);
 
 $(window).on('touchstart', function(e) {
     console.log("touchStarted: Mouse_Down is: " + mouse_Down);
     var touch = e.originalEvent.touches[0];
-    
-    this.xcor = touch.pageX - canvas.offsetLeft;
-    this.ycor = touch.pageY - canvas.offsetTop;
 
+    console.log("C offsetLeft: "+c.offsetLeft);
+    console.log("C.offsettop: "+c.offsetTop);
+    
+    this.xcor = touch.pageX + offsetX2/2;
+    this.ycor = touch.pageY - c.offsetTop;
+
+    //console.log("THIS IS canvasOffSet: "+c.offsetLeft);
+    
     // if you're within boundaries
-    if (x < c.width && y < c.height && drawingPath){
+    if (this.xcor < c.width && this.ycor < c.height && drawingPath){
         mouse_Down = true;
 	//console.log("MOUSE_DOWN "+mouse_Down);
     }
