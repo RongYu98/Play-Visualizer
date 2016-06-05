@@ -412,12 +412,13 @@ function resize() {
 	    PLAYERS[i].x = PLAYERS[i].x * currentWidth;
 	    PLAYERS[i].y = PLAYERS[i].y * currentHeight;
 	}
-    }   
+    }  
     //if (totalCreated > 1){
 	//console.log("XY After: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
     //}
     $("canvas").attr("width", currentWidth);
     $("canvas").attr("height", currentHeight);
+    
     ctx.drawImage(field.get(0), 0, 0, currentWidth, currentHeight);
     for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
@@ -531,7 +532,8 @@ function makePlayer(playerID, team) {
         //console.log("DONE WITH LOOP");
         //console.log("This is it's speed: "+this.speed);
         //console.log("This is imove: "+this.imove);
-        drawSetup();
+        //drawSetup();
+	//draw();
     };
     
     return {
@@ -552,11 +554,11 @@ function makePlayer(playerID, team) {
 // Path Drawing Functions
 function drawSetup() {
     resize();
-    for (var i = 0; i < PLAYERS.length; i++) {
+    /* for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
         current.draw();
         drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team);
-    }
+    } */
 }
 
 function drawPath(arrayX, arrayY, team) {
@@ -1000,9 +1002,11 @@ function main() {
     for (var i = 0; i < PLAYERS.length; i++) {
         if (PLAYERS[i].undone){
             PLAYERS[i].move();
+	    PLAYERS[i].draw();
             drawPath(Xs, Ys);
         }
     }
+    drawSetup();
     requestID = window.requestAnimationFrame(main);
 }
 
