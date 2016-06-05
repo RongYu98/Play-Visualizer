@@ -657,9 +657,9 @@ function drawPath(arrayX, arrayY, team, ball) {
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
 $(window).on('mousemove', function(e) {
     //console.log("Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
-
+    
     if ( mouse_Down && drawingPath  && (!selecting || selected) && !deleting ) {
-
+	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
         
@@ -756,7 +756,9 @@ $(window).mouseup(function() {
 	selected = true;
 
     } else if (selected){
-        PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	if (Xs.length > 1){
+            PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	}
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
         select = -1;
@@ -939,10 +941,10 @@ var add = function(team1) {
     mouse_Down = false;
     player = makePlayer(totalCreated, team1);
     totalCreated++;
-    //lastTeam = team1;
-    creatingTeam1 = team1;
     drawingPath = true;
-    creatingTeam1 = team1;
+    if (!drawingBall){
+	creatingTeam1 = team1;
+    }
     help.text("Click and drag to create a player and a path");
 };
 var changeColor = function(){
