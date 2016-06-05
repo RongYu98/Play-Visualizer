@@ -15,6 +15,13 @@ __Client:__ Vandana (vagarwala@stuy.edu)
 
 __Change Log:__
 
+6/5/16:
+- Cut down on the processing, too many redundant callings -RY
+- Select now works as planned -RY
+- Fully integrate the "ball" -RY
+- Name/type is shown as speed -RY
+- Updated all the touch functions to work on iphone. The x,y are a bit off though -RY
+
 6/3/16:
 - Can load built-in formations -IG
 - Fixed bug with path segments -IG
