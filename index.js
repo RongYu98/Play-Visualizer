@@ -4,9 +4,23 @@
 var c = document.getElementById("field");
 var ctx = c.getContext("2d");
 
+// Initialize Bootstrap Toggle Switch
+$("[name='change']").bootstrapSwitch();
+$("[name='stopping']").bootstrapSwitch();
+$("[name='field-size']").bootstrapSwitch();
+
 var field = $('<img>');
 field.attr('src', 'static/field.jpg');
 field.on('load', resize);
+
+$("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, state){
+    if(!state){
+	field.attr('src', 'static/halffield.jpg');
+    }else{
+	field.attr('src', 'static/field.jpg');
+    }
+    reset();
+});
 
 var help = $('#help');
 
@@ -369,19 +383,22 @@ var FORMATION2 = {
 	  
 };
 
-// Initialize Bootstrap Toggle Switch
-$("[name='change']").bootstrapSwitch();
-$("[name='stopping']").bootstrapSwitch();
-
-
 // Field Resize Function
 function resize() {
     //console.log("RESIZED");
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight = 768;
-    imgWidth = 1024;
-    playerRatio = $("canvas").attr("width")/1024;
+    imgWidth;
+    playerRatio;
+
+    if(field.attr('src') == "static/field.jpg"){
+	imgWidth = 1024;
+	playerRatio = $("canvas").attr("width")/1024;
+    }else{
+	imgWidth = 512;
+	playerRatio = $("canvas").attr("width")/512;
+    }
 
     var i = 0;
     var a = 0;
@@ -972,6 +989,10 @@ $('#ball').click(function() {
 });
 
 $('#reset').click(function() {
+    reset();
+});
+
+var reset = function(){
     for (var i = 0; i < PLAYERS.length; i++) {
         var current = PLAYERS[i];
         current.undone = true;
@@ -980,7 +1001,8 @@ $('#reset').click(function() {
         current.y = PATHS[current.ID][1][0];
     }
     drawSetup();
-});
+};
+
 
 $('#select').click(function() {
     selecting = !selecting;
