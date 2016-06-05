@@ -776,11 +776,8 @@ $(window).on('touchstart', function(e) {
         this.xcor = e.pageX;
         this.ycor = e.pageY;
         
-        console.log("finding players at: " + this.xcor + " " + this.ycor);
+        //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
-            //console.log("mouse x,y: " + e.pageX + " " + e.pageY);
-            //console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
-            //console.log("Compare with playerRatio of: " + playerRatio);
             
             if (
                 (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
@@ -789,9 +786,9 @@ $(window).on('touchstart', function(e) {
             ) {
                 select = this.i;
                 var selectedPlayer = PLAYERS[select];
-                console.log(select);
-                console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
-                console.log("Selected Player's team1 is: " + selectedPlayer.team);
+                //console.log(select);
+                //console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
+                //console.log("Selected Player's team1 is: " + selectedPlayer.team);
                 if (deleting) {
                     PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
                     delete PATHS[selectedPlayer.ID];
@@ -809,6 +806,7 @@ $(window).on('touchstart', function(e) {
         player.x = e.offsetX;
         player.y = e.offsetY;
     }
+
 });
 
 $(window).on('touchmove', function(e) {
@@ -823,18 +821,8 @@ $(window).on('touchmove', function(e) {
     var touch = e.originalEvent.touches[0];
     
     console.log(touch);
-/*
-    if (drawingPath) {
-        this.cursorX = touch.clientX;
-        this.cursorY = touch.clientY;
-        Xs.push( this.cursorX );
-        Ys.push( this.cursorY );
-        drawSetup();
-        drawPath(Xs, Ys, creatingTeam1);
-    }
-*/
     console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
-    if ((mouse_Down && drawingPath) || select > -1 ) {
+    if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
         cursorX = touch.pageX;
         cursorY = touch.pageY;
         //console.log("Not in: "+cursorX);
@@ -842,7 +830,7 @@ $(window).on('touchmove', function(e) {
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
             cursorX >= (winWidth - currentWidth) / 2 &&
-            cursorX <= (winWidth + currentWidth) / 2 &&
+            cursorX <= (winWidth + currentWidth) / 2 && // cursorX != offsetX, may bring problems
             cursorY > 0 && cursorY <= currentHeight
         ) {
 	    console.log("GOT HERE");
@@ -859,7 +847,7 @@ $(window).on('touchmove', function(e) {
     if (mouse_Down && select > -1) {
             console.log("selected");
     }
-
+        
 });
 
 $(window).on('touchend', function(e) {
@@ -871,21 +859,27 @@ $(window).on('touchend', function(e) {
     }
     
     if (drawingPath && select == -1 && Xs.length > 1) {
+
         //console.log(  PLAYERS[ PLAYERS.length -1] );
         //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
         //console.log("Xs: "+Xs);
         //console.log("Ys: "+Ys);
         PATHS[player.ID] = [Xs, Ys];
-        player.onPos = 0;
+        player.onPos = -1;
         player.undone = true;
+        if (drawingBall){
+	    player.ball = true;
+	    drawingBall = false;
+        }
         PLAYERS.push(player);
-    } else if (select > -1 && !deleting) {
-        //console.log("got to else if");
-        //console.log(Xs);
+    } else if (select > -1 && !deleting && !selected) {
+	selected = true;
+    } else if (selected){
         PATHS[PLAYERS[select].ID] = [Xs, Ys];
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
         select = -1;
+	selected = false;
     }
 
     drawSetup();
@@ -894,8 +888,7 @@ $(window).on('touchend', function(e) {
     //drawingPath = false;
     Xs = new Array();
     Ys = new Array();
-    help.text('');
-    
+    help.text('');    
 });
 
 $(window).resize(resize);
