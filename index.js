@@ -390,18 +390,20 @@ function resize() {
     //console.log("RESIZED");
     winHeight = $(window).height();
     winWidth = $(window).width();
-    imgHeight = 768;
+    imgHeight;
     imgWidth;
     playerRatio;
     leftBound = -1;
     rightBound = -1;
 
     if(field.attr('src') == "static/field.jpg"){
+	imgHeight = 768;
 	imgWidth = 1024;
 	playerRatio = $("canvas").attr("width")/1024;
     }else{
-	imgWidth = 512;
-	playerRatio = $("canvas").attr("width")/512;
+	imgHeight = 512
+	imgWidth = 768;
+	playerRatio = $("canvas").attr("width")/768;
     }
 
     var i = 0;
