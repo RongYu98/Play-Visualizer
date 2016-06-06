@@ -39,6 +39,9 @@ __Deployment Guide:__
 
 __Change Log:__
 
+6/6/16:
+- Can select a player and change its speed -IG
+
 6/5/16:
 - Cut down on the processing, too many redundant callings -RY
 - Select now works as planned -RY
