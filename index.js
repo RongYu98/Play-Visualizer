@@ -9,7 +9,6 @@ $("[name='change']").bootstrapSwitch();
 $("[name='stopping']").bootstrapSwitch();
 $("[name='field-size']").bootstrapSwitch();
 
-$('body').unbind('touchmove')
 
 //Initialize Bootstrap Slider
 var mySlider = $("#speed").slider();
@@ -23,6 +22,19 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 	field.attr('src', 'static/halffield.jpg');
     }else{
 	field.attr('src', 'static/field.jpg');
+    }
+    this.i = 0;
+    this.n = 0;
+    this.x = 0;
+    for( this.i=0; this.i< totalCreated; this.i++){
+	if (PATHS[this.i] != null){ //i.e. theres stuff there
+	    for (this.x = 0; this.x < PATHS[this.i][0].length; this.x++ ){
+		this.n = PATHS[this.i][0][this.x];
+		PATHS[this.i][0][this.x] = PATHS[this.i][1][this.x];
+		PATHS[this.i][1][this.x] = this.n;
+		//divide by the width and height to get the thing
+	    }
+	}
     }
     reset();
 });
