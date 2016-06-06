@@ -7,6 +7,7 @@ html, body {
 }
 
 canvas {
+    margin: 0px;
     outline: 0px;
     stroke: 0px;
 }
@@ -25,7 +26,8 @@ button {
 }
 
 #drive {
-  border: 10px dotted #CCC;
+  border: 10px dotted rgb(255,255,255);
+  margin: 20px;
   padding: 10px;
   min-height: 20em;
 }
@@ -46,7 +48,7 @@ button {
     height: 100%;
     position: fixed;
     outline: opx solid;
-    /*background: red;*/
+    background-color: rgb(51,55,69);
 }
 
 #right {
@@ -54,4 +56,41 @@ button {
     height: auto;
     position: absolute;
     right: 0;
+    background-color: rgb(56,111,164);
+}
+
+.btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+ 
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+ 
+.btn-primary {
+    background: #0099cc;
+    color: #ffffff;
+}
+ 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #33a6cc;
+}
+ 
+.btn-primary:active, .btn-primary.active {
+    background: #007299;
+    box-shadow: none;
+}
+
+.btn.sharp {
+  border-radius:0;
+}
+
+#title {
+    font-family: 'Russo One', sans-serif;
+    /*font-family: 'Comfortaa', cursive;*/
+    color:rgb(237,251,255);
 }

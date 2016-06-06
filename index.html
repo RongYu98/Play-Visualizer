@@ -6,6 +6,9 @@
   <meta name="google-signin-client_id"
     content="988111073774-65isrk26ehhuu9e2c66a7grrdl4mj2h3.apps.googleusercontent.com" />
   <title>Sports Play Visualizer</title>
+
+  <!-- Google Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Russo+One|Comfortaa:700' rel='stylesheet' type='text/css'>
   
   <!-- Custom Style Sheet -->
   <link rel="stylesheet" type="text/css" href="static/css/style.css" />
@@ -21,25 +24,32 @@
 <body>
 
 <div id="left">
+
+  <div align="center">
+    <h1 id="title">SPORTS PLAY VISUALIZER</h1>
+  </div>
   <center>
-    <br><br>
-    <!--<button type="button" id="changeColor"> Change Team </button><br>
-    <button type="button" id="run">Run</button><br>
-    <button type="button" id="stop">Stop</button><br>-->
-    <button type="button" id="reset">Reset</button><br>
-    <button type="button" id="ball">Add A Ball</button><br>
-    <button type="button" id="select">Select Player</button><br>
-    <button type="button" id="delete">Delete Player</button><br>
-    <button type="button" id="deleteAll">Delete All</button><br>
-    <select id="formations">
+    <br>
+    <button type="button" class="btn sharp btn-block" id="reset">Reset</button>
+    <button type="button" class="btn sharp btn-block" id="ball">Add A Ball</button>
+    <button type="button" class="btn sharp btn-block" id="select">Select Player</button>
+    <button type="button" class="btn sharp btn-block" id="delete">Delete Player</button>
+    <button type="button" class="btn sharp btn-block" id="deleteAll">Delete All</button>
+
+    <br>
+    
+    <select id="formations" class="btn sharp btn-block">
       <option value="default">Load Built-In Formation...</option>
       <option value="option1">Standard 11 Players</option>
       <option value="option2">Standard 11 Players, 2 Teams</option>
     </select>
-    <input type="checkbox" name="change" checked data-on-text="red team" data-on-color="danger" data-off-text="blue team" data-off-color="primary"><br>
-    <input type="checkbox" name="stopping" checked data-on-text="STOP" data-off-text="RUN" data-on-color="danger" data-off-color="success"><br>
-    <input type="checkbox" name="field-size" checked data-on-text="FULL" data-off-text="HALF" data-on-color="danger" data-off-color="success"><br>
-    <h3 id="help"></h3>
+
+    <br>
+
+    <input type="checkbox" name="change" checked data-on-text="RED TEAM" data-on-color="danger" data-off-text="BLUE TEAM" data-off-color="primary"><br><br>
+    <input type="checkbox" name="stopping" checked data-on-text="STOP" data-off-text="RUN" data-on-color="danger" data-off-color="success"><br><br>
+    <input type="checkbox" name="field-size" checked data-on-text="FULL" data-off-text="HALF" data-on-color="danger" data-off-color="success"><br><br>
+    <h3 style="color:rgb(255,255,255)" id="help"></h3>
 
   </center>
 </div>
@@ -50,17 +60,19 @@
   </div>
   <div id="drive">
     <div id="google-signin" style="display:inline-block;"></div>
-    <button type="button" id="drive-save">New Save</button>
-    <button type="button" id="drive-delete">Delete Save</button>
-    <button type="button" id="drive-refresh">Refresh</button>
-    <br>
+    <button class="btn sharp" type="button" id="drive-save">New Save</button>
+    <button class="btn sharp" type="button" id="drive-delete">Delete Save</button>
+    <button class="btn sharp" type="button" id="drive-refresh">Refresh</button>
+    <br><br>
     <div>
-      <div id="drive-status"><p>Not yet connected.</p></div>
+      <div id="drive-status"><p style="color:rgb(255,255,255);font-size:20pt;margin:5px">Not yet connected.</p></div>
       <div id="drive-list"></div>
     </div>
   </div>
 
-  <p style="text-align:center;">© Stuyvesant Software Development 2016</p>
+  <br>
+
+  <p style="text-align:center;color:rgb(255,255,255);">© Stuyvesant Software Development 2016</p>
 </div>
 
   <!-- Scripts -->
