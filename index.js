@@ -17,18 +17,17 @@ var field = $('<img>');
 field.attr('src', 'static/field.jpg');
 field.on('load', resize);
 
+var old = 1;
+var old2 = 1;
 $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, state){
-    if(!state){
-	field.attr('src', 'static/halffield.jpg');
-    }else{
-	field.attr('src', 'static/field.jpg');
-    }
     this.i = 0;
     this.n = 0;
     this.x = 0;
     for( this.i=0; this.i< totalCreated; this.i++){
 	if (PATHS[this.i] != null){ //i.e. theres stuff there
 	    for (this.x = 0; this.x < PATHS[this.i][0].length; this.x++ ){
+		PATHS[this.i][0][this.x] /= c.width;
+		PATHS[this.i][1][this.x] /= c.height;		
 		this.n = PATHS[this.i][0][this.x];
 		PATHS[this.i][0][this.x] = PATHS[this.i][1][this.x];
 		PATHS[this.i][1][this.x] = this.n;
@@ -36,6 +35,31 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 	    }
 	}
     }
+    old /= c.width;
+    old2 /= c.height;
+    console.log("After dividing: "+ old);
+    console.log("HAfter dividing: "+ old2);
+    console.log(c.width);
+    if(!state){
+	field.attr('src', 'static/halffield.jpg');
+    }else{
+	field.attr('src', 'static/field.jpg');
+    }
+    
+    for( this.i=0; this.i< totalCreated; this.i++){
+	if (PATHS[this.i] != null){ //i.e. theres stuff there
+	    for (this.x = 0; this.x < PATHS[this.i][0].length; this.x++ ){
+		//divide by the width and height to get the thing
+		PATHS[this.i][0][this.x] *= c.width;
+		PATHS[this.i][1][this.x] *= c.height;
+	    }
+	}
+    }
+    old = old*c.width;
+    old2 *= c.height;
+    console.log("After Multiplying: "+old);
+    console.log("HAfter Multiplying: "+old2);
+    console.log(c.height);
     reset();
 });
 
