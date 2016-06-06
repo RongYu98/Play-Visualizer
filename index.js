@@ -9,6 +9,9 @@ $("[name='change']").bootstrapSwitch();
 $("[name='stopping']").bootstrapSwitch();
 $("[name='field-size']").bootstrapSwitch();
 
+//Initialize Bootstrap Slider
+var mySlider = $("#speed").slider();
+
 var field = $('<img>');
 field.attr('src', 'static/field.jpg');
 field.on('load', resize);
@@ -482,7 +485,8 @@ function makePlayer(playerID, team) {
     this.undone = true;
     this.team = team;
     var path;
-    var speed = 30;
+    var speed = mySlider.slider('getValue');
+
     // var angle = 0;    
     this.ball = false;
 

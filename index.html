@@ -19,6 +19,9 @@
   <!--Bootstrap switch -->
   <link href="bootstrap-switch.css" rel="stylesheet">
 
+  <!-- Bootstrap slider -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/css/bootstrap-slider.css">
+
 </head>
 <!-- <body ontouchmove="BlockMove(event);"> -->
 <body>
@@ -49,6 +52,10 @@
     <input type="checkbox" name="change" checked data-on-text="RED TEAM" data-on-color="danger" data-off-text="BLUE TEAM" data-off-color="primary"><br><br>
     <input type="checkbox" name="stopping" checked data-on-text="STOP" data-off-text="RUN" data-on-color="danger" data-off-color="success"><br><br>
     <input type="checkbox" name="field-size" checked data-on-text="FULL" data-off-text="HALF" data-on-color="danger" data-off-color="success"><br><br>
+
+    <div style="color:rgb(255,255,255)">SPEED</div>
+    <input id="speed" data-slider-id="ex1Slider" type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="30"/>
+
     <h3 style="color:rgb(255,255,255)" id="help"></h3>
 
   </center>
@@ -92,6 +99,9 @@
 
     <!-- Bootstrap Switch -->
     <script src="bootstrap-switch.js"></script>
+
+    <!-- Bootstrap Slider-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/7.1.0/bootstrap-slider.js"></script>
 
     <!-- Custom -->
     <script src="index.js"></script>
