@@ -13,6 +13,30 @@ __Description:__ Sports Play Visualizer (Soccer)
 
 __Client:__ Vandana (vagarwala@stuy.edu)
 
+
+__Deployment Guide:__
+1. System Requirements:
+- A decently fast computer
+- The bigger the simulation, the better the computer
+
+2. Overview:
+- This is a application meant to simulate a game with player movement.
+- This is not a magic tool that will grant you victory, but rather an aid to help you plan.
+- DISCLAIMER: Team Impomtu is in no way liable for any losses that are incurred with the usage of this application. Any and all compliants will not hold under the court of law.
+
+3. Set-Up Configurations:
+- Download the files
+- Ensure that all files are in the same directory
+- Open index.html with your prefered browser, with javascript enabled
+
+4. Maintenance and Error Messages and Troubleshooting:
+- All messages and reports should forwarded to the developers:
+* Rong Yu (ryu1@stuy.edu)
+* Isaac Gerstein (igerstein@stuy.edu)
+* Vivian Li (vli@stuy.edu)
+* Eric Stringham (estringham@stuy.edu
+
+
 __Change Log:__
 
 6/5/16:

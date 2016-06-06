@@ -9,6 +9,8 @@ $("[name='change']").bootstrapSwitch();
 $("[name='stopping']").bootstrapSwitch();
 $("[name='field-size']").bootstrapSwitch();
 
+$('body').unbind('touchmove')
+
 //Initialize Bootstrap Slider
 var mySlider = $("#speed").slider();
 
@@ -964,7 +966,7 @@ $(window).on('touchend', function(e) {
     //drawingPath = false;
     Xs = new Array();
     Ys = new Array();
-    help.text('');    
+    //help.text('');    
 });
 
 $(window).resize(resize);
@@ -1161,10 +1163,10 @@ function main() {
 
 
 // prevents one from moving the screen
-function BlockMove(event) {
+//function BlockMove(event) {
     // Tell Safari not to move the window.
-    event.preventDefault();
-}
+  //  event.preventDefault();
+//}
 
 function iOS() {
     var iDevices = [
