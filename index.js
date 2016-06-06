@@ -50,6 +50,8 @@ var player, playerRatio;
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
+var leftBound = -1;
+var rightBound = -1;
 
 var FORMATION1 = {
     'players': [
@@ -391,6 +393,8 @@ function resize() {
     imgHeight = 768;
     imgWidth;
     playerRatio;
+    leftBound = -1;
+    rightBound = -1;
 
     if(field.attr('src') == "static/field.jpg"){
 	imgWidth = 1024;
@@ -493,19 +497,22 @@ function makePlayer(playerID, team) {
             ctx.lineWidth = Math.round(10 * playerRatio);
         } else {
             ctx.lineWidth = 1;
-            
-	    //console.log(this.ball);
 	    if (this.ball) {
 		ctx.strokeStyle = "black";
-		ctx.fillStyle = "black";
 	    } else if (this.team) {
                 ctx.strokeStyle = "red";
-		ctx.fillStyle = "red";
             } else {
                 ctx.strokeStyle = "blue";
-		ctx.fillStyle = "blue";
             }
         }
+
+	if (this.ball){
+	    ctx.fillStyle = "black";
+	} else if (this.team){
+	    ctx.fillStyle = "red";
+	} else {
+	    ctx.fillStyle = "blue";
+	}
         
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
@@ -662,14 +669,19 @@ $(window).on('mousemove', function(e) {
 	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
+	if (leftBound == -1){
+	    leftBound = e.pageX - cursorX;
+	}
+	if (rightBound == -1){
+	    rightBound = leftBound + currentWidth;
+	}
         
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-            e.pageX >= (winWidth - currentWidth) / 2 &&
-            e.pageX <= (winWidth + currentWidth) / 2 &&
+            e.pageX >= leftBound &&
+            e.pageX <= rightBound &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
-            console.log(cursorX);
             Xs.push( cursorX );
             Ys.push( cursorY );
             if (Xs.length > 0) {
@@ -986,7 +998,7 @@ $("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state)
 });
 
 $('#ball').click(function() {
-    drawingBall = !drawingBall;
+    drawingBall = true;
     add( false );
 });
 
@@ -1011,6 +1023,8 @@ $('#select').click(function() {
     drawingPath = false;
     if (selecting) {
         deleting = false;
+    } else {
+	drawingPath = true;
     }
 });
 
