@@ -21,6 +21,8 @@ __Change Log:__
 - Fully integrate the "ball" -RY
 - Name/type is shown as speed -RY
 - Updated all the touch functions to work on iphone. The x,y are a bit off though -RY
+- Various bug fixes -IG
+- Added more messages to help the user -IG
 
 6/3/16:
 - Can load built-in formations -IG

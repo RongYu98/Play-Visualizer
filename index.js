@@ -50,6 +50,8 @@ var player, playerRatio;
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
+var leftBound = -1;
+var rightBound = -1;
 
 var FORMATION1 = {
     'players': [
@@ -391,6 +393,8 @@ function resize() {
     imgHeight = 768;
     imgWidth;
     playerRatio;
+    leftBound = -1;
+    rightBound = -1;
 
     if(field.attr('src') == "static/field.jpg"){
 	imgWidth = 1024;
@@ -493,19 +497,22 @@ function makePlayer(playerID, team) {
             ctx.lineWidth = Math.round(10 * playerRatio);
         } else {
             ctx.lineWidth = 1;
-            
-	    //console.log(this.ball);
 	    if (this.ball) {
 		ctx.strokeStyle = "black";
-		ctx.fillStyle = "black";
 	    } else if (this.team) {
                 ctx.strokeStyle = "red";
-		ctx.fillStyle = "red";
             } else {
                 ctx.strokeStyle = "blue";
-		ctx.fillStyle = "blue";
             }
         }
+
+	if (this.ball){
+	    ctx.fillStyle = "black";
+	} else if (this.team){
+	    ctx.fillStyle = "red";
+	} else {
+	    ctx.fillStyle = "blue";
+	}
         
         ctx.beginPath();
         ctx.arc(this.x, this.y, 10 * playerRatio, 0, Math.PI * 2);
@@ -662,14 +669,19 @@ $(window).on('mousemove', function(e) {
 	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
+	if (leftBound == -1){
+	    leftBound = e.pageX - cursorX;
+	}
+	if (rightBound == -1){
+	    rightBound = leftBound + currentWidth;
+	}
         
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-            e.pageX >= (winWidth - currentWidth) / 2 &&
-            e.pageX <= (winWidth + currentWidth) / 2 &&
+            e.pageX >= leftBound &&
+            e.pageX <= rightBound &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
-            console.log(cursorX);
             Xs.push( cursorX );
             Ys.push( cursorY );
             if (Xs.length > 0) {
@@ -771,7 +783,7 @@ $(window).mouseup(function() {
     add( creatingTeam1 );
     Xs = new Array();
     Ys = new Array();
-    help.text('');
+    //help.text('');
     //console.log("WENT UP");
 });
 
@@ -917,7 +929,9 @@ $(window).on('touchend', function(e) {
     } else if (select > -1 && !deleting && !selected) {
 	selected = true;
     } else if (selected){
-        PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	if (Xs.length > 1){
+            PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	}
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
         select = -1;
@@ -935,6 +949,11 @@ $(window).on('touchend', function(e) {
 
 $(window).resize(resize);
 
+$(window).scroll(function() {
+    leftBound = -1;
+    rightBound = -1;
+});
+
 var lastTeam;
 // Button handler assignment
 var add = function(team1) {
@@ -945,7 +964,15 @@ var add = function(team1) {
     if (!drawingBall){
 	creatingTeam1 = team1;
     }
-    help.text("Click and drag to create a player and a path");
+    if (drawingBall){
+	help.text("Click and drag to add a ball");
+    } else if (selecting){
+	help.text("Selecting...");
+    } else if (deleting){
+	help.text("Deleting...");
+    } else {
+	help.text("Click and drag to create a player and a path");
+    }
 };
 var changeColor = function(){
     creatingTeam1 = !creatingTeam1;
@@ -986,7 +1013,7 @@ $("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state)
 });
 
 $('#ball').click(function() {
-    drawingBall = !drawingBall;
+    drawingBall = true;
     add( false );
 });
 
@@ -1011,6 +1038,10 @@ $('#select').click(function() {
     drawingPath = false;
     if (selecting) {
         deleting = false;
+	help.text("Selecting...");
+    } else {
+	drawingPath = true;
+	help.text("Click and drag to create a player and a path");
     }
 });
 
@@ -1020,6 +1051,10 @@ $('#delete').click(function() {
     if (deleting) {
         selecting = false;
         select = -1;
+	help.text("Deleting...");
+    } else {
+	drawingPath = true;
+	help.text("Click and drag to create a player and a path");
     }
 });
 
