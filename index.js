@@ -35,13 +35,10 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 	    }
 	}
     }
-    old /= c.width;
-    old2 /= c.height;
-    console.log("After dividing: "+ old);
-    console.log("HAfter dividing: "+ old2);
-    console.log(c.width);
+    this.toHalf = false;
     if(!state){
 	field.attr('src', 'static/halffield.jpg');
+	this.toHalf = true;
     }else{
 	field.attr('src', 'static/field.jpg');
     }
@@ -52,14 +49,14 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 		//divide by the width and height to get the thing
 		PATHS[this.i][0][this.x] *= c.width;
 		PATHS[this.i][1][this.x] *= c.height;
+		if (this.toHalf){
+		    PATHS[this.i][1][this.x] *= 2;
+		} else {
+		    PATHS[this.i][0][this.x] /= 2;
+		}
 	    }
 	}
     }
-    old = old*c.width;
-    old2 *= c.height;
-    console.log("After Multiplying: "+old);
-    console.log("HAfter Multiplying: "+old2);
-    console.log(c.height);
     reset();
 });
 

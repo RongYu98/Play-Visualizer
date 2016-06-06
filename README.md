@@ -42,6 +42,7 @@ __Change Log:__
 6/6/16:
 - Can select a player and change its speed -IG
 - When switching between fields, positions no longer change -RY
+- Players not on half-field no longer show up -RY
 
 6/5/16:
 - Cut down on the processing, too many redundant callings -RY
