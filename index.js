@@ -41,6 +41,7 @@ var drawingPath = false;
 var running = false;
 var creatingTeam1 = true;
 var nonSelectColor;
+var nonSelectSpeed;
 var BALL;
 
 var selecting = false;
@@ -486,10 +487,18 @@ function makePlayer(playerID, team) {
     this.undone = true;
     this.team = team;
     var path;
-    var speed = mySlider.slider('getValue');
+    var initialSpeed = mySlider.slider('getValue');
+    var speed = initialSpeed;
 
     // var angle = 0;    
     this.ball = false;
+
+    var setSpeed = function(newSpeed) {
+	initialSpeed = newSpeed;
+	speed = newSpeed;
+	drawSetup();
+	this.draw();
+    }
 
     var redo = function() {
         this.onPos = 0;
@@ -599,12 +608,14 @@ function makePlayer(playerID, team) {
     return {
         draw: draw,
         move: move,
+	setSpeed: setSpeed,
         undone: this.undone,
         onPos: this.onPos,
         ID: this.ID,
         x: this.x,
         y: this.y,
-        speed: this.speed,
+        speed: speed,
+	initialSpeed: initialSpeed,
         team: this.team,
         redo: redo,
         save: save,
@@ -740,6 +751,8 @@ $(window).on('mousedown', function(e) {
                     drawSetup();
                 } else {
                     creatingTeam1 = selectedPlayer.team;
+		    nonSelectSpeed = mySlider.slider('getValue');
+		    mySlider.slider('setValue', selectedPlayer.initialSpeed);
                 }
                 break;
             }
@@ -1050,6 +1063,7 @@ $('#select').click(function() {
     } else {
 	drawingPath = true;
 	creatingTeam1 = nonSelectColor;
+	mySlider.slider('setValue', nonSelectSpeed);
 	add(creatingTeam1);
 	help.text("Click and drag to create a player and a path");
     }
@@ -1097,6 +1111,12 @@ $('#formations').change(function() {
     } else if (option == 'option2'){
 	deleteAll();
 	loadFormation(FORMATION2);
+    }
+});
+
+$('#speed').change(function() {
+    if (selected){
+	selectedPlayer.setSpeed(mySlider.slider('getValue'));
     }
 });
 
