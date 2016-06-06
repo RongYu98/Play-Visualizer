@@ -37,6 +37,7 @@ var mouse_Down = false;
 var drawingPath = false;
 var running = false;
 var creatingTeam1 = true;
+var nonSelectColor;
 var BALL;
 
 var selecting = false;
@@ -1040,9 +1041,12 @@ $('#select').click(function() {
     drawingPath = false;
     if (selecting) {
         deleting = false;
+	nonSelectColor = creatingTeam1;
 	help.text("Selecting...");
     } else {
 	drawingPath = true;
+	creatingTeam1 = nonSelectColor;
+	add(creatingTeam1);
 	help.text("Click and drag to create a player and a path");
     }
 });
@@ -1071,7 +1075,7 @@ function deleteAll() {
     Xs = new Array();
     Ys = new Array();
     mouse_Down = false;
-    drawingPath = false;
+    drawingPath = true;
     running = false;
     creatingTeam1 = true;
     selecting = false;
