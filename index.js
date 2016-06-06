@@ -783,7 +783,7 @@ $(window).mouseup(function() {
     add( creatingTeam1 );
     Xs = new Array();
     Ys = new Array();
-    help.text('');
+    //help.text('');
     //console.log("WENT UP");
 });
 
@@ -929,7 +929,9 @@ $(window).on('touchend', function(e) {
     } else if (select > -1 && !deleting && !selected) {
 	selected = true;
     } else if (selected){
-        PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	if (Xs.length > 1){
+            PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	}
         PLAYERS[select].redo();
         PLAYERS[select].undone = true;
         select = -1;
@@ -947,6 +949,11 @@ $(window).on('touchend', function(e) {
 
 $(window).resize(resize);
 
+$(window).scroll(function() {
+    leftBound = -1;
+    rightBound = -1;
+});
+
 var lastTeam;
 // Button handler assignment
 var add = function(team1) {
@@ -957,7 +964,15 @@ var add = function(team1) {
     if (!drawingBall){
 	creatingTeam1 = team1;
     }
-    help.text("Click and drag to create a player and a path");
+    if (drawingBall){
+	help.text("Click and drag to add a ball");
+    } else if (selecting){
+	help.text("Selecting...");
+    } else if (deleting){
+	help.text("Deleting...");
+    } else {
+	help.text("Click and drag to create a player and a path");
+    }
 };
 var changeColor = function(){
     creatingTeam1 = !creatingTeam1;
@@ -1023,8 +1038,10 @@ $('#select').click(function() {
     drawingPath = false;
     if (selecting) {
         deleting = false;
+	help.text("Selecting...");
     } else {
 	drawingPath = true;
+	help.text("Click and drag to create a player and a path");
     }
 });
 
@@ -1034,6 +1051,10 @@ $('#delete').click(function() {
     if (deleting) {
         selecting = false;
         select = -1;
+	help.text("Deleting...");
+    } else {
+	drawingPath = true;
+	help.text("Click and drag to create a player and a path");
     }
 });
 
