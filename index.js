@@ -9,6 +9,8 @@ $("[name='change']").bootstrapSwitch();
 $("[name='stopping']").bootstrapSwitch();
 $("[name='field-size']").bootstrapSwitch();
 
+$('body').unbind('touchmove')
+
 //Initialize Bootstrap Slider
 var mySlider = $("#speed").slider();
 
