@@ -23,6 +23,13 @@ __Change Log:__
 - Updated all the touch functions to work on iphone. The x,y are a bit off though -RY
 - Various bug fixes -IG
 - Added more messages to help the user -IG
+- Made the whole thing a lot prettier - VL
+- Added toggle for Full/Half Field -VL
+- Added slider for speed -VL
+
+6/4/16:
+- Made Side Menu -VL
+- Added toggle for Teams -VL
 
 6/3/16:
 - Can load built-in formations -IG
