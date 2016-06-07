@@ -31,6 +31,7 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 		this.n = PATHS[this.i][0][this.x];
 		PATHS[this.i][0][this.x] = PATHS[this.i][1][this.x];
 		PATHS[this.i][1][this.x] = this.n;
+		
 		//divide by the width and height to get the thing
 	    }
 	}
@@ -47,6 +48,12 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 	if (PATHS[this.i] != null){ //i.e. theres stuff there
 	    for (this.x = 0; this.x < PATHS[this.i][0].length; this.x++ ){
 		//divide by the width and height to get the thing
+		if (this.toHalf){
+	  	    PATHS[this.i][0][this.x] = 1 - PATHS[this.i][0][this.x];
+		    console.log(PATHS[this.i][0][this.x]);
+		} else {
+		    PATHS[this.i][1][this.x] = 1 - PATHS[this.i][1][this.x];
+		}
 		PATHS[this.i][0][this.x] *= c.width;
 		PATHS[this.i][1][this.x] *= c.height;
 		if (this.toHalf){
@@ -1164,27 +1171,43 @@ $('#speed').change(function() {
 });
 
 function loadFormation(formation) {
-    for (var i = 0; i < formation['players'].length; i++){
-	var onPlayer = formation['players'][i];
-	var newPlayer = makePlayer(onPlayer['id'], onPlayer['team']);
-	newPlayer.speed = onPlayer['speed'];
-	var onPath = formation['paths'][onPlayer['id']];
-	newPlayer.x = onPath[0][0] * currentWidth;
-	newPlayer.y = onPath[1][0] * currentHeight;
-	if ( onPlayer['ball'] == true ){
-	    newPlayer.ball = true;
-	}
-	PLAYERS.push(newPlayer);
-	totalCreated++;
+    for (var i = 0; i < formation['players'].length; i++) {
+        var onPlayer = formation['players'][i];
+        var newPlayer = makePlayer(onPlayer['id'], onPlayer['team']);
+        newPlayer.speed = onPlayer['speed'];
+        var onPath = formation['paths'][onPlayer['id']];
+        newPlayer.x = onPath[0][0] * currentWidth;
+        newPlayer.y = onPath[1][0] * currentHeight;
+        if ( onPlayer['ball'] == true ) {
+            newPlayer.ball = true;
+        }
+        PLAYERS.push(newPlayer);
+        totalCreated++;
     }
-    for (id in formation['paths']){
-	var onPath = formation['paths'][id];
-	for (var i = 0; i < onPath[0].length; i++){
-	    onPath[0][i] *= currentWidth;
-	    onPath[1][i] *= currentHeight;
-	}
-	PATHS[id] = onPath;
+    for (var id in formation['paths']) {
+        var onPath = formation['paths'][id];
+        for (var i = 0; i < onPath[0].length; i++) {
+            onPath[0][i] *= currentWidth;
+            onPath[1][i] *= currentHeight;
+        }
+        PATHS[id] = onPath;
     }
+}
+
+function saveFormation() {
+    var psuedoPaths = new Array(), path;
+    for (var i in PATHS) {
+        path = JSON.parse(JSON.stringify(PATHS[i]));
+        for (var i = 0; i < path[0].length; i++) {
+            path[0][i] /= currentWidth;
+            path[1][i] /= currentHeight;
+        }
+        psuedoPaths.push(path);
+    }
+    return {
+        'players': JSON.stringify(PLAYERS, ['id', 'team', 'speed', 'ball']),
+        'paths': JSON.stringify(psuedoPaths),
+    };
 }
 
 
