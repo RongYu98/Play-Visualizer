@@ -1150,6 +1150,7 @@ function deleteAll() {
     select = -1;
     deleting = false;
     totalCreated = 0;
+    add( creatingTeam1 );
     drawSetup();
 }
 
