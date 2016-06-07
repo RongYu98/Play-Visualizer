@@ -1,0 +1,17 @@
+Add:
+1. Mouse Down - Where you click will be the place the player is.
+2. Mouse Move - As you move your mouse/finger, the locations (x and y) will be added to 2 arrays.
+3. Mouse Up - When you let go, a new player is initialized with a unique ID.
+   Using that ID, the arrays recored get stored into PATH, with the ID as the callback.
+
+Delete:
+1. Mouse Down - Finds the player using the Pythagorean Theorem.
+2. If delete is true, set to true by pressing the button, it will delete itself.
+3. Because delete is true, nothing else happens for mouseMove and mouseUp.
+
+Select:
+1. Once select is pressed, selecting will be true.
+2. If a player is clicked on and select is true, then that player will become selectedPlayer,
+   and selected will refer to its index.
+3. If a selected is not -1, i.e. a player is selected, and selecting is not true, i.e. done picking player, the 'move' and 'up/end' functions will do nothing.
+4. Same as Add Step 2 and 3, except instead of a new player, the player is the one at the index selected.

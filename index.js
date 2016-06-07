@@ -842,6 +842,8 @@ $(window).mouseup(function() {
     //console.log("WENT UP");
 });
 
+
+
 /* The following functions are for mobile devices,
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
@@ -872,12 +874,11 @@ $(window).on('touchstart', function(e) {
     //console.log("xcor: "+this.xcor);
     //console.log("width: " + c.width);
     // if you're within boundaries
-    //console.log("drawingPath "+drawingPath);
-    //console.log(this.xcors<c.width);
-    console.log("compare ycors "+(this.ycor < c.height));
     if (this.xcor < c.width && this.ycor < c.height && drawingPath){
         mouse_Down = true;
 	console.log("MOUSE_DOWN "+mouse_Down);
+	//e.preventDefault() ensures that the screen does not move
+	e.preventDefault();
     }
 
     if (selecting || deleting) { // this will find the player
@@ -913,15 +914,16 @@ $(window).on('touchstart', function(e) {
 });
 
 $(window).on('touchmove', function(e) {
-    //Because this is jquery, this isn't the original event
+    //Because this is jquery, this isn't the original event, we need to do e.originalEvent
     //e.preventDefault();
     var E = e.originalEvent.touches;
     //console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
 
-   // console.log("OffsetX: "+e.offsetX);
+    // console.log("OffsetX: "+e.offsetX);
     //console.log("PAGE: "+e.pageX);
 
     var touch = e.originalEvent.touches[0];
+    // the following is random math using scaled numbers that will yield a somewhat accurate canvas border
     this.xcor = touch.pageX + offsetX2/2;
     this.ycor = touch.pageY - c.offsetTop;
 
@@ -929,7 +931,8 @@ $(window).on('touchmove', function(e) {
     //console.log("movey: "+ this.ycor);
     
     //console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
-    console.log(mouse_Down);
+    console.log("In touchmove, mouse_Down"+mouse_Down);
+
     if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
 	console.log("Adding");
 	cursorX = touch.pageX + offsetX2/2;
@@ -942,10 +945,11 @@ $(window).on('touchmove', function(e) {
             cursorX <= (winWidth + currentWidth) / 2 && // cursorX != offsetX, may bring problems
             cursorY > 0 && cursorY <= currentHeight
         ) {
-	    console.log("GOT HERE");
+	    //console.log("GOT HERE");
+	    //add the coords into an array that will be a players path
 	    Xs.push( cursorX );
             Ys.push( cursorY );
-            if (Xs.length > 0) {
+            if (Xs.length > 0) { //draws out the path itself before player's made
                 drawSetup();
                 drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
@@ -960,7 +964,7 @@ $(window).on('touchmove', function(e) {
 });
 
 $(window).on('touchend', function(e) {
-    console.log("ENDED");
+    console.log("TOUCH ENDED");
    
     if (Xs.length > 2) {
         mouse_Down = false;
