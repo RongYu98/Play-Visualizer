@@ -529,7 +529,7 @@ function makePlayer(playerID, team) {
     this.ball = false;
 
     var setSpeed = function(newSpeed) {
-	initialSpeed = newSpeed;
+	this.initialSpeed = newSpeed;
 	speed = newSpeed;
 	drawSetup();
 	this.draw();
