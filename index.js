@@ -31,6 +31,7 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 		this.n = PATHS[this.i][0][this.x];
 		PATHS[this.i][0][this.x] = PATHS[this.i][1][this.x];
 		PATHS[this.i][1][this.x] = this.n;
+		
 		//divide by the width and height to get the thing
 	    }
 	}
@@ -47,6 +48,12 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 	if (PATHS[this.i] != null){ //i.e. theres stuff there
 	    for (this.x = 0; this.x < PATHS[this.i][0].length; this.x++ ){
 		//divide by the width and height to get the thing
+		if (this.toHalf){
+	  	    PATHS[this.i][0][this.x] = 1 - PATHS[this.i][0][this.x];
+		    console.log(PATHS[this.i][0][this.x]);
+		} else {
+		    PATHS[this.i][1][this.x] = 1 - PATHS[this.i][1][this.x];
+		}
 		PATHS[this.i][0][this.x] *= c.width;
 		PATHS[this.i][1][this.x] *= c.height;
 		if (this.toHalf){

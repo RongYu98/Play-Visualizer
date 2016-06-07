@@ -41,6 +41,7 @@ __Change Log:__
 
 6/7/16:
 - Fixed bugs with selection speed and color -IG
+- When switching between fields, players are in correct postion relative to background, no longer reflect -RY
 
 6/6/16:
 - Can select a player and change its speed -IG
