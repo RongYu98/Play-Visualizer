@@ -1030,7 +1030,11 @@ var add = function(team1) {
     }
 };
 var changeColor = function(){
-    creatingTeam1 = !creatingTeam1;
+    if (selecting){
+	nonSelectColor = !nonSelectColor;
+    } else {
+	creatingTeam1 = !creatingTeam1;
+    }
     add( creatingTeam1 );
 };
 
