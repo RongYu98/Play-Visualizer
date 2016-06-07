@@ -529,7 +529,7 @@ function makePlayer(playerID, team) {
     this.ball = false;
 
     var setSpeed = function(newSpeed) {
-	initialSpeed = newSpeed;
+	this.initialSpeed = newSpeed;
 	speed = newSpeed;
 	drawSetup();
 	this.draw();
@@ -1030,7 +1030,11 @@ var add = function(team1) {
     }
 };
 var changeColor = function(){
-    creatingTeam1 = !creatingTeam1;
+    if (selecting){
+	nonSelectColor = !nonSelectColor;
+    } else {
+	creatingTeam1 = !creatingTeam1;
+    }
     add( creatingTeam1 );
 };
 
