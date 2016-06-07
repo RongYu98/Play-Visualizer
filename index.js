@@ -856,7 +856,7 @@ console.log("screen: "+screen.width);
 //console.log("OffsetX2 is: "+offsetX2);
 
 $(window).on('touchstart', function(e) {
-    console.log("touchStarted: Mouse_Down is: " + mouse_Down);
+    console.log("touchStarted: Mouse_Down is: " + mouse_Down); // fix this by onyl allowing a boundary check first, then prevent
     var touch = e.originalEvent.touches[0];
 
     //console.log("C offsetLeft: "+c.offsetLeft);
@@ -914,7 +914,7 @@ $(window).on('touchstart', function(e) {
 
 $(window).on('touchmove', function(e) {
     //Because this is jquery, this isn't the original event
-    e.preventDefault();
+    //e.preventDefault();
     var E = e.originalEvent.touches;
     //console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
 
