@@ -43,6 +43,8 @@ __Change Log:__
 6/7/16:
 - Fixed bugs with selection speed and color -IG
 - When switching between fields, players are in correct postion relative to background, no longer reflect -RY
+- The first player created after delete all is not longer off, b/c totalCreated now starts at 1, not 0 -RY
+- TouchMove no longer prevents scrolling -RY
 
 6/6/16:
 - Can select a player and change its speed -IG
