@@ -39,6 +39,9 @@ __Client:__ Vandana (vagarwala@stuy.edu)
 
 __Change Log:__
 
+6/7/16:
+- Fixed bugs with selection speed and color -IG
+
 6/6/16:
 - Can select a player and change its speed -IG
 - When switching between fields, positions no longer change -RY
