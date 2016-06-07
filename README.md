@@ -23,7 +23,7 @@ __Client:__ Vandana (vagarwala@stuy.edu)
 **2. Overview:**
 - This is a application meant to simulate a game with player and ball movement.
 - This is not a magic tool that will grant you victory, but rather an aid to help you plan.
-- DISCLAIMER: Team Impomtu is in no way liable for any losses that are incurred with the usage of this application. Any and all compliants will not hold under the court of law.
+- DISCLAIMER: Team Impomtu is in no way liable for any losses that are incurred with the usage of this application. Any and all compliants will not hold under the scutiny of the court of law.
 
 **3. Set-Up Configurations:**
 - Download the files, i.e. clone the repo
