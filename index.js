@@ -97,6 +97,7 @@ var player, playerRatio;
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
+var leftBound, rightBound;
 
 var FORMATION1 = {
     'players': [
@@ -430,9 +431,16 @@ var FORMATION2 = {
 	  
 };
 
+function calculateBounds() {
+    leftBound = winWidth * 0.2;
+    if (winWidth * 0.8 / winHeight > 4/3){
+	leftBound += ((winWidth * 0.8) - currentWidth) / 2;
+    }
+    rightBound = leftBound + currentWidth;
+}
+
 // Field Resize Function
 function resize() {
-    //console.log("RESIZED");
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight;
@@ -514,6 +522,7 @@ function resize() {
         current.draw();
         drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team, current.ball);
     }
+    calculateBounds();
 }
 
 
@@ -725,17 +734,10 @@ $(window).on('mousemove', function(e) {
 	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
-
-	var leftBound = winWidth * 0.2;
-	if (winWidth * 0.8 / winHeight > 4/3){
-	    leftBound += ((winWidth * 0.8) - currentWidth) / 2;
-	}
-	var rightBound = leftBound + currentWidth;
         
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-	    e.pageX > leftBound &&
-	    e.pageX < rightBound &&
+	    e.pageX > leftBound && e.pageX < rightBound &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
             Xs.push( cursorX );
@@ -758,7 +760,9 @@ var selectedPlayer;
 $(window).on('mousedown', function(e) {
     //console.log("mouseDown");
     // if you're within boundaries
-    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
+    if (drawingPath &&
+	e.pageX > leftBound && e.pageX < rightBound &&
+	e.pageY > 0 && e.pageY <= currentHeight){
         mouse_Down = true;
     }
     
@@ -853,7 +857,6 @@ $(window).mouseup(function() {
 **/
 var offsetX = $(window).width() - c.width;
 var offsetX2 = screen.width - c.width - 2*offsetX;
-console.log("screen: "+screen.width);
 //console.log(currentWidth);
 //console.log("WindWidth: " +  $(window).width());
 //console.log("Canvas Width: "+c.width);
