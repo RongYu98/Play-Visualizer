@@ -17,8 +17,6 @@ var field = $('<img>');
 field.attr('src', 'static/field.jpg');
 field.on('load', resize);
 
-var old = 1;
-var old2 = 1;
 $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, state){
     this.i = 0;
     this.n = 0;
@@ -99,6 +97,7 @@ var imgHeight, imgWidth;
 var currentHeight, currentWidth;
 var leftBound = -1;
 var rightBound = -1;
+var name = "";
 
 var FORMATION1 = {
     'players': [
@@ -531,6 +530,8 @@ function makePlayer(playerID, team) {
     var path;
     var initialSpeed = mySlider.slider('getValue');
     var speed = initialSpeed;
+    this.name = this.speed.toString();
+    this.named = false;
 
     // var angle = 0;    
     this.ball = false;
@@ -591,7 +592,8 @@ function makePlayer(playerID, team) {
            'id': this.ID,
            'team': this.team,
            'speed': speed,
-	   'ball': this.ball
+	   'ball': this.ball,
+	   'name': this.name
         });
     };
     
@@ -661,6 +663,7 @@ function makePlayer(playerID, team) {
         team: this.team,
         redo: redo,
         save: save,
+	name: this.name,
     };
 }
 
@@ -750,7 +753,6 @@ $(window).on('mousemove', function(e) {
             }
         }
         //console.log(cursorX, cursorY);
-        //record stuff onto something
     }
     if (mouse_Down && select > -1) {
             //console.log("selected");
@@ -760,7 +762,7 @@ $(window).on('mousemove', function(e) {
 var selected = false;
 var selectedPlayer;
 $(window).on('mousedown', function(e) {
-    //console.log("mouseDown");
+
     // if you're within boundaries
     if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
         mouse_Down = true;
@@ -772,9 +774,6 @@ $(window).on('mousedown', function(e) {
         
         //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
-            //console.log("mouse x,y: " + e.offsetX + " " + e.offsetY);
-            //console.log("Distance is: " + (PLAYERS[this.i].x - this.xcor));
-            //console.log("Compare with playerRatio of: " + playerRatio);
             
             if (
                 (PLAYERS[this.i].x - this.xcor) * (PLAYERS[this.i].x - this.xcor) +
@@ -783,7 +782,6 @@ $(window).on('mousedown', function(e) {
             ) {
                 select = this.i;
                 selectedPlayer = PLAYERS[select];
-                //console.log(select);
                 //console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
                 //console.log("Selected Player's team1 is: " + selectedPlayer.team);
                 if (deleting) {
@@ -982,8 +980,6 @@ $(window).on('touchend', function(e) {
 
         //console.log(  PLAYERS[ PLAYERS.length -1] );
         //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
-        //console.log("Xs: "+Xs);
-        //console.log("Ys: "+Ys);
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = -1;
         player.undone = true;
@@ -1154,6 +1150,20 @@ function deleteAll() {
     drawSetup();
 }
 
+/* $('#name').click(function(){
+   
+   this.str = document.getElementById("text").value;
+   if (this.str.length > 0){
+      name = this.str;
+   }
+   if ( selected > -1){
+      PLAYERS[selected].name = this.str;
+   }
+   document.getElementById("text").value = "";
+}
+*/
+
+
 $('#formations').change(function() {
     var option = $('#formations option:selected').val();
     if (option == 'option1'){
@@ -1182,6 +1192,9 @@ function loadFormation(formation) {
         if ( onPlayer['ball'] == true ) {
             newPlayer.ball = true;
         }
+	if ( onPlayer['name'] != null ){
+	    newPlayer.name = onPlayer['name'];
+	}
         PLAYERS.push(newPlayer);
         totalCreated++;
     }
