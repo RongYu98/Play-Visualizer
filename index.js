@@ -95,6 +95,7 @@ var player, playerRatio;
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
+
 var leftBound = -1;
 var rightBound = -1;
 var name = "";
@@ -431,16 +432,21 @@ var FORMATION2 = {
 	  
 };
 
+function calculateBounds() {
+    leftBound = winWidth * 0.2;
+    if (winWidth * 0.8 / winHeight > 4/3){
+	leftBound += ((winWidth * 0.8) - currentWidth) / 2;
+    }
+    rightBound = leftBound + currentWidth;
+}
+
 // Field Resize Function
 function resize() {
-    //console.log("RESIZED");
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight;
     imgWidth;
     playerRatio;
-    leftBound = -1;
-    rightBound = -1;
 
     if(field.attr('src') == "static/field.jpg"){
 	imgHeight = 768;
@@ -517,6 +523,7 @@ function resize() {
         current.draw();
         drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team, current.ball);
     }
+    calculateBounds();
 }
 
 
@@ -727,22 +734,15 @@ function drawPath(arrayX, arrayY, team, ball) {
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
 $(window).on('mousemove', function(e) {
     //console.log("Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
-    
+
     if ( mouse_Down && drawingPath  && (!selecting || selected) && !deleting ) {
 	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
-	if (leftBound == -1){
-	    leftBound = e.pageX - cursorX;
-	}
-	if (rightBound == -1){
-	    rightBound = leftBound + currentWidth;
-	}
         
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-            e.pageX >= leftBound &&
-            e.pageX <= rightBound &&
+	    e.pageX > leftBound && e.pageX < rightBound &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
             Xs.push( cursorX );
@@ -764,7 +764,9 @@ var selectedPlayer;
 $(window).on('mousedown', function(e) {
 
     // if you're within boundaries
-    if (e.offsetX < c.width && e.offsetY < c.height && drawingPath){
+    if (drawingPath &&
+	e.pageX > leftBound && e.pageX < rightBound &&
+	e.pageY > 0 && e.pageY <= currentHeight){
         mouse_Down = true;
     }
     
@@ -855,7 +857,6 @@ $(window).mouseup(function() {
 **/
 var offsetX = $(window).width() - c.width;
 var offsetX2 = screen.width - c.width - 2*offsetX;
-console.log("screen: "+screen.width);
 //console.log(currentWidth);
 //console.log("WindWidth: " +  $(window).width());
 //console.log("Canvas Width: "+c.width);
@@ -1010,11 +1011,6 @@ $(window).on('touchend', function(e) {
 });
 
 $(window).resize(resize);
-
-$(window).scroll(function() {
-    leftBound = -1;
-    rightBound = -1;
-});
 
 var lastTeam;
 // Button handler assignment

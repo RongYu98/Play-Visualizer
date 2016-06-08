@@ -40,6 +40,9 @@ __Client:__ Vandana (vagarwala@stuy.edu)
 
 __Change Log:__
 
+6/8/16:
+- Paths cannot be drawn or started outside of the field -IG
+
 6/7/16:
 - Fixed bugs with selection speed and color -IG
 - When switching between fields, players are in correct postion relative to background, no longer reflect -RY
