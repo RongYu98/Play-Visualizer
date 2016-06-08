@@ -97,8 +97,6 @@ var player, playerRatio;
 var winHeight, winWidth;
 var imgHeight, imgWidth;
 var currentHeight, currentWidth;
-var leftBound = -1;
-var rightBound = -1;
 
 var FORMATION1 = {
     'players': [
@@ -440,8 +438,6 @@ function resize() {
     imgHeight;
     imgWidth;
     playerRatio;
-    leftBound = -1;
-    rightBound = -1;
 
     if(field.attr('src') == "static/field.jpg"){
 	imgHeight = 768;
@@ -724,22 +720,22 @@ function drawPath(arrayX, arrayY, team, ball) {
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
 $(window).on('mousemove', function(e) {
     //console.log("Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
-    
+
     if ( mouse_Down && drawingPath  && (!selecting || selected) && !deleting ) {
 	
         cursorX = e.offsetX;
         cursorY = e.offsetY;
-	if (leftBound == -1){
-	    leftBound = e.pageX - cursorX;
+
+	var leftBound = winWidth * 0.2;
+	if (winWidth * 0.8 / winHeight > 4/3){
+	    leftBound += ((winWidth * 0.8) - currentWidth) / 2;
 	}
-	if (rightBound == -1){
-	    rightBound = leftBound + currentWidth;
-	}
+	var rightBound = leftBound + currentWidth;
         
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-            e.pageX >= leftBound &&
-            e.pageX <= rightBound &&
+	    e.pageX > leftBound &&
+	    e.pageX < rightBound &&
             e.pageY > 0 && e.pageY <= currentHeight
         ) {
             Xs.push( cursorX );
@@ -1014,11 +1010,6 @@ $(window).on('touchend', function(e) {
 });
 
 $(window).resize(resize);
-
-$(window).scroll(function() {
-    leftBound = -1;
-    rightBound = -1;
-});
 
 var lastTeam;
 // Button handler assignment
