@@ -793,6 +793,9 @@ $(window).on('mousedown', function(e) {
                     drawSetup();
                 } else {
                     creatingTeam1 = selectedPlayer.team;
+		    if (selectedPlayer.ball){
+			drawingBall = true;
+		    }
 		    nonSelectSpeed = mySlider.slider('getValue');
 		    mySlider.slider('setValue', selectedPlayer.initialSpeed);
                 }
@@ -837,6 +840,7 @@ $(window).mouseup(function() {
         PLAYERS[select].undone = true;
         select = -1;
 	selected = false;
+	drawingBall = false;
     }
  
     drawSetup();
@@ -864,7 +868,6 @@ var offsetX2 = screen.width - c.width - 2*offsetX;
 //console.log("OffsetX2 is: "+offsetX2);
 
 $(window).on('touchstart', function(e) {
-    console.log("touchStarted: Mouse_Down is: " + mouse_Down); // fix this by onyl allowing a boundary check first, then prevent
     var touch = e.originalEvent.touches[0];
 
     //console.log("C offsetLeft: "+c.offsetLeft);
@@ -874,15 +877,11 @@ $(window).on('touchstart', function(e) {
     this.ycor = touch.pageY - c.offsetTop;
 
     //console.log("THIS IS canvasOffSet: "+c.offsetLeft);
-
-    console.log("ycor: "+this.ycor);
-    console.log("c.height "+c.height);
     //console.log("xcor: "+this.xcor);
     //console.log("width: " + c.width);
     // if you're within boundaries
     if (this.xcor < c.width && this.ycor < c.height && drawingPath){
         mouse_Down = true;
-	console.log("MOUSE_DOWN "+mouse_Down);
 	//e.preventDefault() ensures that the screen does not move
 	e.preventDefault();
     }
@@ -906,6 +905,9 @@ $(window).on('touchstart', function(e) {
                     drawSetup();
                 } else {
                     creatingTeam1 = selectedPlayer.team;
+		    if (selectedPlayer.ball){
+			drawingBall = true;
+		    }
                 }
                 break;
             }
@@ -935,12 +937,8 @@ $(window).on('touchmove', function(e) {
 
     //console.log("movex: "+ this.xcor);
     //console.log("movey: "+ this.ycor);
-    
-    //console.log("Mouse: "+mouse_Down+" DrawingPath: "+drawingPath);
-    console.log("In touchmove, mouse_Down"+mouse_Down);
 
     if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
-	console.log("Adding");
 	cursorX = touch.pageX + offsetX2/2;
         cursorY = touch.pageY;
         //console.log("Not in: "+cursorX);
@@ -959,22 +957,16 @@ $(window).on('touchmove', function(e) {
                 drawSetup();
                 drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
-	    console.log( cursorX );
         }
         //console.log(cursorX, cursorY);
-    }
-    if (mouse_Down && select > -1) {
-            console.log("selected");
     }
         
 });
 
 $(window).on('touchend', function(e) {
-    console.log("TOUCH ENDED");
    
     if (Xs.length > 2) {
         mouse_Down = false;
-        console.log("FALSE, ended touch");
     }
     
     if (drawingPath && select == -1 && Xs.length > 1) {
@@ -999,6 +991,7 @@ $(window).on('touchend', function(e) {
         PLAYERS[select].undone = true;
         select = -1;
 	selected = false;
+	drawingBall = false;
     }
 
     drawSetup();
@@ -1022,12 +1015,12 @@ var add = function(team1) {
     if (!drawingBall){
 	creatingTeam1 = team1;
     }
-    if (drawingBall){
-	help.text("Click and drag to add a ball");
-    } else if (selecting){
+    if (selecting){
 	help.text("Selecting...");
     } else if (deleting){
 	help.text("Deleting...");
+    } else if (drawingBall){
+	help.text("Click and drag to add a ball");
     } else {
 	help.text("Click and drag to create a player and a path");
     }
@@ -1074,12 +1067,14 @@ $("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state)
     }
 });
 
-$('#ball').click(function() {
+$('#ball').on('click touchstart', function(e) {
+    e.preventDefault();
     drawingBall = true;
     add( false );
 });
 
-$('#reset').click(function() {
+$('#reset').on('click touchstart', function(e) {
+    e.preventDefault();
     reset();
 });
 
@@ -1095,7 +1090,8 @@ var reset = function(){
 };
 
 
-$('#select').click(function() {
+$('#select').on('click touchstart', function(e) {
+    e.preventDefault();
     selecting = !selecting;
     drawingPath = false;
     if (selecting) {
@@ -1111,9 +1107,13 @@ $('#select').click(function() {
     }
 });
 
-$('#delete').click(function() {
+$('#delete').on('click touchstart', function(e) {
+    e.preventDefault();
     drawingPath = false;
     deleting = !deleting;
+    if (selecting){
+	creatingTeam1 = nonSelectColor;
+    }
     if (deleting) {
         selecting = false;
         select = -1;
@@ -1124,7 +1124,8 @@ $('#delete').click(function() {
     }
 });
 
-$('#deleteAll').click(function() {
+$('#deleteAll').on('click touchstart', function(e) {
+    e.preventDefault();
     deleteAll();
 });
 
@@ -1137,7 +1138,6 @@ function deleteAll() {
     mouse_Down = false;
     drawingPath = true;
     running = false;
-    creatingTeam1 = true;
     selecting = false;
     select = -1;
     deleting = false;
