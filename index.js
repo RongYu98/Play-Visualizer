@@ -115,6 +115,8 @@ function calculateBounds() {
 
 // Field Resize Function
 function resize() {
+    // all coordinates are divided by the current width and height to get a percent
+    // the percent is applied by then multiplying it with the new width and height
     winHeight = $(window).height();
     winWidth = $(window).width();
     imgHeight;
@@ -133,8 +135,6 @@ function resize() {
 
     var i = 0;
     var a = 0;
-
-    //console.log("The totalCreated is: "+totalCreated);
 
     for (i=0; i<totalCreated-1; i++){// this not linear, sometimes wrong
 	if (PATHS[i]!=null){
@@ -184,9 +184,7 @@ function resize() {
 	    PLAYERS[i].y = PLAYERS[i].y * currentHeight;
 	}
     }  
-    //if (totalCreated > 1){
-	//console.log("XY After: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
-    //}
+
     $("canvas").attr("width", currentWidth);
     $("canvas").attr("height", currentHeight);
     
@@ -223,6 +221,7 @@ function makePlayer(playerID, team) {
 	this.draw();
     }
 
+    // used to reset the the players
     var redo = function() {
         this.onPos = 0;
         this.x = PATHS[this.ID][0][this.onPos];
@@ -288,11 +287,12 @@ function makePlayer(playerID, team) {
             //console.log("This was onPos = -1, so setted it");
         }
         
-        //console.log(path);
         for (this.imove = 0; this.imove < this.speed; this.imove++) {
-            //console.log("This is now on: "+this.x+" "+this.y);
-            //console.log(path);
-            if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
+	    // essentially, the following code is executed this.speed times
+	    // this is for future development, with more executions and smaller steps
+	    // it is possible to add something else inbetween the movements
+            
+	    if (Math.abs( this.x - path[0][this.onPos] ) < .1) {
                 this.x = path[0][this.onPos];
             } else {
                 if (this.x - path[0][this.onPos] < 0) {
@@ -318,9 +318,7 @@ function makePlayer(playerID, team) {
             
             if (this.x == path[0][this.onPos] && this.y == path[1][this.onPos]) {
                 this.onPos+=1;
-            } //else {
-                //console.log("need "+(this.x-path[0][this.onPos])+" more for x");
-            //}
+            } 
             
             if (this.onPos > path[0].length-1) {
                 this.onPos = path[0].length-1;
@@ -358,7 +356,7 @@ function drawSetup() {
 }
 
 function drawPath(arrayX, arrayY, team, ball) {
-    //console.log(team);
+
     if (team) {
         ctx.strokeStyle = "red";
     } else {
@@ -404,7 +402,7 @@ function drawPath(arrayX, arrayY, team, ball) {
 
 
 // Window Event Handler Assignment
-//     (pressing the buttons is mouse, touching the canvas is onTouchMove)
+// Note: mouse functions are mouse, touch functions are mobile finger touch
 $(window).on('mousemove', function(e) {
 
     if ( mouse_Down && drawingPath  && (!selecting || selected) && !deleting ) {
@@ -518,9 +516,9 @@ $(window).mouseup(function() {
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
 **/
+//note: these are random calculations meant to compensate for touch not having an offset
 var offsetX = $(window).width() - c.width;
 var offsetX2 = screen.width - c.width - 2*offsetX;
-//console.log(currentWidth);
 //console.log("WindWidth: " +  $(window).width());
 //console.log("Canvas Width: "+c.width);
 //console.log("offSet is: "+offsetX);
@@ -676,8 +674,6 @@ var changeColor = function(){
     add( creatingTeam1 );
 };
 
-//$('#add').click(function() { add(true); });
-//$('#add2').click(function() { add(false); });
 add(true);
 //$('#changeColor').click(function() { changeColor(); });
 

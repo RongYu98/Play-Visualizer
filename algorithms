@@ -15,3 +15,15 @@ Select:
    and selected will refer to its index.
 3. If a selected is not -1, i.e. a player is selected, and selecting is not true, i.e. done picking player, the 'move' and 'up/end' functions will do nothing.
 4. Same as Add Step 2 and 3, except instead of a new player, the player is the one at the index selected.
+
+PATHS Storage:
+1. PATHS has all the paths.
+2. Each player has his single index.
+3. Within each index is two arrays, the first is of xcoordinates and the second ycoordinates.
+4. These arrays represent the path a player will make.
+
+Player Movement:
+1. Each player's ID corresponds to the index in PATHS which is theirs.
+2. Each player has a onPos, i.e. on position, that signifies which pair of (x,y) the player is approaching.
+3. Movement is determined by finding the angle using the slope of the line connecting the player's current xy to the target xy.
+4. Using the angle, cosine and sin ensure that the player moves the exact distance each time
