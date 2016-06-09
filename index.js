@@ -48,7 +48,6 @@ $("[name='field-size']").on('switchChange.bootstrapSwitch', function(event, stat
 		//divide by the width and height to get the thing
 		if (this.toHalf){
 	  	    PATHS[this.i][0][this.x] = 1 - PATHS[this.i][0][this.x];
-		    console.log(PATHS[this.i][0][this.x]);
 		} else {
 		    PATHS[this.i][1][this.x] = 1 - PATHS[this.i][1][this.x];
 		}
@@ -733,7 +732,6 @@ function drawPath(arrayX, arrayY, team, ball) {
 // Window Event Handler Assignment
 //     (pressing the buttons is mouse, touching the canvas is onTouchMove)
 $(window).on('mousemove', function(e) {
-    //console.log("Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
 
     if ( mouse_Down && drawingPath  && (!selecting || selected) && !deleting ) {
 	
@@ -752,10 +750,6 @@ $(window).on('mousemove', function(e) {
                 drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
         }
-        //console.log(cursorX, cursorY);
-    }
-    if (mouse_Down && select > -1) {
-            //console.log("selected");
     }
 });
 
@@ -769,10 +763,11 @@ $(window).on('mousedown', function(e) {
 	e.pageY > 0 && e.pageY <= currentHeight){
         mouse_Down = true;
     }
+
+    this.xcor = e.offsetX;
+    this.ycor = e.offsetY;
     
     if ( ( selecting && !selected) || deleting) { // this will find the player
-        this.xcor = e.offsetX;
-        this.ycor = e.offsetY;
         
         //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
@@ -784,8 +779,6 @@ $(window).on('mousedown', function(e) {
             ) {
                 select = this.i;
                 selectedPlayer = PLAYERS[select];
-                //console.log("Selected Player is: " + select + " "); // + PLAYERS[select]);
-                //console.log("Selected Player's team1 is: " + selectedPlayer.team);
                 if (deleting) {
                     PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
                     delete PATHS[selectedPlayer.ID];
@@ -805,8 +798,8 @@ $(window).on('mousedown', function(e) {
     }
     
     if (drawingPath) {
-        player.x = e.offsetX;
-        player.y = e.offsetY;
+        player.x = this.xcor;
+        player.y = this.ycor;
     }
 });
 
@@ -817,8 +810,7 @@ $(window).mouseup(function() {
     }
 
     if (drawingPath && select == -1 && Xs.length > 1) { // not selecting, so adding
-        //console.log(  PLAYERS[ PLAYERS.length -1] );
-        //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
+
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = -1;
         player.undone = true;
@@ -827,11 +819,8 @@ $(window).mouseup(function() {
 	    drawingBall = false;
         }
         PLAYERS.push(player);
-
     } else if (select > -1 && !deleting && !selected) {
-
 	selected = true;
-
     } else if (selected){
 	if (Xs.length > 1){
             PATHS[PLAYERS[select].ID] = [Xs, Ys];
@@ -844,13 +833,9 @@ $(window).mouseup(function() {
     }
  
     drawSetup();
-    //drawingPath = false;
-    //add( lastTeam );
     add( creatingTeam1 );
     Xs = new Array();
     Ys = new Array();
-    //help.text('');
-    //console.log("WENT UP");
 });
 
 
@@ -868,26 +853,25 @@ var offsetX2 = screen.width - c.width - 2*offsetX;
 //console.log("OffsetX2 is: "+offsetX2);
 
 $(window).on('touchstart', function(e) {
+    
     var touch = e.originalEvent.touches[0];
 
-    //console.log("C offsetLeft: "+c.offsetLeft);
-    //console.log("C.offsettop: "+c.offsetTop);
-    
-    this.xcor = touch.pageX + offsetX2/2;
-    this.ycor = touch.pageY - c.offsetTop;
-
-    //console.log("THIS IS canvasOffSet: "+c.offsetLeft);
-    //console.log("xcor: "+this.xcor);
-    //console.log("width: " + c.width);
     // if you're within boundaries
-    if (this.xcor < c.width && this.ycor < c.height && drawingPath){
+    if (drawingPath &&
+	touch.pageX > leftBound && touch.pageX < rightBound &&
+	touch.pageY > 0 && touch.pageY <= currentHeight){
         mouse_Down = true;
-	//e.preventDefault() ensures that the screen does not move
 	e.preventDefault();
     }
 
-    if (selecting || deleting) { // this will find the player
-        
+    this.xcor = touch.pageX - winWidth * 0.2;
+    if (winWidth * 0.8 / winHeight > 4/3) {
+	this.xcor -= ((winWidth * 0.8) - currentWidth) / 2;
+    }
+    this.ycor = touch.pageY;
+    
+    if ((selecting && !selected) || deleting) { // this will find the player
+	
         //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
             
@@ -897,7 +881,7 @@ $(window).on('touchstart', function(e) {
                 (10 * playerRatio) * (10 * playerRatio) * 64
             ) {
                 select = this.i;
-                var selectedPlayer = PLAYERS[select];
+                selectedPlayer = PLAYERS[select];
                 if (deleting) {
                     PLAYERS.splice(PLAYERS.indexOf(selectedPlayer), 1);
                     delete PATHS[selectedPlayer.ID];
@@ -908,6 +892,8 @@ $(window).on('touchstart', function(e) {
 		    if (selectedPlayer.ball){
 			drawingBall = true;
 		    }
+		    nonSelectSpeed = mySlider.slider('getValue');
+		    mySlider.slider('setValue', selectedPlayer.initialSpeed);
                 }
                 break;
             }
@@ -918,38 +904,27 @@ $(window).on('touchstart', function(e) {
         player.x = this.xcor;
         player.y = this.ycor;
     }
-
 });
 
 $(window).on('touchmove', function(e) {
     //Because this is jquery, this isn't the original event, we need to do e.originalEvent
-    //e.preventDefault();
     var E = e.originalEvent.touches;
-    //console.log("TouchMove: Mouse_Down is: "+mouse_Down+" DrawingPath is: "+drawingPath);
-
-    // console.log("OffsetX: "+e.offsetX);
-    //console.log("PAGE: "+e.pageX);
 
     var touch = e.originalEvent.touches[0];
-    // the following is random math using scaled numbers that will yield a somewhat accurate canvas border
-    this.xcor = touch.pageX + offsetX2/2;
-    this.ycor = touch.pageY - c.offsetTop;
-
-    //console.log("movex: "+ this.xcor);
-    //console.log("movey: "+ this.ycor);
 
     if ( mouse_Down && drawingPath && (!selecting || selected) && !deleting) {
-	cursorX = touch.pageX + offsetX2/2;
+	
+	cursorX = touch.pageX - winWidth * 0.2;
+	if (winWidth * 0.8 / winHeight > 4/3) {
+	    cursorX -= ((winWidth * 0.8) - currentWidth) / 2;
+	}
         cursorY = touch.pageY;
-        //console.log("Not in: "+cursorX);
-	//console.log(E.pageX);
+	
         if ((Xs.length == 0 || Math.abs(cursorX - Xs[Xs.length - 1]) >= 0.02 * currentWidth || 
             Math.abs(cursorY - Ys[Ys.length - 1]) >= 0.02 * currentWidth) &&
-            cursorX >= (winWidth - currentWidth) / 2 &&
-            cursorX <= (winWidth + currentWidth) / 2 && // cursorX != offsetX, may bring problems
-            cursorY > 0 && cursorY <= currentHeight
+            touch.pageX > leftBound && touch.pageX < rightBound &&
+            touch.pageY > 0 && touch.pageY <= currentHeight
         ) {
-	    //console.log("GOT HERE");
 	    //add the coords into an array that will be a players path
 	    Xs.push( cursorX );
             Ys.push( cursorY );
@@ -958,21 +933,17 @@ $(window).on('touchmove', function(e) {
                 drawPath(Xs, Ys, creatingTeam1, drawingBall);
             }
         }
-        //console.log(cursorX, cursorY);
     }
-        
 });
 
 $(window).on('touchend', function(e) {
    
-    if (Xs.length > 2) {
+    if (Xs.length > 1) {
         mouse_Down = false;
     }
     
-    if (drawingPath && select == -1 && Xs.length > 1) {
+    if (drawingPath && select == -1 && Xs.length > 1) { // not selecting, so adding
 
-        //console.log(  PLAYERS[ PLAYERS.length -1] );
-        //player = makePlayer(PLAYERS.length, PLAYERS[ PLAYERS.length - 1].team );
         PATHS[player.ID] = [Xs, Ys];
         player.onPos = -1;
         player.undone = true;
@@ -980,7 +951,7 @@ $(window).on('touchend', function(e) {
 	    player.ball = true;
 	    drawingBall = false;
         }
-        PLAYERS.push(player);
+        PLAYERS.push(player);	
     } else if (select > -1 && !deleting && !selected) {
 	selected = true;
     } else if (selected){
@@ -995,12 +966,9 @@ $(window).on('touchend', function(e) {
     }
 
     drawSetup();
-    //add( lastTeam );
     add( creatingTeam1 );
-    //drawingPath = false;
     Xs = new Array();
-    Ys = new Array();
-    //help.text('');    
+    Ys = new Array();  
 });
 
 $(window).resize(resize);
@@ -1096,6 +1064,7 @@ $('#select').on('click touchstart', function(e) {
     drawingPath = false;
     if (selecting) {
         deleting = false;
+	nonSelectSpeed = mySlider.slider('getValue');
 	nonSelectColor = creatingTeam1;
 	help.text("Selecting...");
     } else {
