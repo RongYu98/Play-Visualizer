@@ -537,8 +537,8 @@ function makePlayer(playerID, team) {
     var path;
     var initialSpeed = mySlider.slider('getValue');
     var speed = initialSpeed;
-    this.name = speed.toString();
-    this.named = false;
+    //this.name = speed.toString();
+    //this.named = false;
 
     // var angle = 0;    
     this.ball = false;
@@ -590,7 +590,7 @@ function makePlayer(playerID, team) {
 	if (this.ball){
 	    ctx.fillText("BALL",this.x - 30*playerRatio,this.y + 30*playerRatio);
 	} else {
-	    ctx.fillText(this.name,this.x - 15*playerRatio,this.y + 30*playerRatio);
+	    ctx.fillText(speed,this.x - 15*playerRatio,this.y + 30*playerRatio);
 	}
     };
     
@@ -1146,7 +1146,7 @@ function deleteAll() {
     drawSetup();
 }
 
-$('#submit').click(function(){
+/*$('#submit').click(function(){
     this.str = document.getElementById("playerName").value;
     console.log(this.str);
     if (this.str.length > 0){
@@ -1156,8 +1156,7 @@ $('#submit').click(function(){
 	PLAYERS[0].name = this.str;
     //}
     document.getElementById("playerName").value = "";
-});
-
+});*/
 
 $('#formations').change(function() {
     var option = $('#formations option:selected').val();
