@@ -208,8 +208,8 @@ function makePlayer(playerID, team) {
     var path;
     var initialSpeed = mySlider.slider('getValue');
     var speed = initialSpeed;
-    //this.name = speed.toString();
     //this.named = false;
+    this.name = speed.toString();
 
     // var angle = 0;    
     this.ball = false;
@@ -262,7 +262,8 @@ function makePlayer(playerID, team) {
 	if (this.ball){
 	    ctx.fillText("BALL",this.x - 30*playerRatio,this.y + 30*playerRatio);
 	} else {
-	    ctx.fillText(speed,this.x - 15*playerRatio,this.y + 30*playerRatio);
+	    ctx.fillText(this.name,this.x - 15*playerRatio,this.y + 30*playerRatio);
+	    console.log("The name is: "+name);
 	}
     };
     
@@ -475,7 +476,7 @@ $(window).on('mousedown', function(e) {
     }
 });
 
-$(window).mouseup(function() {
+$(window).mouseup(function(e) {
     
     if (Xs.length > 1) {
        mouse_Down = false;
@@ -494,14 +495,16 @@ $(window).mouseup(function() {
     } else if (select > -1 && !deleting && !selected) {
 	selected = true;
     } else if (selected){
-	if (Xs.length > 1){
-            PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	if ( e.pageX > leftBound && e.pageX < rightBound && e.pageY > 0 && e.pageY <= currentHeight){
+	    if (Xs.length > 1){
+        	PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	    }
+            PLAYERS[select].redo();
+            PLAYERS[select].undone = true;
+            select = -1;
+	    selected = false;
+	    drawingBall = false;
 	}
-        PLAYERS[select].redo();
-        PLAYERS[select].undone = true;
-        select = -1;
-	selected = false;
-	drawingBall = false;
     }
  
     drawSetup();
@@ -524,9 +527,11 @@ var offsetX2 = screen.width - c.width - 2*offsetX;
 //console.log("offSet is: "+offsetX);
 //console.log("OffsetX2 is: "+offsetX2);
 
+var lastTouch;
 $(window).on('touchstart', function(e) {
     
     var touch = e.originalEvent.touches[0];
+    lastTouch = touch;
 
     // if you're within boundaries
     if (drawingPath &&
@@ -577,7 +582,6 @@ $(window).on('touchstart', function(e) {
         player.y = this.ycor;
     }
 });
-
 $(window).on('touchmove', function(e) {
     //Because this is jquery, this isn't the original event, we need to do e.originalEvent
     var E = e.originalEvent.touches;
@@ -610,6 +614,8 @@ $(window).on('touchmove', function(e) {
 
 $(window).on('touchend', function(e) {
    
+    var touch = lastTouch;
+    //console.log(e.originalEvent.touches);
     if (Xs.length > 1) {
         mouse_Down = false;
     }
@@ -627,14 +633,20 @@ $(window).on('touchend', function(e) {
     } else if (select > -1 && !deleting && !selected) {
 	selected = true;
     } else if (selected){
-	if (Xs.length > 1){
-            PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	if ( touch.pageX > leftBound && touch.pageX < rightBound &&
+	     touch.pageY > 0 && touch.pageY <= currentHeight){
+		console.log("touch.pageX: "+touch.pageX);
+		console.log("leftBound: "+leftBound);
+	    if (Xs.length > 1){
+        	PATHS[PLAYERS[select].ID] = [Xs, Ys];
+	    }
+            PLAYERS[select].redo();
+            PLAYERS[select].undone = true;
+            select = -1;
+	    selected = false;
+	    drawingBall = false;
+	    console.log("true");
 	}
-        PLAYERS[select].redo();
-        PLAYERS[select].undone = true;
-        select = -1;
-	selected = false;
-	drawingBall = false;
     }
 
     drawSetup();
@@ -743,6 +755,8 @@ $('#select').on('click touchstart', function(e) {
 	mySlider.slider('setValue', nonSelectSpeed);
 	add(creatingTeam1);
 	help.text("Click and drag to create a player and a path");
+	select = -1;
+	selected = false;
     }
 });
 
@@ -785,17 +799,19 @@ function deleteAll() {
     drawSetup();
 }
 
-/*$('#submit').click(function(){
+$('#submit').click(function(){
     this.str = document.getElementById("playerName").value;
     console.log(this.str);
     if (this.str.length > 0){
 	name = this.str;
     }
-    //if ( selected > -1){
-	PLAYERS[0].name = this.str;
-    //}
+    if ( select > -1){
+	PLAYERS[select].name = this.str;
+	console.log(PLAYERS[select].name);
+    }
     document.getElementById("playerName").value = "";
-});*/
+    resize();
+});
 
 $('#formations').change(function() {
     var option = $('#formations option:selected').val();
@@ -852,7 +868,7 @@ function saveFormation() {
         psuedoPaths.push(path);
     }
     return {
-        'players': JSON.stringify(PLAYERS, ['id', 'team', 'speed', 'ball']),
+        'players': JSON.stringify(PLAYERS, ['id', 'team', 'speed', 'ball', 'name']),
         'paths': JSON.stringify(psuedoPaths),
     };
 }

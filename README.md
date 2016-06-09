@@ -42,6 +42,7 @@ __Change Log:__
 
 6/9/16:
 - Fixed various mobile device bugs -IG
+- Added naming componenet -RY
 
 6/8/16:
 - Paths cannot be drawn or started outside of the field -IG
