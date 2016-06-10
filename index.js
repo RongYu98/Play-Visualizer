@@ -209,7 +209,7 @@ function makePlayer(playerID, team) {
     var initialSpeed = mySlider.slider('getValue');
     var speed = initialSpeed;
     //this.named = false;
-    this.name = speed.toString();
+    this.name = "";
 
     // var angle = 0;    
     this.ball = false;
@@ -263,7 +263,6 @@ function makePlayer(playerID, team) {
 	    ctx.fillText("BALL",this.x - 30*playerRatio,this.y + 30*playerRatio);
 	} else {
 	    ctx.fillText(this.name,this.x - 15*playerRatio,this.y + 30*playerRatio);
-	    console.log("The name is: "+name);
 	}
     };
     
@@ -464,6 +463,7 @@ $(window).on('mousedown', function(e) {
 		    }
 		    nonSelectSpeed = mySlider.slider('getValue');
 		    mySlider.slider('setValue', selectedPlayer.initialSpeed);
+		    $('#playerName').val(selectedPlayer.name);
                 }
                 break;
             }
@@ -571,6 +571,7 @@ $(window).on('touchstart', function(e) {
 		    }
 		    nonSelectSpeed = mySlider.slider('getValue');
 		    mySlider.slider('setValue', selectedPlayer.initialSpeed);
+		    $('#playerName').val(selectedPlayer.name);
                 }
                 break;
             }
@@ -635,8 +636,6 @@ $(window).on('touchend', function(e) {
     } else if (selected){
 	if ( touch.pageX > leftBound && touch.pageX < rightBound &&
 	     touch.pageY > 0 && touch.pageY <= currentHeight){
-		console.log("touch.pageX: "+touch.pageX);
-		console.log("leftBound: "+leftBound);
 	    if (Xs.length > 1){
         	PATHS[PLAYERS[select].ID] = [Xs, Ys];
 	    }
@@ -753,10 +752,12 @@ $('#select').on('click touchstart', function(e) {
 	drawingPath = true;
 	creatingTeam1 = nonSelectColor;
 	mySlider.slider('setValue', nonSelectSpeed);
+	$('#playerName').val("");
 	add(creatingTeam1);
 	help.text("Click and drag to create a player and a path");
 	select = -1;
 	selected = false;
+	drawSetup();
     }
 });
 
@@ -801,13 +802,11 @@ function deleteAll() {
 
 $('#submit').click(function(){
     this.str = document.getElementById("playerName").value;
-    console.log(this.str);
     if (this.str.length > 0){
 	name = this.str;
     }
     if ( select > -1){
 	PLAYERS[select].name = this.str;
-	console.log(PLAYERS[select].name);
     }
     document.getElementById("playerName").value = "";
     resize();
