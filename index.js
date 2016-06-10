@@ -832,9 +832,9 @@ $('#speed').change(function() {
 function loadFormation(formation) {
     for (var i = 0; i < formation['players'].length; i++) {
         var onPlayer = formation['players'][i];
-        var newPlayer = makePlayer(onPlayer['id'], onPlayer['team']);
+        var newPlayer = makePlayer(onPlayer['ID'], onPlayer['team']);
         newPlayer.speed = onPlayer['speed'];
-        var onPath = formation['paths'][onPlayer['id']];
+        var onPath = formation['paths'][onPlayer['ID']];
         newPlayer.x = onPath[0][0] * currentWidth;
         newPlayer.y = onPath[1][0] * currentHeight;
         if ( onPlayer['ball'] == true ) {
@@ -857,18 +857,18 @@ function loadFormation(formation) {
 }
 
 function saveFormation() {
-    var psuedoPaths = new Array(), path;
+    var psuedoPaths = {}, path;
     for (var i in PATHS) {
         path = JSON.parse(JSON.stringify(PATHS[i]));
-        for (var i = 0; i < path[0].length; i++) {
-            path[0][i] /= currentWidth;
-            path[1][i] /= currentHeight;
+        for (var k = 0; k < path[0].length; k++) {
+            path[0][k] /= currentWidth;
+            path[1][k] /= currentHeight;
         }
-        psuedoPaths.push(path);
+        psuedoPaths[i] = path;
     }
     return {
-        'players': JSON.stringify(PLAYERS, ['id', 'team', 'speed', 'ball', 'name']),
-        'paths': JSON.stringify(psuedoPaths),
+        'players': JSON.parse(JSON.stringify(PLAYERS, ['ID', 'team', 'speed', 'ball', 'name'])),
+        'paths': JSON.parse(JSON.stringify(psuedoPaths)),
     };
 }
 
