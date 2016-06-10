@@ -45,8 +45,10 @@ button {
 
 #left {
     width: 20%;
-    height: 100%;
-    position: fixed;
+    /*height: 100%;*/
+    height: auto;
+    /*position: fixed;*/
+    position: absolute;
     outline: opx solid;
     background-color: rgb(51,55,69);
 }
