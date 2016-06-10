@@ -805,8 +805,11 @@ $('#submit').click(function(){
     if (this.str.length > 0){
 	name = this.str;
     }
+    console.log("the name submitted is: "+this.str);
     if ( select > -1){
 	PLAYERS[select].name = this.str;
+    } else {
+	console.log("nope, no selected");
     }
     document.getElementById("playerName").value = "";
     resize();
