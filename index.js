@@ -847,7 +847,7 @@ function loadFormation(formation) {
         totalCreated++;
     }
     for (var id in formation['paths']) {
-        var onPath = formation['paths'][id];
+        var onPath = JSON.parse(JSON.stringify(formation['paths'][id]));
         for (var i = 0; i < onPath[0].length; i++) {
             onPath[0][i] *= currentWidth;
             onPath[1][i] *= currentHeight;
