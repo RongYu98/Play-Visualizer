@@ -136,7 +136,7 @@ function resize() {
     var i = 0;
     var a = 0;
 
-    for (i=0; i<totalCreated-1; i++){// this not linear, sometimes wrong
+    for (i=0; i<totalCreated-1; i++){
 	if (PATHS[i]!=null){
 	    for (a=0; a<PATHS[i][0].length; a++){
 		PATHS[i][0][a] = PATHS[i][0][a] / currentWidth;
@@ -148,10 +148,6 @@ function resize() {
 	PLAYERS[i].x = PLAYERS[i].x / currentWidth;
 	PLAYERS[i].y = PLAYERS[i].y / currentHeight;
     }
-
-    //if (totalCreated > 1){
-        //console.log("XY Empirical: "+PATHS[0][0][0]+" "+PATHS[0][1][0]);
-    //}
 
     if (winWidth/imgWidth <= winHeight/imgHeight) {
         currentWidth = winWidth;
@@ -208,10 +204,8 @@ function makePlayer(playerID, team) {
     var path;
     var initialSpeed = mySlider.slider('getValue');
     var speed = initialSpeed;
-    //this.named = false;
     this.name = "";
 
-    // var angle = 0;    
     this.ball = false;
 
     var setSpeed = function(newSpeed) {
@@ -226,7 +220,6 @@ function makePlayer(playerID, team) {
         this.onPos = 0;
         this.x = PATHS[this.ID][0][this.onPos];
         this.y = PATHS[this.ID][1][this.onPos];
-        //console.log("redo done, onPos: "+this.onPos);
     };
     
     var draw = function() {
@@ -284,7 +277,6 @@ function makePlayer(playerID, team) {
             this.onPos = 0;
             this.x = path[0][this.onPos];
             this.y = path[1][this.onPos];
-            //console.log("This was onPos = -1, so setted it");
         }
         
         for (this.imove = 0; this.imove < this.speed; this.imove++) {
@@ -348,11 +340,6 @@ function makePlayer(playerID, team) {
 // Path Drawing Functions
 function drawSetup() {
     resize();
-    /* for (var i = 0; i < PLAYERS.length; i++) {
-        var current = PLAYERS[i];
-        current.draw();
-        drawPath(PATHS[current.ID][0], PATHS[current.ID][1], current.team);
-    } */
 }
 
 function drawPath(arrayX, arrayY, team, ball) {
@@ -386,8 +373,8 @@ function drawPath(arrayX, arrayY, team, ball) {
     var angleA = angle + 3 * Math.PI / 4;
     var angleB = angle - 3 * Math.PI / 4;
     if (xDiff < 0 || (xDiff == 0 && yDiff < 0)){
-    angleA += Math.PI;
-    angleB += Math.PI;
+    	angleA += Math.PI;
+    	angleB += Math.PI;
     }
     ctx.beginPath();
     ctx.moveTo(arrayX[arrayX.length - 1], arrayY[arrayY.length - 1]);
@@ -441,7 +428,6 @@ $(window).on('mousedown', function(e) {
     
     if ( ( selecting && !selected) || deleting) { // this will find the player
         
-        //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
             
             if (
@@ -519,14 +505,6 @@ $(window).mouseup(function(e) {
 *  or anything that does not use the mouse, and 
 *  therefore, does not support mouse functions
 **/
-//note: these are random calculations meant to compensate for touch not having an offset
-var offsetX = $(window).width() - c.width;
-var offsetX2 = screen.width - c.width - 2*offsetX;
-//console.log("WindWidth: " +  $(window).width());
-//console.log("Canvas Width: "+c.width);
-//console.log("offSet is: "+offsetX);
-//console.log("OffsetX2 is: "+offsetX2);
-
 var lastTouch;
 $(window).on('touchstart', function(e) {
     
@@ -549,7 +527,6 @@ $(window).on('touchstart', function(e) {
     
     if ((selecting && !selected) || deleting) { // this will find the player
 	
-        //console.log("finding players at: " + this.xcor + " " + this.ycor);
         for (this.i = 0; this.i < PLAYERS.length; this.i++) {
             
             if (
@@ -616,7 +593,6 @@ $(window).on('touchmove', function(e) {
 $(window).on('touchend', function(e) {
    
     var touch = lastTouch;
-    //console.log(e.originalEvent.touches);
     if (Xs.length > 1) {
         mouse_Down = false;
     }
@@ -644,7 +620,6 @@ $(window).on('touchend', function(e) {
             select = -1;
 	    selected = false;
 	    drawingBall = false;
-	    console.log("true");
 	}
     }
 
@@ -686,27 +661,11 @@ var changeColor = function(){
 };
 
 add(true);
-//$('#changeColor').click(function() { changeColor(); });
 
 $("[name='change']").on('switchChange.bootstrapSwitch', function(event, state){
     changeColor();
 });
 
-
-/*
-$('#run').click(function() {
-    if (!running) {
-        running = true;
-        main();
-    }
-});
-
-$('#stop').click(function() {
-    window.cancelAnimationFrame(requestID);
-    running = false;
-});
-
-*/
 
 $("[name='stopping']").on('switchChange.bootstrapSwitch', function(event, state){
     if(!state){
@@ -805,11 +764,8 @@ $('#submit').click(function(){
     if (this.str.length > 0){
 	name = this.str;
     }
-    console.log("the name submitted is: "+this.str);
     if ( select > -1){
 	PLAYERS[select].name = this.str;
-    } else {
-	console.log("nope, no selected");
     }
     document.getElementById("playerName").value = "";
     resize();
@@ -888,14 +844,6 @@ function main() {
     drawSetup();
     requestID = window.requestAnimationFrame(main);
 }
-
-
-
-// prevents one from moving the screen
-//function BlockMove(event) {
-    // Tell Safari not to move the window.
-  //  event.preventDefault();
-//}
 
 function iOS() {
     var iDevices = [
