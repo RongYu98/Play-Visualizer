@@ -4,6 +4,7 @@ html, body {
   margin: 0px;
   font-family: sans-serif;
   outline: 0px;
+  overflow-x: hidden;
 }
 
 canvas {
@@ -45,12 +46,11 @@ button {
 
 #left {
     width: 20%;
-    /*height: 100%;*/
-    height: auto;
-    /*position: fixed;*/
-    position: absolute;
+    height: 100%;
+    position: fixed;
     outline: opx solid;
     background-color: rgb(51,55,69);
+    overflow: scroll;
 }
 
 #right {
@@ -100,4 +100,3 @@ button {
     font-family: 'Comfortaa', cursive;
     color:rgb(237,251,255);
 }
-
