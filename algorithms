@@ -27,3 +27,11 @@ Player Movement:
 2. Each player has a onPos, i.e. on position, that signifies which pair of (x,y) the player is approaching.
 3. Movement is determined by finding the angle using the slope of the line connecting the player's current xy to the target xy.
 4. Using the angle, cosine and sin ensure that the player moves the exact distance each time
+
+Resizing:
+1. We figure out the empirical formula, the percentage of screen the ball is at.
+2. We divide to get it, and then multiply it by the new width and height.
+
+Misc. Notes:
+1. JS is weird, undefined != true and does not throw an error, therefore, one can call it to see if it exists.
+2. 
