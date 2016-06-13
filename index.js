@@ -633,7 +633,7 @@ $(window).resize(resize);
 
 var lastTeam;
 // Button handler assignment
-var add = function(team1) {
+var add = function(team1) { 
     mouse_Down = false;
     player = makePlayer(totalCreated, team1);
     totalCreated++;
@@ -659,8 +659,6 @@ var changeColor = function(){
     }
     add( creatingTeam1 );
 };
-
-add(true);
 
 $("[name='change']").on('switchChange.bootstrapSwitch', function(event, state){
     changeColor();
@@ -844,3 +842,5 @@ function main() {
     drawSetup();
     requestID = window.requestAnimationFrame(main);
 }
+
+add(true); // initiation with the first player, allows user to start making players right away
